@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"math/rand"
 
 	"github.com/c-my/lottery_iris/datasource"
@@ -23,8 +24,8 @@ func main() {
 	})
 
 	app.Get("/screen", func(ctx iris.Context) {
-    		ctx.ServeFile("PrizeDraw.html", false)
-    	})
+		ctx.ServeFile("PrizeDraw.html", false)
+	})
 
 	setupWebsocket(app)
 
@@ -47,13 +48,18 @@ func setupWebsocket(app *iris.Application) {
 
 }
 
+type message map[string]interface{}
+
 func handleWebsocket(c websocket.Connection) {
 	c.OnMessage(func(data []byte) {
-		message := string(data)
-		switch message {
+		var msg message
+		json.Unmarshal(data, &msg)
+
+		switch msg["action"] {
 		case "stop-drawing":
 			luckyNumber := rand.Intn(len(datasource.Users))
 			j, _ := addAction("who-is-lucky-dog", datasource.Users[luckyNumber])
+			fmt.Println(string(j))
 			c.To(websocket.All).EmitMessage(j)
 
 			println("lucy dog is: ", datasource.Users[luckyNumber].ID)
