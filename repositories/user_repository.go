@@ -4,7 +4,7 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/c-my/lottery/datamodels"
+	"github.com/c-my/lottery_iris/datamodels"
 )
 
 //Query defines query actions
