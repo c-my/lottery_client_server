@@ -37,7 +37,7 @@ function on_reset_button_click() {
 
 // msg: JSON Object
 function add_luck_dog(msg) {
-    let user_id = msg['uid'];
+    let user_id = msg['content']['uid'];
     let content = $("#user_" + user_id).html();
     let user_info_template = `<div id="won_${user_id}" class="valign-wrapper">${content}</div>`;
     $("#won-list").append('<li class="collection-item">' + user_info_template + '</li>')

@@ -28,7 +28,7 @@ function get_participant_list() {
     })
 }
 
-let drawing = true;
+let drawing = false;
 
 ws.onmessage = function(message) {
     let msg = JSON.parse(message);
@@ -51,16 +51,18 @@ ws.onmessage = function(message) {
 // msg: JSON Object
 function set_lucky_dog (msg) {
     drawing = false;
-    let user_id = msg['uid'];
+    let user_id = msg['content']['uid'];
     let content = $("#user_" + user_id).html();
     $("#draw-area").html(content);
 }
 
 function* draw() {
-    let list = $("#user-list").children();
-    for (let item in list) {
-        $("#draw-area").html($(list[item]).html());
-        yield list[item].id;
+    while (1) {
+        let list = $("#user-list").children("div");
+        for (let i = 0; i < list.length; i++) {
+            $("#draw-area").html(list[i].innerHTML);
+            yield list[i].id;
+        }
     }
 }
 
@@ -70,7 +72,7 @@ $(document).ready(function () {
     get_participant_list();
     setInterval(function () {
         if (drawing) {
-            iterator.next();
+            let id = iterator.next();
         }
     }, 300);
 });
