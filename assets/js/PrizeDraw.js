@@ -31,7 +31,7 @@ function get_participant_list() {
 let drawing = false;
 
 ws.onmessage = function(message) {
-    let msg = JSON.parse(message);
+    let msg = JSON.parse(message.data);
     switch (msg.action) {
         case 'reset-page':
             $("#draw-area").html('');

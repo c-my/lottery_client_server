@@ -1,7 +1,8 @@
 let ws = new WebSocket('ws://127.0.0.1:8000/ws');
 
 ws.onmessage = function (message) {
-    let msg = JSON.parse(message);
+    console.log(message.data);
+    let msg = JSON.parse(message.data);
     switch (msg.action) {
         case 'who-is-lucky-dog':
             add_luck_dog(msg);
