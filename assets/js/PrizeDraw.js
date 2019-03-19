@@ -1,4 +1,4 @@
-let ws = new Ws("ws://127.0.0.1:8000/ws");
+let ws = new WebSocket("ws://127.0.0.1:8000/ws");
 
 function get_participant_list() {
     $.ajax({
@@ -28,22 +28,33 @@ function get_participant_list() {
     })
 }
 
-ws.On("reset-page", function(msg) {
-    $("#draw-area").html('');
-});
+let drawing = true;
 
-let drawing = false;
-ws.On("start-drawing", function (msg) {
-    drawing = true;
-});
+ws.onmessage = function(message) {
+    let msg = JSON.parse(message);
+    switch (msg.action) {
+        case 'reset-page':
+            $("#draw-area").html('');
+            break;
+        case 'start-drawing':
+            drawing = true;
+            break;
+        case 'who-is-lucky-dog':
+            set_lucky_dog(msg);
+            break;
+        default:
+            console.log('unknown action:\n' + message);
+    }
+};
 
-ws.On("who-is-lucky-dog", function (msg) {
+
+// msg: JSON Object
+function set_lucky_dog (msg) {
     drawing = false;
-    let result = JSON.parse(msg);
-    let user_id = result['uid'];
+    let user_id = msg['uid'];
     let content = $("#user_" + user_id).html();
     $("#draw-area").html(content);
-});
+}
 
 function* draw() {
     let list = $("#user-list").children();
