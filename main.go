@@ -43,16 +43,30 @@ func setupWebsocket(app *iris.Application) {
 }
 
 func handleWebsocket(c websocket.Connection) {
-	c.On("stop-drawing", func() {
-		luckyNumber := rand.Intn(len(datasource.Users))
-		j, _ := json.Marshal(datasource.Users[luckyNumber])
-		c.To(websocket.All).Emit("who-is-lucky-dog", j)
+	c.OnMessage(func(data []byte) {
+		message := string(data)
+		switch message {
+		case "stop-drawing":
+			luckyNumber := rand.Intn(len(datasource.Users))
+			j, _ := addAction("who-is-lucky-dog", datasource.Users[luckyNumber])
+			c.To(websocket.All).EmitMessage(j)
 
-		println("lucy dog is: ", datasource.Users[luckyNumber].ID)
+			println("lucy dog is: ", datasource.Users[luckyNumber].ID)
+		default:
+			c.To(websocket.Broadcast).EmitMessage(data)
+		}
 
 	})
 }
 
 func getExistUsers(ctx iris.Context) {
 	ctx.JSON(datasource.Users)
+}
+
+func addAction(action string, content interface{}) ([]byte, error) {
+	m := map[string]interface{}{
+		"action":  action,
+		"content": content,
+	}
+	return json.Marshal(m)
 }
