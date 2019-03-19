@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"math/rand"
 
 	"github.com/c-my/lottery_iris/datasource"
@@ -23,8 +24,8 @@ func main() {
 	})
 
 	app.Get("/screen", func(ctx iris.Context) {
-    		ctx.ServeFile("PrizeDraw.html", false)
-    	})
+		ctx.ServeFile("PrizeDraw.html", false)
+	})
 
 	setupWebsocket(app)
 
@@ -47,17 +48,36 @@ func setupWebsocket(app *iris.Application) {
 
 }
 
-func handleWebsocket(c websocket.Connection) {
-	c.On("stop-drawing", func() {
-		luckyNumber := rand.Intn(len(datasource.Users))
-		j, _ := json.Marshal(datasource.Users[luckyNumber])
-		c.To(websocket.All).Emit("who-is-lucky-dog", j)
+type message map[string]interface{}
 
-		println("lucy dog is: ", datasource.Users[luckyNumber].ID)
+func handleWebsocket(c websocket.Connection) {
+	c.OnMessage(func(data []byte) {
+		var msg message
+		json.Unmarshal(data, &msg)
+
+		switch msg["action"] {
+		case "stop-drawing":
+			luckyNumber := rand.Intn(len(datasource.Users))
+			j, _ := addAction("who-is-lucky-dog", datasource.Users[luckyNumber])
+			fmt.Println(string(j))
+			c.To(websocket.All).EmitMessage(j)
+
+			println("lucy dog is: ", datasource.Users[luckyNumber].ID)
+		default:
+			c.To(websocket.Broadcast).EmitMessage(data)
+		}
 
 	})
 }
 
 func getExistUsers(ctx iris.Context) {
 	ctx.JSON(datasource.Users)
+}
+
+func addAction(action string, content interface{}) ([]byte, error) {
+	m := map[string]interface{}{
+		"action":  action,
+		"content": content,
+	}
+	return json.Marshal(m)
 }

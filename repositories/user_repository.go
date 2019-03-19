@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"database/sql"
 	"errors"
 	"sync"
 
@@ -136,3 +137,19 @@ func (r *userMemoryRepository) Delete(query Query, limit int) bool {
 		return true
 	}, limit, ReadWriteMode)
 }
+
+func test() {
+	db, err := sql.Open("sqlite3", "./datasource/user.db")
+	if err != nil {
+		panic(err)
+	}
+
+}
+
+const (
+	createTable = `CREATE TABLE IF NOT EXISTS [main].[user](
+		[id] INT PRIMARY KEY NOT NULL UNIQUE, 
+		[nickname] TEXT DEFAULT user, 
+		[avatar_name] TEXT DEFAULT "avatar.png", 
+		[avatar_path] TEXT DEFAULT "/assets/avatar/");`
+)
