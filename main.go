@@ -21,6 +21,10 @@ func main() {
 		ctx.ServeFile("console.html", false)
 	})
 
+	app.Get("/screen", func(ctx iris.Context) {
+    		ctx.ServeFile("PrizeDraw.html", false)
+    	})
+
 	setupWebsocket(app)
 
 	app.Run(iris.Addr(":8000"))

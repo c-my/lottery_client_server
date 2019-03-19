@@ -129,3 +129,17 @@ body {
         opacity: 0;
       }
 }
+
+
+table {
+    text-align: center;
+}
+
+#draw-area {
+    position: absolute;
+    display: block;
+    font-size:3em;
+    left:50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+}

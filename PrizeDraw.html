@@ -1,22 +1,28 @@
 <!DOCTYPE html>
 <html lang="zh">
-    <head>
-        <meta charset="utf-8">
-        <link rel="stylesheet" type="text/css" href="css/PrizeDraw.css" />
-        <title>抽奖</title>
-    </head>
-    <body>
-        <div id="load">
-            <span class="load_letter" data-content="P">P</span>
-            <span class="load_letter" data-content="R">R</span>
-            <span class="load_letter" data-content="I">I</span>
-            <span class="load_letter" data-content="Z">Z</span>
-            <span class="load_letter" data-content="E">E</span>
-            <span class="load_letter" data-content="-">-</span>
-            <span class="load_letter" data-content="D">D</span>
-            <span class="load_letter" data-content="R">R</span>
-            <span class="load_letter" data-content="A">A</span>
-            <span class="load_letter" data-content="W">W</span>
-        </div>
-        </body>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="css/PrizeDraw.css"/>
+    <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="js/iris-ws.js"></script>
+    <script type="text/javascript" src="js/PrizeDraw.js"></script>
+    <title>抽奖</title>
+</head>
+<body>
+<div id="load">
+    <span class="load_letter" data-content="P">P</span>
+    <span class="load_letter" data-content="R">R</span>
+    <span class="load_letter" data-content="I">I</span>
+    <span class="load_letter" data-content="Z">Z</span>
+    <span class="load_letter" data-content="E">E</span>
+    <span class="load_letter" data-content="-">-</span>
+    <span class="load_letter" data-content="D">D</span>
+    <span class="load_letter" data-content="R">R</span>
+    <span class="load_letter" data-content="A">A</span>
+    <span class="load_letter" data-content="W">W</span>
+</div>
+<div id="draw-area"></div>
+<div id="user-list" style="display: none;"></div>
+
+</body>
 </html>
