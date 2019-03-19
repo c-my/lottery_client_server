@@ -15,11 +15,16 @@ func main() {
 	app.StaticWeb("/assets", "./assets")
 	app.StaticWeb("/css", "./assets/css")
 	app.StaticWeb("/js", "./assets/js")
+	app.StaticWeb("/fonts", "./assets/fonts")
 	app.Get("/get-exist-user", getExistUsers)
 
 	app.Get("/", func(ctx iris.Context) {
 		ctx.ServeFile("console.html", false)
 	})
+
+	app.Get("/screen", func(ctx iris.Context) {
+    		ctx.ServeFile("PrizeDraw.html", false)
+    	})
 
 	setupWebsocket(app)
 
