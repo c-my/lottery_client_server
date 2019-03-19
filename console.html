@@ -1,0 +1,95 @@
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="css/materialize.min.css"/>
+    <link rel="stylesheet" href="css/console.css"/>
+    <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/iris-ws.js"></script>
+    <script type="text/javascript" src="js/console.js"></script>
+    <title>抽奖系统</title>
+</head>
+
+<body>
+<span>&nbsp;</span>
+
+<div class="container">
+    <div class="row">
+        <div class="valign-wrapper">
+            <div class="col m8">
+                <h3>抽奖系统</h3>
+            </div>
+            <div class="col m2">
+                <label>
+                    <input type="text" value="127.0.0.1:8000/screen"/>
+                </label>
+            </div>
+            <a class="waves-effect waves-light btn valign col m1 group-btn" href="screen">打开屏幕</a>
+            <a class="waves-effect waves-light btn valign col m1 group-btn">复制链接</a>
+        </div>
+    </div>
+
+    <hr/>
+
+    <div class="row">
+        <div class="valign-wrapper">
+            <div class="col m4">
+                <select id="award-select">
+                    <option value="" disabled selected>请选择奖项</option>
+                    <option value="1">白菜</option>
+                    <option value="2">青菜</option>
+                    <option value="3">萝卜</option>
+                    <option value="3">土豆</option>
+                </select>
+                <label for="award-select"></label>
+            </div>
+            <div class="col m2">
+                <a class="waves-effect waves-light btn-large valign" id="pick-btn">抽！</a>
+            </div>
+            <div class="vhr" style="height: 100px;"></div>
+            <div class="col m6">
+                <table>
+                    <tr>
+                        <td>
+                            <a class="waves-effect waves-light btn" id="reset-btn">复位</a>
+                        </td>
+                    </tr>
+                </table>
+                <!--<a class="waves-effect waves-light btn valign"> 设置背景</a>-->
+            </div>
+        </div>
+    </div>
+
+    <hr />
+
+    <div class="row">
+        <div class="col m4">
+            <h5>奖品奖项</h5>
+            <ul class="collection" id="award-list">
+                <li class="collection-item">白菜</li>
+                <li class="collection-item">青菜</li>
+                <li class="collection-item">萝卜</li>
+                <li class="collection-item">土豆</li>
+            </ul>
+        </div>
+
+        <div class="col m4">
+            <h5>参与用户</h5>
+            <ul class="collection" id="user-list">
+
+            </ul>
+        </div>
+
+        <div class="col m4">
+            <h5>中奖用户</h5>
+            <ul class="collection" id="won-list">
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>
