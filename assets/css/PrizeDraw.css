@@ -143,3 +143,9 @@ table {
     top:50%;
     transform: translate(-50%,-50%);
 }
+
+.avatar-img {
+  display: block;
+  width: 128px;
+  height: 128px;
+}

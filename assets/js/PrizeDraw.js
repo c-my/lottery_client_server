@@ -14,7 +14,7 @@ function get_participant_list() {
                     `<div id="user_${user_id}">
                         <table>
                             <tr><td>
-                                <img class="circle img" src="${user_avatar}" alt="avatar">
+                                <img class="circle img avatar-img" src="${user_avatar}" alt="">
                             </td></tr>
                             <tr><td>
                                 <span>${user_name}</span>
@@ -74,5 +74,5 @@ $(document).ready(function () {
         if (drawing) {
             let id = iterator.next();
         }
-    }, 300);
+    }, 100);
 });
