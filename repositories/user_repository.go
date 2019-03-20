@@ -4,8 +4,8 @@ import (
 	"sync"
 
 	"github.com/c-my/lottery_client_server/datamodels"
+	"github.com/c-my/lottery_client_server/datasource"
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
 //UserSQLRepository handle users from database
@@ -34,10 +34,8 @@ func (r *UserSQLRepository) SelectAll() (users []datamodels.User) {
 
 //NewUserRepository is
 func NewUserRepository() UserSQLRepository {
-	var db *gorm.DB
-	// var err error
-	db, _ = gorm.Open("sqlite3", "./datasource/user.db")
-	if (!db.HasTable(&datamodels.User{})) {
+	db := datasource.DB
+	if !db.HasTable(&datamodels.User{}) {
 		db.CreateTable(&datamodels.User{})
 	}
 	return UserSQLRepository{source: db}
