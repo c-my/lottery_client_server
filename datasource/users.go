@@ -1,6 +1,6 @@
 package datasource
 
-import "github.com/c-my/lottery_iris/datamodels"
+import "github.com/c-my/lottery_client_server/datamodels"
 
 // Users is a collection of user
 var Users = map[int]datamodels.User{

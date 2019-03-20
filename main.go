@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"math/rand"
 
-	"github.com/c-my/lottery_iris/datasource"
+	"github.com/c-my/lottery_client_server/datasource"
 	"github.com/kataras/iris"
 	"github.com/kataras/iris/websocket"
 )
