@@ -22,6 +22,7 @@ function on_pick_button_click() {
         }));
     } else {
         $("#pick-btn").html("抽！");
+        console.log('停！');
         ws.send(JSON.stringify({
             action: 'stop-drawing'
         }));
