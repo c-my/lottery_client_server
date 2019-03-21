@@ -21,10 +21,19 @@ func main() {
 	app.StaticWeb("/css", "./assets/css")
 	app.StaticWeb("/js", "./assets/js")
 	app.StaticWeb("/fonts", "./assets/fonts")
+	app.StaticWeb("/img", "./assets/img")
 
 	mvc.Configure(app.Party("/get-exist-user"), users)
 	mvc.Configure(app.Party("get-awards"), awards)
 	app.Get("/", func(ctx iris.Context) {
+		ctx.ServeFile("index.html", false)
+	})
+
+	app.Get("/index", func(ctx iris.Context) {
+		ctx.ServeFile("index.html", false)
+	})
+
+	app.Get("/console", func(ctx iris.Context) {
 		ctx.ServeFile("console.html", false)
 	})
 
