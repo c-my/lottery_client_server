@@ -1,16 +1,17 @@
 package controllers
 
 import (
+	"github.com/c-my/lottery_client_server/services"
+
 	"github.com/c-my/lottery_client_server/datamodels"
-	"github.com/c-my/lottery_client_server/repositories"
 )
 
 // UserController is our user controller
 type UserController struct {
-	service repositories.UserRepository
+	Service services.UserService
 }
 
 // Get returns list of users
 func (c *UserController) Get() (results []datamodels.User) {
-	return c.service.SelectAll()
+	return c.Service.GetAll()
 }

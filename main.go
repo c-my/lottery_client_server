@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/jinzhu/gorm"
-
 	"github.com/c-my/lottery_client_server/repositories"
 	"github.com/c-my/lottery_client_server/services"
 	"github.com/c-my/lottery_client_server/web/controllers"
@@ -23,7 +21,8 @@ func main() {
 	app.StaticWeb("/css", "./assets/css")
 	app.StaticWeb("/js", "./assets/js")
 	app.StaticWeb("/fonts", "./assets/fonts")
-	app.Get("/get-exist-user", getExistUsers)
+
+	mvc.Configure(app.Party("/get-exist-user"), users)
 
 	app.Get("/", func(ctx iris.Context) {
 		ctx.ServeFile("console.html", false)
@@ -35,7 +34,11 @@ func main() {
 
 	setupWebsocket(app)
 
-	app.Run(iris.Addr(":8000"))
+	app.Run(
+		iris.Addr(":8000"),
+		iris.WithoutServerError(iris.ErrServerClosed),
+		iris.WithOptimizations,
+	)
 }
 
 func setupWebsocket(app *iris.Application) {
@@ -63,28 +66,18 @@ func handleWebsocket(c websocket.Connection) {
 
 		switch msg["action"] {
 		case "stop-drawing":
-			// userRepository.Rando
 			luckyDog := userRepository.RandomSelect()
-			// luckyNumber := rand.Intn(len(datasource.Users))
+
 			j, _ := addAction("who-is-lucky-dog", luckyDog)
 			fmt.Println(string(j))
 			c.To(websocket.All).EmitMessage(j)
 
-			gorm.Expr("random")
 			println("lucy dog is: ", luckyDog.ID)
 		default:
 			c.To(websocket.Broadcast).EmitMessage(data)
 		}
 
 	})
-}
-
-func getExistUsers(ctx iris.Context) {
-	// ctx.JSON(datasource.Users)
-	var users = userRepository.SelectAll()
-	fmt.Println(users)
-	ctx.JSON(users)
-
 }
 
 func addAction(action string, content interface{}) ([]byte, error) {
