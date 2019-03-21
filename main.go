@@ -44,7 +44,7 @@ func main() {
 	setupWebsocket(app)
 
 	app.Run(
-		iris.Addr(":8000"),
+		iris.Addr(":1923"),
 		iris.WithoutServerError(iris.ErrServerClosed),
 		iris.WithOptimizations,
 	)

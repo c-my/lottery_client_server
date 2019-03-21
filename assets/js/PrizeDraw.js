@@ -1,4 +1,4 @@
-let ws = new WebSocket("ws://127.0.0.1:8000/ws");
+let ws = new WebSocket("ws://127.0.0.1:1923/ws");
 
 function get_participant_list() {
     $.ajax({
