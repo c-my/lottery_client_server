@@ -13,7 +13,7 @@ function get_participant_list() {
                 let user_info_template =
                     `<div id="user_${user_id}">
                         <table>
-                            <tr><td>
+                            <tr><td align="center">
                                 <img class="circle img avatar-img" src="${user_avatar}" alt="">
                             </td></tr>
                             <tr><td>
