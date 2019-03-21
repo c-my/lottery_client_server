@@ -23,7 +23,7 @@ func main() {
 	app.StaticWeb("/fonts", "./assets/fonts")
 
 	mvc.Configure(app.Party("/get-exist-user"), users)
-
+	mvc.Configure(app.Party("get-awards"), awards)
 	app.Get("/", func(ctx iris.Context) {
 		ctx.ServeFile("console.html", false)
 	})
@@ -93,4 +93,11 @@ func users(app *mvc.Application) {
 	userService := services.NewUserService(repo)
 	app.Register(userService)
 	app.Handle(new(controllers.UserController))
+}
+
+func awards(app *mvc.Application) {
+	repo := repositories.NewAwardSQLRepository()
+	awardService := services.NewAwardService(repo)
+	app.Register(awardService)
+	app.Handle(new(controllers.AwardController))
 }

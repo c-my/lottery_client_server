@@ -1,9 +1,8 @@
 package controllers
 
 import (
-	"github.com/c-my/lottery_client_server/services"
-
 	"github.com/c-my/lottery_client_server/datamodels"
+	"github.com/c-my/lottery_client_server/services"
 )
 
 // UserController is our user controller
