@@ -2,7 +2,7 @@ package datamodels
 
 import "time"
 
-//User is the data struct of user
+// User is the data struct of user
 type User struct {
 	ID        uint   `json:"uid" gorm:"primary_key"`
 	Nickname  string `json:"nickname"`

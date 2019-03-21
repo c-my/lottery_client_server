@@ -8,35 +8,42 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-//UserSQLRepository handle users from database
-type UserSQLRepository struct {
+// UserRepository handles basic operations of user
+type UserRepository interface {
+	SelectByID(uid uint) (user datamodels.User, found bool)
+	SelectAll() []datamodels.User
+	RandomSelect() datamodels.User
+}
+
+// UserSQLRepository handle users from database
+type userSQLRepository struct {
 	source *gorm.DB
 	mu     sync.RWMutex
 }
 
-//SelectByID selects user by uid
-func (r *UserSQLRepository) SelectByID(uid uint) (user datamodels.User, found bool) {
+// SelectByID selects user by uid
+func (r *userSQLRepository) SelectByID(uid uint) (user datamodels.User, found bool) {
 	found = r.source.Where("ID = ?", uid).First(&user).RecordNotFound()
 	return
 }
 
-//RandomSelect randomly select a user
-func (r *UserSQLRepository) RandomSelect() (user datamodels.User) {
+// RandomSelect randomly select a user
+func (r *userSQLRepository) RandomSelect() (user datamodels.User) {
 	r.source.Order(gorm.Expr("random()")).First(&user)
 	return
 }
 
-//SelectAll returns all users from database
-func (r *UserSQLRepository) SelectAll() (users []datamodels.User) {
+// SelectAll returns all users from database
+func (r *userSQLRepository) SelectAll() (users []datamodels.User) {
 	r.source.Find(&users)
 	return
 }
 
-//NewUserRepository is
-func NewUserRepository() UserSQLRepository {
+// NewUserRepository is
+func NewUserRepository() UserRepository {
 	db := datasource.DB
 	if !db.HasTable(&datamodels.User{}) {
 		db.CreateTable(&datamodels.User{})
 	}
-	return UserSQLRepository{source: db}
+	return &userSQLRepository{source: db}
 }

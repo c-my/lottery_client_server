@@ -6,15 +6,25 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type AwardSQLRepository struct {
-	source gorm.DB
+// AwardRepository handles basic operations of award
+type AwardRepository interface {
+	SelectAll() []datamodels.Award
 }
 
-//NewAwardSQLRepository returns a award repository
-func NewAwardSQLRepository() AwardSQLRepository {
+type awardSQLRepository struct {
+	source *gorm.DB
+}
+
+func (r *awardSQLRepository) SelectAll() (users []datamodels.Award) {
+	r.source.Find(&users)
+	return
+}
+
+// NewAwardSQLRepository returns a award repository
+func NewAwardSQLRepository() AwardRepository {
 	db := datasource.DB
 	if !db.HasTable(&datamodels.Award{}) {
 		db.CreateTable(&datamodels.Award{})
 	}
-	return AwardSQLRepository{}
+	return &awardSQLRepository{source: db}
 }

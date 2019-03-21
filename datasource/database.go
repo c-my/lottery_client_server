@@ -10,11 +10,11 @@ import (
 
 var (
 	databasePath = "./data/data.db"
-	//DB is the only database
+	// DB is the only database
 	DB = newDatabase()
 )
 
-//newDatabase returns a database
+// newDatabase returns a database
 func newDatabase() *gorm.DB {
 	if !isDatabaseExists(databasePath) {
 		os.Create(databasePath)
@@ -28,7 +28,7 @@ func newDatabase() *gorm.DB {
 
 func isDatabaseExists(path string) bool {
 	s, err := os.Stat(path)
-	//file not exists
+	// file not exists
 	if (err != nil && os.IsNotExist(err)) || s.IsDir() {
 		return false
 	}
