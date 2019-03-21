@@ -7,7 +7,10 @@ import (
 	"github.com/jinzhu/gorm"
 
 	"github.com/c-my/lottery_client_server/repositories"
+	"github.com/c-my/lottery_client_server/services"
+	"github.com/c-my/lottery_client_server/web/controllers"
 	"github.com/kataras/iris"
+	"github.com/kataras/iris/mvc"
 	"github.com/kataras/iris/websocket"
 )
 
@@ -90,4 +93,11 @@ func addAction(action string, content interface{}) ([]byte, error) {
 		"content": content,
 	}
 	return json.Marshal(m)
+}
+
+func users(app *mvc.Application) {
+	repo := repositories.NewUserRepository()
+	userService := services.NewUserService(repo)
+	app.Register(userService)
+	app.Handle(new(controllers.UserController))
 }
