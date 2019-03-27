@@ -3,16 +3,19 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-
 	"github.com/c-my/lottery_client_server/repositories"
 	"github.com/c-my/lottery_client_server/services"
 	"github.com/c-my/lottery_client_server/web/controllers"
+	"github.com/c-my/lottery_client_server/web/websockets"
+	gwebsocket "github.com/gorilla/websocket"
 	"github.com/kataras/iris"
 	"github.com/kataras/iris/mvc"
 	"github.com/kataras/iris/websocket"
 )
 
 var userRepository = repositories.NewUserRepository()
+
+const cloudWsServer string = "wss://sampling.alphamj.cn/ws"
 
 func main() {
 	app := iris.New()
@@ -43,11 +46,20 @@ func main() {
 
 	setupWebsocket(app)
 
+	wsc := websockets.NewWebsocketClient(cloudWsServer)
+	wsc.SetHandler(getWsCRecv)
+	wsc.Run()
+	err := wsc.SendMessage("ping")
+	if (err != nil) {
+		fmt.Println(err)
+	}
+
 	app.Run(
 		iris.Addr(":1923"),
 		iris.WithoutServerError(iris.ErrServerClosed),
 		iris.WithOptimizations,
 	)
+
 }
 
 func setupWebsocket(app *iris.Application) {
@@ -72,16 +84,21 @@ func handleWebsocket(c websocket.Connection) {
 	c.OnMessage(func(data []byte) {
 		var msg message
 		json.Unmarshal(data, &msg)
-
+		fmt.Println(msg)
 		switch msg["action"] {
 		case "stop-drawing":
 			luckyDog := userRepository.RandomSelect()
 
 			j, _ := addAction("who-is-lucky-dog", luckyDog)
-			fmt.Println(string(j))
+			// fmt.Println(string(j))
 			c.To(websocket.All).EmitMessage(j)
 
-			println("lucy dog is: ", luckyDog.ID)
+		// println("lucy dog is: ", luckyDog.ID)
+		case "append-user":
+			c.To(cloudWsServer).EmitMessage(data)
+			fmt.Println("append user:")
+			fmt.Println(msg)
+
 		default:
 			c.To(websocket.Broadcast).EmitMessage(data)
 		}
@@ -109,4 +126,15 @@ func awards(app *mvc.Application) {
 	awardService := services.NewAwardService(repo)
 	app.Register(awardService)
 	app.Handle(new(controllers.AwardController))
+}
+
+func getWsCRecv(wsc *websockets.WebsocketClient, messageType int, p []byte) {
+	switch messageType {
+	case gwebsocket.TextMessage:
+		var msg message
+		json.Unmarshal(p, &msg)
+		fmt.Println(string(p))
+		break
+
+	}
 }
