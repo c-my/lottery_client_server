@@ -36,7 +36,6 @@ function on_reset_button_click() {
     }));
 }
 
-
 // msg: JSON Object
 function add_luck_dog(msg) {
     let user_id = msg['content']['uid'];

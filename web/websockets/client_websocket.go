@@ -51,7 +51,7 @@ func (wsc *WebsocketClient) receiveLoop(conn *gwebsocket.Conn, handler RecvHandl
 		msgTyp, message, err := conn.ReadMessage()
 		if err != nil {
 			log.Println("read:", err)
-			return
+			continue
 		}
 		handler(wsc, msgTyp, message)
 	}
