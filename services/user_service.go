@@ -36,3 +36,7 @@ func (s *userService) GetByID(uid uint) datamodels.User {
 func (s *userService) GetRandomly() datamodels.User {
 	return s.repo.RandomSelect()
 }
+
+func (s *userService) Add(user datamodels.User) {
+	s.repo.Append(user)
+}

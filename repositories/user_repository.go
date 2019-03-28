@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"sync"
+	"time"
 
 	"github.com/c-my/lottery_client_server/datamodels"
 	"github.com/c-my/lottery_client_server/datasource"
@@ -13,6 +14,7 @@ type UserRepository interface {
 	SelectByID(uid uint) (user datamodels.User, found bool)
 	SelectAll() []datamodels.User
 	RandomSelect() datamodels.User
+	Append(user datamodels.User) bool
 }
 
 // UserSQLRepository handle users from database
@@ -37,6 +39,16 @@ func (r *userSQLRepository) RandomSelect() (user datamodels.User) {
 func (r *userSQLRepository) SelectAll() (users []datamodels.User) {
 	r.source.Find(&users)
 	return
+}
+
+func (r *userSQLRepository) Append(user datamodels.User) bool {
+	if !r.source.NewRecord(user) {
+		user.CreatedAt = time.Now()
+		user.UpdatedAt = time.Now()
+		r.source.Create(user)
+		return true
+	}
+	return false
 }
 
 // NewUserRepository is
