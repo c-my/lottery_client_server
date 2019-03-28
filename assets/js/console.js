@@ -1,16 +1,44 @@
 let drawing = false;
 let running = false;
 
+let ws = new WebSocket('ws://127.0.0.1:1923/ws');
+
+ws.onmessage = function (message) {
+    console.log(message.data);
+    let msg = JSON.parse(message.data);
+    switch (msg.action) {
+        case 'append-user':
+            let username = msg.content.nickname;
+            let uid = msg.content.uid;
+            let avatarUrl = msg.content.avatar;
+            auto_add_user(avatarUrl, username, uid);
+        default:
+            console.log('unknown action:\n' + message.data);
+    }
+};
+
+function auto_add_user(img_url, username, uid) {
+    $("#parts-list-head").html("<tr><td>头像</td><td>用户名</td><td>UID</td></tr>");
+    $("#parts-list-body").append("<tr><td>" + "<img width='100px' height='100px' src='" + img_url + "'/></td><td>" + username + "</td><td>" + uid + "</td></tr>");
+}
+
 function start_draw() {
     $("#draw-label").text("停止抽奖");
     $(".btn-draw-action").css("background-color", "orangered");
     $("#draw-action").attr("class", "mdi mdi-stop-circle-outline right");
+    ws.send(JSON.stringify({
+        action: 'start-drawing',
+        content: {'dkind': $("#draw-style").val()}
+    }));
 }
 
 function stop_draw() {
     $("#draw-label").text("开始抽奖");
     $(".btn-draw-action").css("background-color", "forestgreen");
     $("#draw-action").attr("class", "mdi mdi-arrow-right-drop-circle-outline right");
+    ws.send(JSON.stringify({
+        action: 'stop-drawing'
+    }));
 }
 
 function on_draw_btn_click() {

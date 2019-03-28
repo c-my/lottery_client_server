@@ -44,7 +44,7 @@
     </div>
     <div class="row main" style="margin: 0px;">
         <div class="card-panel col s4" style="width: 30%; margin-left: 20px; padding: 0px;">
-            <div style="height: 80%;">
+            <div style="height: 83%;">
                 <video controls="controls" id="video" preload="auto" width="100%;" style="margin-top: 0%">
                     <source src="" type="video/mp4">
                 </video>
@@ -91,7 +91,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-panel col s8" id="setting-panel" style="width: 66%; margin-left: 20px; height: 80%; overflow-y: auto;">
+        <div class="card-panel col s8" id="setting-panel" style="width: 66%; margin-left: 20px; height: 83%; overflow-y: auto;">
             <div id="basic-info">
                 <div class="row" style="margin-bottom: 0px;">
                     <form class="col s12" style="margin-top: 20px; margin-bottom: 0px;">
@@ -194,9 +194,11 @@
                         <div class="row">
                             <div class="input-field col s6">
                                 <label class="active">抽奖风格</label>
-                                <select>
-                                    <option value="1">魔方</option>
-                                    <option value="2">转盘</option>
+                                <select id="draw-style">
+                                    <option value="cube">魔方</option>
+                                    <option value="flash">闪烁</option>
+                                    <option value="swing">晃动</option>
+                                    <option value="load">默认</option>
                                 </select>
                             </div>
                             <div class="input-field col s6">
@@ -207,7 +209,101 @@
                     </form>
                 </div>
             </div>
-            <div id="test4" class="col s12">Test 4</div>
+            <div id="test4">
+                <!--Ed's part-->
+                <!--  We should have speed, size of font, color of font, position (up or down), screen percentage (single line, half screen, full screen), transparency  -->
+                <!-- speed should be input as multiple choice (single) or perhaps a scrollbar that triggers an animation?-->
+                <!-- Size of font multiple option or maybe scrollbar. triggers visualization -->
+                <!-- color of font multiple choice or color pallet if possible, we'll see. also, it truggers a visualization -->
+                <!-- font multiple choice and triggers visualization-->
+                <!-- transparency multiple choice or perhaps a scrollbar with visualization pls -->
+                <!---->
+                    <div class="row" style="margin-bottom: 0px;">
+                        
+                        <form action="#" class="col s12" style="margin-top: 20px; margin-bottom: 0px;">
+                            <div class="range-field">
+                            
+                                
+                                
+                                <div class="col s12 m8 l9">
+                                    <label>Set font size</label>
+                                    <form action="#">
+                                        <p class="range-field">
+                                            <input type="range" id="test5" min="6" max="72">
+                                                <span class="thumb" style="left: 68.975px; height: 0px; width: 0px; top: 10px; margin-left: 10px;">
+                                                </span>
+                                            </input>
+                                        </p>
+                                    </form>
+                                </div>
+                                
+                                
+                                <div class="row">
+                                    <div class="col s12 m8 l9">
+                                        <label>Choose font</label>
+                                        <select class="browser-default">
+                                            <option value="" disabled="" selected="">Arial</option>
+                                            <option value="1">Arial</option>
+                                            <option value="2">Comic Sans</option>
+                                            <option value="3">Option 3</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col s12 m8 l9">
+                                        <label>Choose font color</label>
+                                        <select class="browser-default">
+                                            <option value="" disabled="" selected="">Black</option>
+                                            <option value="1">Black</option>
+                                            <option value="2">White</option>
+                                            <option value="3">Yellow</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col s12 m8 l9">
+                                        <label>Choose speed</label>
+                                        <select class="browser-default">
+                                            <option value="" disabled="" selected="">Normal</option>
+                                            <option value="1">Slow</option>
+                                            <option value="2">Normal</option>
+                                            <option value="3">Fast</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col s12 m8 l9">
+                                        <label>Choose position</label>
+                                        <select class="browser-default">
+                                            <option value="" disabled="" selected="">Top</option>
+                                            <option value="1">Top</option>
+                                            <option value="2">Middle</option>
+                                            <option value="3">Bottom</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="col s12 m8 l9">
+                                    <label>Set opacity</label>
+                                    <form action="#">
+                                        <p class="range-field">
+                                            <input type="range" id="test5" min="0" max="10">
+                                                <span class="thumb" style="left: 68.975px; height: 0px; width: 0px; top: 10px; margin-left: 10px;">
+                                                </span>
+                                            </input>
+                                        </p>
+                                    </form>
+                                </div>
+                                
+                            </div>
+                        </form>
+                    </div>
+                
+                <!--Ed's part-->
+                </div>
         </div>
     </div>
     <!-- <footer class="page-footer" style="padding-top: 0px; background-color: #1B7690; margin-top: 0px;">

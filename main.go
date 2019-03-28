@@ -148,6 +148,7 @@ func wsWriter(c websocket.Connection) {
 }
 
 func getWsCRecv(wsc *websockets.WebsocketClient, messageType int, p []byte) {
+	fmt.Println(string(p))
 	switch messageType {
 	case gwebsocket.TextMessage:
 		var msg message
