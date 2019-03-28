@@ -3,7 +3,7 @@ package datamodels
 import "time"
 
 type BulletComment struct {
-	openid    string `json:"openid"`
+	openid    string `json:"openid" gorm:"primary_key`
 	danmu     string `json:"danmu"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
