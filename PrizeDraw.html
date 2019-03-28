@@ -3,12 +3,20 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="css/PrizeDraw.css"/>
+    <link rel="stylesheet" type="text/css" href="css/swing.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="css/cube.css"/>
+    <link rel="stylesheet" type="text/css" href="css/flash.css"/>
     <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="js/PrizeDraw.js"></script>
+    <script  type="text/javascript" class="library" src="js/huangdong.js"></script>
     <title>抽奖</title>
 </head>
 <body>
-<div id="load">
+<div id="swing" style="display: none">
+</div>
+
+
+<div id="load" style="display: none">
     <span class="load_letter" data-content="P">P</span>
     <span class="load_letter" data-content="R">R</span>
     <span class="load_letter" data-content="I">I</span>
@@ -20,6 +28,24 @@
     <span class="load_letter" data-content="A">A</span>
     <span class="load_letter" data-content="W">W</span>
 </div>
+
+<div id="flash" style="display: none">
+    <div class="shandong"><img class="pic" src="img/1.jpeg" /></div>
+</div>
+
+<div id="cube_div" style="display: none">
+    <div class="cube" id="cube">
+        <!--前后左右六张图-->
+        <div class="cube front"><img class="pic" src="img/1.jpeg" /></div>
+        <div class="cube behind"><img class="pic" src="img/2.jpeg" /></div>
+        <div class="cube left"><img class="pic" src="img/3.jpeg" /></div>
+        <div class="cube right"><img class="pic" src="img/4.jpeg" /></div>
+        <div class="cube top"><img class="pic" src="img/5.jpeg" /></div>
+        <div class="cube bottom"><img class="pic" src="img/6.jpeg" /></div>
+    </div>
+</div>
+<button id="btn" onclick="start()">开始抽奖</button>
+<button style="position: absolute;left: 1000px" id="changebtn" onclick="change()">状态转换</button>
 <div id="draw-area"></div>
 <div id="user-list" style="display: none;"></div>
 
