@@ -11,6 +11,7 @@ body {
     transform: rotateX(0deg) rotateY(0deg);
 }
 .cube{
+    left:50%;
     width: 300px;
     height:300px;
     margin:100px auto;
