@@ -79,6 +79,9 @@ func setupWebsocket(app *iris.Application) {
 }
 
 type message map[string]interface{}
+type drawMsg struct {
+	dkind string
+}
 
 func handleWebsocket(c websocket.Connection) {
 	c.OnMessage(func(data []byte) {
@@ -99,7 +102,12 @@ func handleWebsocket(c websocket.Connection) {
 			c.To(cloudWsServer).EmitMessage(data)
 			fmt.Println("append user:")
 			fmt.Println(msg)
-
+		case "start-draw":
+			var dmsg = drawMsg{dkind: "cube"}
+			d, _ := addAction("start-draw", dmsg)
+			fmt.Println("message delivered: " + string(d))
+			c.To(websocket.All).EmitMessage(d)
+			break
 		default:
 			c.To(websocket.Broadcast).EmitMessage(data)
 		}
