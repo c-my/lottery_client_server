@@ -21,6 +21,10 @@ const cloudWsServer string = "wss://sampling.alphamj.cn/ws"
 var app *iris.Application
 var sendChan = make(chan []byte)
 
+type tmp struct{
+	Success string `json:"success"`
+}
+
 func main() {
 	app = iris.New()
 
@@ -29,6 +33,8 @@ func main() {
 	app.StaticWeb("/js", "./assets/js")
 	app.StaticWeb("/fonts", "./assets/fonts")
 	app.StaticWeb("/img", "./assets/img")
+	app.StaticWeb("/avatars", "./assets/avatars")
+
 
 	mvc.Configure(app.Party("/get-exist-user"), users)
 	mvc.Configure(app.Party("get-awards"), awards)
@@ -46,6 +52,33 @@ func main() {
 
 	app.Get("/screen", func(ctx iris.Context) {
 		ctx.ServeFile("PrizeDraw.html", false)
+	})
+
+	app.Get("/start", func(ctx iris.Context) {
+		ctx.ServeFile("start-menu.html", false)
+	})
+
+	app.Get("/login", func(ctx iris.Context) {
+		ctx.ServeFile("login.html", false)
+	})
+
+	app.Post("/signin", func(ctx iris.Context){
+		name :=ctx.FormValue("username")
+		pass := ctx.FormValue("password")
+		fmt.Println(name+":"+pass)
+		if name=="1234" && pass =="admin" {
+			fmt.Println("success")
+			success:=&tmp{}
+			success.Success="true"
+			ctx.JSON(iris.Map{
+				"status":  name})
+			// ctx.JSON(success)
+		}else{
+			fmt.Println("false")
+			ctx.JSON(iris.Map{
+				"success":  "false",
+			})
+		}
 	})
 
 	setupWebsocket(app)

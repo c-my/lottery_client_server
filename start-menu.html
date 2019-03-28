@@ -2,9 +2,9 @@
 
 <head>
     <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="css/materialize.min.css"/>
-    <link type="text/css" href="css/materialdesignicons.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="css/console.css"/>
+    <link rel="stylesheet" href="assets/css/materialize.min.css"/>
+    <link type="text/css" href="assets/css/materialdesignicons.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="assets/css/console.css"/>
     <title>三百两抽奖系统控制台</title>
 </head>
 <body>
@@ -23,13 +23,109 @@
     </div>
     <div class="row main" style="margin: 6% 0px 0px 0px;">
         <div class="card col s8 offset-s2" style="height: 60%; padding: 0px; margin-top: 0px;">
-            <ul id="task-card" class="collection with-header">
-                <li class="collection-header" style="background-color: #1B7690;">
+            <ul id="task-card" class="collection with-header" >
+                <li class="collection-header" style="background-color: #1B7690;width:100%;">
                     <h4 class="task-card-title">SAMPLING lucky draw</h4>
                 </li>
                 <li>
-                    <div style="height: 200px;">
-                        <p class="task-card-date">March 26, 2015</p>
+                    <div style="padding: 0px;border:0px;height: 200px;text-align:center;width: 100%;" class="col s12 m8 l9" >
+                        <a id="creat_activity" class="waves-effect waves-light btn modal-trigger" href="#modal5" style="line-height:100px;height: 100px;width: 500px;top: 50px;margin:0 auto;">创建活动</a>
+                        <div id="modal5" class="modal bottom-sheet" style="display: block; opacity: 0; bottom: -100%;">
+                            <div class="modal-content">
+                                <h4>创建选项</h4>
+                                <ul class="collection">
+                                    <li class="collection-item avatar mdi-file-folder modal-close" style="text-align:left;" >
+
+                                        <a class="mdi-file-folder circle green modal-close"  style="top:13px"></a>
+                                        <span class="title">新建活动</span>
+                                        <p style="font-size:10px;"><i>从零开始打造！</i></p>
+                                        <a href="#modal1" class="secondary-content"  style="top: 0px;width: 100%;height: 84px;" ></a>
+                                    </li>
+                                    <li class="collection-item avatar" style="text-align:left;">
+                                        <a class="mdi-file-folder circle red modal-close" href="#modal2" style="top:13px"></a>
+                                        <span class="title">从历史活动中导入</span>
+                                        <p style="font-size:10px;"><i>保存历史设置！</i></p>
+                                        <a href="#modal2" class="secondary-content"  style="top: 0px;width: 100%;height: 84px;" ></a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+
+
+                        <div id="modal1" class="modal" style="display: block; opacity: 0; top: 0px;">
+
+                            <div class="card-panel">
+                                <h4 class="header2">活动信息</h4>
+                                <div class="row">
+                                    <form class="col s12">
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <input id="name" type="text">
+                                                <label for="name" class="">活动名称</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <input id="lasttime" type="text">
+                                                <label for="lasttime" class="">活动时长</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <input id="maxpeoplenum" type="text"oninput="this.value=this.value.replace(/\D|^0/g,'')" onafterpaste="this.value=this.value.replace(/\\D|^0/g,'')">
+                                                <label for="maxpeoplenum" class="">最大人数</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <textarea id="message" class="materialize-textarea"></textarea>
+                                                <label for="message" class="">备注/简介</label>
+                                            </div>
+                                            <div class="row">
+                                                <div class="input-field col s12">
+                                                    <button class="btn cyan waves-effect waves-light right" type="submit" name="action">创建房间
+                                                        <i class="mdi-content-send right"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="modal2" class="modal" style="display: block; opacity: 0; top: 0px;padding: 0px;margin-bottom:0px">
+
+                            <div class="card-panel">
+                                <h4 class="header2">历史活动</h4>
+
+                                <div class="row">
+                                    <div class="col s12 m8 l9" style="width: 100%">
+                                        <ul class="collection">
+                                            <a href="#!" class="collection-item" style="text-align:left">2016年会抽奖<span class="badge" style="text-align:right">人数</span></a>
+                                            <a href="#!" class="collection-item" style="text-align:left">2017年会抽奖<span class="badge" style="text-align:right">人数</span></a>
+                                            <a href="#!" class="collection-item" style="text-align:left">2018年会抽奖<span class="badge" style="text-align:right">人数</span></a>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    <div style="padding: 0px;border:0px;height: 200px;text-align:center;width: 100%;" class="col s12 m8 l9">
+                        <a id="recover_activity" class="waves-effect waves-light btn modal-trigger " href="#modal3" style="line-height:100px;height: 100px;width: 500px;top: 50px;margin:0 auto;">恢复活动</a>
+                        <div id="modal3" class="modal" style="display: block; opacity: 0; top: 0px;padding: 0px;margin-bottom:0px">
+
+                            <div class="card-panel">
+                                <h4 class="header2">暂停中的活动</h4>
+                                <div class="row">
+                                    <div class="col s12 m8 l9" style="width: 100%">
+                                        <ul class="collection">
+                                            <a href="#!" class="collection-item" style="text-align:left">2019年会抽奖<span class="badge" style="text-align:right">106</span></a>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </li>
             </ul>
@@ -45,6 +141,7 @@
     </footer>
 </body>
 </html>
-<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="js/materialize.min.js"></script>
-<script type="text/javascript" src="js/start-menu.js"></script>
+<script type="text/javascript" src="assets/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="assets/js/materialize.min.js"></script>
+<script type="text/javascript" src="assets/js/start-menu.js"></script>
+<!--<script type="text/javascript" src="assets/js/tem.js"></script>-->
