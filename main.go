@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/c-my/lottery_client_server/datamodels"
 	"github.com/c-my/lottery_client_server/repositories"
 	"github.com/c-my/lottery_client_server/services"
 	"github.com/c-my/lottery_client_server/web/controllers"
@@ -17,8 +18,11 @@ var userRepository = repositories.NewUserRepository()
 
 const cloudWsServer string = "wss://sampling.alphamj.cn/ws"
 
+var app *iris.Application
+var sendChan = make(chan []byte)
+
 func main() {
-	app := iris.New()
+	app = iris.New()
 
 	app.StaticWeb("/assets", "./assets")
 	app.StaticWeb("/css", "./assets/css")
@@ -49,8 +53,8 @@ func main() {
 	wsc := websockets.NewWebsocketClient(cloudWsServer)
 	wsc.SetHandler(getWsCRecv)
 	wsc.Run()
-	err := wsc.SendMessage("ping")
-	if (err != nil) {
+	err := wsc.SendMessage("my son wants append user and send a danmu")
+	if err != nil {
 		fmt.Println(err)
 	}
 
@@ -104,6 +108,7 @@ func handleWebsocket(c websocket.Connection) {
 		}
 
 	})
+	go wsWriter(c)
 }
 
 func addAction(action string, content interface{}) ([]byte, error) {
@@ -128,13 +133,38 @@ func awards(app *mvc.Application) {
 	app.Handle(new(controllers.AwardController))
 }
 
+func wsWriter(c websocket.Connection) {
+	for {
+		var msg []byte
+		msg = <-sendChan
+		fmt.Println("intitive deliver:" + string(msg))
+		c.To(websocket.All).EmitMessage(msg)
+	}
+}
+
 func getWsCRecv(wsc *websockets.WebsocketClient, messageType int, p []byte) {
 	switch messageType {
 	case gwebsocket.TextMessage:
 		var msg message
 		json.Unmarshal(p, &msg)
+		fmt.Println("received from cloud: \n\t" + string(p))
+		switch msg["action"] {
+		case "append-user":
+			content := msg["content"]
+			var u datamodels.User
+			{
+			}
+			jcontent, _ := json.Marshal(content)
+			//fmt.Println("user to append: " + string(jcontent))
+			json.Unmarshal(jcontent, &u)
+			userRepository.Append(u)
+			sendChan <- p
+			break
+		case "send-danmu":
+			sendChan <- p
+			break
+		}
 		fmt.Println(string(p))
 		break
-
 	}
 }

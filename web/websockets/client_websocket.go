@@ -17,6 +17,7 @@ type WebsocketClient struct {
 
 // SendMessage send ws server a text message
 func (ws *WebsocketClient) SendMessage(msg string) error {
+	log.Println("message delivered: " + msg)
 	return ws.conn.WriteMessage(gwebsocket.TextMessage, []byte(msg))
 }
 
