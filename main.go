@@ -48,6 +48,24 @@ func main() {
 		ctx.ServeFile("PrizeDraw.html", false)
 	})
 
+	app.Get("/login", func(ctx iris.Context) {
+		ctx.ServeFile("login.html", false)
+	})
+
+	app.Post("/login", func(ctx iris.Context) {
+		username := ctx.FormValue("username")
+		password := ctx.FormValue("password")
+		if username == "1234" && password == "admin" {
+			ctx.JSON(iris.Map{
+				"success": "true",
+			})
+		} else {
+			ctx.JSON(iris.Map{
+				"success": "false",
+			})
+		}
+	})
+
 	setupWebsocket(app)
 
 	wsc := websockets.NewWebsocketClient(cloudWsServer)
