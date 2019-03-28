@@ -46,6 +46,9 @@ ws.onmessage = function (message) {
                 set_lucky_dog(msg);
             }
             break;
+        case 'send-danmu':
+            eg.Send(msg.content.danmu);
+            break;
         default:
             console.log('unknown action:\n' + message);
     }
