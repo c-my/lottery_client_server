@@ -1,0 +1,41 @@
+body {
+    color: rgb(64, 77, 91);
+    background-color: #2BBAAC;
+    font-weight: 500;
+    font-size: 1.05em;
+    font-family: "Microsoft YaHei", 宋体, "Segoe UI", 
+    "Lucida Grande", Helvetica, Arial, sans-serif, FreeSans, Arimo;
+}
+
+#login-page {
+    margin-top: 40px;
+}
+
+[class^="mdi-"], [class*="mdi-"] {
+    display: inline-block;
+    font-family: "Material-Design-Icons";
+}
+
+.user-icon, .pwd-icon {
+    font-size: 30px;
+}
+
+.offline-icon {
+    font-size: 20px;
+}
+
+a {
+    color: rgb(64, 77, 91);
+}
+
+a:hover {
+    color: #2BBAAC;
+}
+
+#rem-label {
+    top: 0px;
+}
+
+.log-bar {
+    color: firebrick;
+}
