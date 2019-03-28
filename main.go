@@ -94,7 +94,7 @@ func handleWebsocket(c websocket.Connection) {
 			luckyDog := userRepository.RandomSelect()
 
 			j, _ := addAction("who-is-lucky-dog", luckyDog)
-			// fmt.Println(string(j))
+			fmt.Println(string(j))
 			c.To(websocket.All).EmitMessage(j)
 
 		// println("lucy dog is: ", luckyDog.ID)

@@ -1,12 +1,10 @@
 package repositories
 
 import (
-	"sync"
-	"time"
-
 	"github.com/c-my/lottery_client_server/datamodels"
 	"github.com/c-my/lottery_client_server/datasource"
 	"github.com/jinzhu/gorm"
+	"sync"
 )
 
 // UserRepository handles basic operations of user
@@ -42,11 +40,12 @@ func (r *userSQLRepository) SelectAll() (users []datamodels.User) {
 }
 
 func (r *userSQLRepository) Append(user datamodels.User) bool {
-	if !r.source.NewRecord(user) {
-		user.CreatedAt = time.Now()
-		user.UpdatedAt = time.Now()
-		r.source.Create(user)
-		return true
+	var u datamodels.User
+	if err := r.source.Where("ID = ?", user.ID).First(&u).Error; err != nil {
+		if gorm.IsRecordNotFoundError(err) {
+			r.source.Create(user)
+			return true
+		}
 	}
 	return false
 }
