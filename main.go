@@ -54,29 +54,22 @@ func main() {
 		ctx.ServeFile("PrizeDraw.html", false)
 	})
 
-	app.Get("/start", func(ctx iris.Context) {
-		ctx.ServeFile("start-menu.html", false)
-	})
 
 	app.Get("/login", func(ctx iris.Context) {
 		ctx.ServeFile("login.html", false)
 	})
 
-	app.Post("/signin", func(ctx iris.Context){
-		name :=ctx.FormValue("username")
-		pass := ctx.FormValue("password")
-		fmt.Println(name+":"+pass)
-		if name=="1234" && pass =="admin" {
-			fmt.Println("success")
-			success:=&tmp{}
-			success.Success="true"
+
+	app.Post("/login", func(ctx iris.Context) {
+		username := ctx.FormValue("username")
+		password := ctx.FormValue("password")
+		if username == "1234" && password == "admin" {
 			ctx.JSON(iris.Map{
-				"status":  name})
-			// ctx.JSON(success)
-		}else{
-			fmt.Println("false")
+				"success": "true",
+			})
+		} else {
 			ctx.JSON(iris.Map{
-				"success":  "false",
+				"success": "false",
 			})
 		}
 	})
