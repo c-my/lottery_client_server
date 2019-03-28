@@ -53,10 +53,6 @@ func main() {
 	wsc := websockets.NewWebsocketClient(cloudWsServer)
 	wsc.SetHandler(getWsCRecv)
 	wsc.Run()
-	err := wsc.SendMessage("my son wants append user and send a danmu")
-	if err != nil {
-		fmt.Println(err)
-	}
 
 	app.Run(
 		iris.Addr(":1923"),
@@ -88,6 +84,7 @@ func handleWebsocket(c websocket.Connection) {
 	c.OnMessage(func(data []byte) {
 		var msg message
 		json.Unmarshal(data, &msg)
+		fmt.Print("received from controller: ")
 		fmt.Println(msg)
 		switch msg["action"] {
 		case "stop-drawing":
@@ -137,7 +134,7 @@ func wsWriter(c websocket.Connection) {
 	for {
 		var msg []byte
 		msg = <-sendChan
-		fmt.Println("intitive deliver:" + string(msg))
+		fmt.Println("message delivered to cloud:" + string(msg))
 		c.To(websocket.All).EmitMessage(msg)
 	}
 }
@@ -147,7 +144,7 @@ func getWsCRecv(wsc *websockets.WebsocketClient, messageType int, p []byte) {
 	case gwebsocket.TextMessage:
 		var msg message
 		json.Unmarshal(p, &msg)
-		fmt.Println("received from cloud: \n\t" + string(p))
+		fmt.Println("received from cloud: \n" + string(p))
 		switch msg["action"] {
 		case "append-user":
 			content := msg["content"]
@@ -164,7 +161,7 @@ func getWsCRecv(wsc *websockets.WebsocketClient, messageType int, p []byte) {
 			sendChan <- p
 			break
 		}
-		fmt.Println(string(p))
+		//fmt.Println(string(p))
 		break
 	}
 }
