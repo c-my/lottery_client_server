@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"github.com/c-my/lottery_client_server/web/controllers"
 	"github.com/c-my/lottery_client_server/web/logger"
+	"github.com/c-my/lottery_client_server/web/websockets"
 	"github.com/gorilla/mux"
+	"github.com/gorilla/websocket"
 	"net/http"
 )
 
@@ -14,6 +16,7 @@ func SetSubRouter(parent string, r *mux.Router) {
 	setStatic(subRouter)
 	setGet(subRouter)
 	setPost(subRouter)
+	setWebsocket(subRouter)
 }
 
 func setStatic(r *mux.Router) {
@@ -30,7 +33,7 @@ func setGet(r *mux.Router) {
 		w.Header().Set("Content-Type", "application/json")
 		_, err := w.Write(controllers.UserControl.Get())
 		if err != nil {
-			logger.Error.Println("failed to get exist user: ", err)
+			logger.Error.Println("failed to get exist user:", err)
 		}
 	})
 
@@ -57,12 +60,53 @@ func setPost(r *mux.Router) {
 			"success": "true",
 		})
 		if err != nil {
-			logger.Error.Println("an impossible error happened: ", err)
+			logger.Error.Println("an impossible error happened:", err)
 		}
 		w.Header().Set("Content-Type", "application/json")
 		_, err = w.Write(js)
 		if err != nil {
-			logger.Error.Println("fail to response login: ", err)
+			logger.Error.Println("fail to response login:", err)
 		}
 	}).Methods("POST")
+}
+
+func setWebsocket(r *mux.Router) {
+	r.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
+		logger.Info.Println("websocket established:", r.RemoteAddr)
+		upgrader := websocket.Upgrader{}
+		c, err := upgrader.Upgrade(w, r, nil)
+		if err != nil {
+		}
+		websockets.HUB.Register <- c
+		defer closeWebsocket(c)
+		for {
+			mt, message, err := c.ReadMessage()
+			if err != nil {
+				break
+			}
+			websockets.HUB.BroadMsg <- websockets.ClientMsg{c, message}
+			logger.Info.Println("received from local:", string(message), "message type:", mt)
+		}
+	})
+}
+
+func closeWebsocket(conn *websocket.Conn) {
+	conn.Close()
+	websockets.HUB.Unregister <- conn
+	logger.Info.Println("websocket disconnected:", conn.RemoteAddr())
+}
+
+func onWebsocketServerReceived(conn *websocket.Conn, data []byte) {
+	msg, err := websockets.DecodeMsg(data)
+	if err != nil {
+		return
+	}
+	switch msg["action"] {
+	//case "stop-drawing":
+	//	conn.WriteMessage()
+	case "start-draw":
+		conn.WriteMessage(websocket.TextMessage, data)
+	case "append-user":
+
+	}
 }
