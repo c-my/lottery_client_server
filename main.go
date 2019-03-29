@@ -7,84 +7,74 @@ import (
 	"github.com/c-my/lottery_client_server/repositories"
 	"github.com/c-my/lottery_client_server/services"
 	"github.com/c-my/lottery_client_server/web/controllers"
+	"github.com/c-my/lottery_client_server/web/routers"
 	"github.com/c-my/lottery_client_server/web/websockets"
+	"github.com/gorilla/mux"
 	gwebsocket "github.com/gorilla/websocket"
 	"github.com/kataras/iris"
 	"github.com/kataras/iris/mvc"
 	"github.com/kataras/iris/websocket"
+	"log"
+	"net/http"
+	"time"
 )
 
 var userRepository = repositories.NewUserRepository()
 
 const cloudWsServer string = "wss://sampling.alphamj.cn/ws"
 
-var app *iris.Application
+//var app *iris.Application
 var sendChan = make(chan []byte)
 
-type tmp struct{
-	Success string `json:"success"`
-}
-
 func main() {
-	app = iris.New()
+	r := mux.NewRouter()
+	routers.SetSubRouter("127.0.0.1:1923", r)
 
-	app.StaticWeb("/assets", "./assets")
-	app.StaticWeb("/css", "./assets/css")
-	app.StaticWeb("/js", "./assets/js")
-	app.StaticWeb("/fonts", "./assets/fonts")
-	app.StaticWeb("/img", "./assets/img")
-	app.StaticWeb("/avatars", "./assets/avatars")
+	srv := &http.Server{
+		Handler: r,
+		Addr:    "127.0.0.1:1923",
+		// Good practice: enforce timeouts for servers you create!
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
+	}
 
-
-	mvc.Configure(app.Party("/get-exist-user"), users)
-	mvc.Configure(app.Party("get-awards"), awards)
-	app.Get("/", func(ctx iris.Context) {
-		ctx.ServeFile("index.html", false)
-	})
-
-	app.Get("/index", func(ctx iris.Context) {
-		ctx.ServeFile("index.html", false)
-	})
-
-	app.Get("/console", func(ctx iris.Context) {
-		ctx.ServeFile("console.html", false)
-	})
-
-	app.Get("/screen", func(ctx iris.Context) {
-		ctx.ServeFile("PrizeDraw.html", false)
-	})
-
-
-	app.Get("/login", func(ctx iris.Context) {
-		ctx.ServeFile("login.html", false)
-	})
-
-
-	app.Post("/login", func(ctx iris.Context) {
-		username := ctx.FormValue("username")
-		password := ctx.FormValue("password")
-		if username == "1234" && password == "admin" {
-			ctx.JSON(iris.Map{
-				"success": "true",
-			})
-		} else {
-			ctx.JSON(iris.Map{
-				"success": "false",
-			})
-		}
-	})
-
-	setupWebsocket(app)
-
-	wsc := websockets.NewWebsocketClient(cloudWsServer)
-	wsc.SetHandler(getWsCRecv)
-	wsc.Run()
-
-	app.Run(
-		iris.Addr(":1923"),
-		iris.WithoutServerError(iris.ErrServerClosed),
-		iris.WithOptimizations,
-	)
+	log.Fatal(srv.ListenAndServe())
+	//app = iris.New()
+	//
+	//
+	//mvc.Configure(app.Party("/get-exist-user"), users)
+	//mvc.Configure(app.Party("get-awards"), awards)
+	//app.Get("/", func(ctx iris.Context) {
+	//	ctx.ServeFile("index.html", false)
+	//})
+	//
+	//
+	//
+	//app.Post("/login", func(ctx iris.Context) {
+	//	username := ctx.FormValue("username")
+	//	password := ctx.FormValue("password")
+	//	if username == "1234" && password == "admin" {
+	//		ctx.JSON(iris.Map{
+	//			"success": "true",
+	//		})
+	//	} else {
+	//		ctx.JSON(iris.Map{
+	//			"success": "false",
+	//		})
+	//	}
+	//})
+	//
+	//setupWebsocket(app)
+	//
+	//wsc := websockets.NewWebsocketClient(cloudWsServer)
+	//wsc.SetHandler(getWsCRecv)
+	//wsc.Run()
+	//
+	//app.Run(
+	//	iris.Addr(":1923"),
+	//	iris.WithoutServerError(iris.ErrServerClosed),
+	//	iris.WithOptimizations,
+	//)
 
 }
 
