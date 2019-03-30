@@ -10,6 +10,7 @@ type UserService interface {
 	GetAll() []datamodels.User
 	GetByID(id uint) datamodels.User
 	GetRandomly() datamodels.User
+	Add(datamodels.User)
 }
 
 type userService struct {

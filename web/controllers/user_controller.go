@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"github.com/c-my/lottery_client_server/datamodels"
 	"github.com/c-my/lottery_client_server/repositories"
 	"github.com/c-my/lottery_client_server/services"
 	"github.com/labstack/gommon/log"
@@ -24,4 +25,8 @@ func (c *UserController) Get() []byte {
 		log.Fatal("get users failed: ", err)
 	}
 	return res
+}
+
+func (c *UserController) Append(u datamodels.User) {
+	c.Service.Add(u)
 }
