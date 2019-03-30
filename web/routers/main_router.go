@@ -84,7 +84,7 @@ func setWebsocket(r *mux.Router) {
 			if err != nil {
 				break
 			}
-			websockets.HUB.BroadMsg <- websockets.ClientMsg{c, message}
+			websockets.HUB.BroadMsg <- websockets.ClientMsg{c, mt, message}
 			//logger.Info.Println("received from local:", string(message), "message type:", mt)
 		}
 	})

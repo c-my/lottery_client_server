@@ -7,11 +7,12 @@ import (
 
 type WsMessage map[string]interface{}
 
+// DecodeMsg decodes ws message received from local
 func DecodeMsg(data []byte) (WsMessage, error) {
 	var msg WsMessage
 	err := json.Unmarshal(data, &msg)
 	if err != nil {
-		logger.Warning.Println("cannot encode command received from local: ", string(data))
+		logger.Warning.Println("unrecognized message received from local: ", string(data))
 	}
 	return msg, err
 }

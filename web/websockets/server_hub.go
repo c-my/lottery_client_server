@@ -12,6 +12,7 @@ func init() {
 	go HUB.Run()
 }
 
+// Hub is used to control all the client
 type Hub struct {
 	Clients    map[*websocket.Conn]bool
 	BroadMsg   chan ClientMsg
@@ -19,9 +20,12 @@ type Hub struct {
 	Unregister chan *websocket.Conn
 }
 
+// ClientMsg is the content sent to channel when some client
+// receiving message
 type ClientMsg struct {
-	Client  *websocket.Conn
-	Message []byte
+	Client      *websocket.Conn
+	MessageType int
+	Message     []byte
 }
 
 func newHub() *Hub {
@@ -33,6 +37,7 @@ func newHub() *Hub {
 	}
 }
 
+// Run makes Hub begins monitoring channels
 func (h *Hub) Run() {
 	for {
 		select {
@@ -48,15 +53,16 @@ func (h *Hub) Run() {
 }
 
 func (h *Hub) SendAll(messageType int, data []byte) {
+	logger.Info.Println("message delivered to all:", data, "message type:", messageType)
 	for client, _ := range h.Clients {
 		client.WriteMessage(messageType, data)
 	}
 }
 
 func (h *Hub) Broadcast(conn *websocket.Conn, messageType int, data []byte) {
+	logger.Info.Println("broadcast message:", string(data), "message type:", messageType)
 	for client, _ := range h.Clients {
 		if client != conn {
-			logger.Info.Println("message delivered to local: ", string(data))
 			client.WriteMessage(messageType, data)
 		}
 	}
@@ -64,16 +70,27 @@ func (h *Hub) Broadcast(conn *websocket.Conn, messageType int, data []byte) {
 
 func (h *Hub) handleMessage(msg *ClientMsg) {
 	data := msg.Message
+	mt := msg.MessageType
 	conn := msg.Client
 	m, err := DecodeMsg(data)
 	if err != nil {
 		return
 	}
-	switch m["action"] {
-	case "start-drawing":
-		h.Broadcast(conn, websocket.TextMessage, data)
-	case "stop-drawing":
-		// relay the message
-		h.Broadcast(conn, websocket.TextMessage, data)
+	switch mt {
+	case websocket.TextMessage:
+		switch m["action"] {
+		case "start-drawing":
+			h.Broadcast(conn, websocket.TextMessage, data)
+		case "stop-drawing":
+			// relay the message
+			h.Broadcast(conn, websocket.TextMessage, data)
+		}
+	case websocket.BinaryMessage:
+		break
+	case websocket.PingMessage:
+		break
+	case websocket.PongMessage:
+		break
 	}
+
 }
