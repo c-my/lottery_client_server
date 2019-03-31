@@ -32,7 +32,7 @@ func (ws *WebsocketClient) Run() {
 }
 
 // NewClientWs returns a
-func NewWebsocketClient(url string) *(WebsocketClient) {
+func NewWebsocketClient(url string) (*(WebsocketClient), error) {
 
 	c, _, err := websocket.DefaultDialer.Dial(url, nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func NewWebsocketClient(url string) *(WebsocketClient) {
 	var wsc = WebsocketClient{
 		conn: c,
 	}
-	return &wsc
+	return &wsc, err
 }
 
 func (wsc *WebsocketClient) receiveLoop(conn *websocket.Conn, handler RecvHandler) {

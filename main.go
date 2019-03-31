@@ -6,6 +6,7 @@ import (
 	"github.com/c-my/lottery_client_server/web/websockets"
 	"github.com/gorilla/mux"
 	"net/http"
+	"os/exec"
 	"time"
 )
 
@@ -15,11 +16,15 @@ func main() {
 	r := mux.NewRouter()
 	routers.SetSubRouter("127.0.0.1:1923", r)
 
-	c := websockets.NewWebsocketClient(cloudWsServer)
-	c.SetHandler(func(wsc *websockets.WebsocketClient, messageType int, p []byte) {
-		websockets.HUB.ServerMsg <- websockets.ServerMsg{messageType, p}
-	})
-	c.Run()
+	c, err := websockets.NewWebsocketClient(cloudWsServer)
+	if err != nil {
+		logger.Warning.Println("stop trying to connect")
+	} else {
+		c.SetHandler(func(wsc *websockets.WebsocketClient, messageType int, p []byte) {
+			websockets.HUB.ServerMsg <- websockets.ServerMsg{messageType, p}
+		})
+		c.Run()
+	}
 
 	srv := &http.Server{
 		Handler: r,
@@ -27,6 +32,11 @@ func main() {
 		// Good practice: enforce timeouts for servers you create!
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
+	}
+
+	err = exec.Command("cmd.exe", " /c start http://127.0.0.1:1923/login").Start()
+	if err != nil {
+		logger.Warning.Println("failed to open explorer:", err)
 	}
 
 	logger.Error.Fatal(srv.ListenAndServe())
