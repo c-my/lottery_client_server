@@ -1,6 +1,6 @@
 message
 {
-	¡°action¡±£º["reset-page","start-drawing","who-is-lucky","set-config"],
+	 "action" : ["reset-page","start-drawing","who-is-lucky","set-config"],
 	 "content": [            ,    "dkind"    ,      "uid"   ,  "config"  ]
 } 
 
