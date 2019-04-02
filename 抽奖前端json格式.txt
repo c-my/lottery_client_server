@@ -1,0 +1,17 @@
+message
+{
+	¡°action¡±£º["reset-page","start-drawing","who-is-lucky","set-config"],
+	 "content": [            ,    "dkind"    ,      "uid"   ,  "config"  ]
+} 
+
+config
+{
+	"theme":[ ],
+	"font" :[ ],
+	"music":[ ],
+	"danmu":"danmu-config"
+}
+danmu-config
+{
+	
+}
