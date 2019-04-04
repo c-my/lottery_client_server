@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/c-my/lottery_client_server/config"
 	"github.com/c-my/lottery_client_server/web/logger"
 	"github.com/c-my/lottery_client_server/web/routers"
 	"github.com/c-my/lottery_client_server/web/websockets"
@@ -10,13 +11,11 @@ import (
 	"time"
 )
 
-const cloudWsServer string = "wss://sampling.alphamj.cn/ws"
-
 func main() {
 	r := mux.NewRouter()
-	routers.SetSubRouter("127.0.0.1:1923", r)
+	routers.SetSubRouter(config.LocalUrl, r)
 
-	c, err := websockets.NewWebsocketClient(cloudWsServer)
+	c, err := websockets.NewWebsocketClient(config.CloudWsServer)
 	if err != nil {
 		logger.Warning.Println("stop trying to connect")
 	} else {
@@ -28,13 +27,13 @@ func main() {
 
 	srv := &http.Server{
 		Handler: r,
-		Addr:    "127.0.0.1:1923",
+		Addr:    config.LocalUrl,
 		// Good practice: enforce timeouts for servers you create!
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
 
-	err = exec.Command("cmd.exe", " /c start http://127.0.0.1:1923/login").Start()
+	err = exec.Command("cmd.exe", " /c start http://"+config.InitialUrl).Start()
 	if err != nil {
 		logger.Warning.Println("failed to open explorer:", err)
 	}
