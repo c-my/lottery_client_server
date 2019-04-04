@@ -3,6 +3,7 @@ package websockets
 import (
 	"github.com/c-my/lottery_client_server/web/logger"
 	"github.com/gorilla/websocket"
+	"net/http"
 )
 
 // RecvHandler is a callback type
@@ -34,7 +35,8 @@ func (ws *WebsocketClient) Run() {
 // NewClientWs returns a
 func NewWebsocketClient(url string) (*(WebsocketClient), error) {
 
-	c, _, err := websocket.DefaultDialer.Dial(url, nil)
+	header := http.Header{} // set websocket session here
+	c, _, err := websocket.DefaultDialer.Dial(url, header)
 	if err != nil {
 		logger.Error.Println("failed to connect to cloud:", err)
 	}
