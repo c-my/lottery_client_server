@@ -4,10 +4,10 @@ import (
 	"github.com/c-my/lottery_client_server/config"
 	"github.com/c-my/lottery_client_server/web/logger"
 	"github.com/c-my/lottery_client_server/web/routers"
+	"github.com/c-my/lottery_client_server/web/tools"
 	"github.com/c-my/lottery_client_server/web/websockets"
 	"github.com/gorilla/mux"
 	"net/http"
-	"os/exec"
 	"time"
 )
 
@@ -33,10 +33,7 @@ func main() {
 		ReadTimeout:  15 * time.Second,
 	}
 
-	err = exec.Command("cmd.exe", " /c start http://"+config.InitialUrl).Start()
-	if err != nil {
-		logger.Warning.Println("failed to open explorer:", err)
-	}
+	tools.LaunchBrowser("http://" + config.InitialUrl)
 
 	logger.Error.Fatal(srv.ListenAndServe())
 }
