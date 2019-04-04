@@ -1,0 +1,34 @@
+message
+{
+	 "action":  ["reset-page","start-drawing","who-is-lucky","set-config"],
+	 "content": [            ,    "dkind"    ,      "uid"   ,  "config"  ]
+} 
+
+
+config
+{
+	"theme":[ ],
+	"font" :[ ],
+	"music":[ ],
+	"danmu":"danmu-config"
+}
+danmu-config
+{
+	
+}
+
+
+1. "reset-page"是刷新抽奖页面信号
+2. "start-drawing"是开始抽奖信号
+3. "who-is-lucky"是结束抽奖信号
+4. "set-config" 是设置背景主题等配置信号
+
+
+5. "dkind"    是抽奖的方式 分为
+   ["load"  "swing" "flash" "cube"] 默认抽奖，晃动抽奖，闪动抽奖，魔方抽奖
+
+6. "config" 是一个json包
+7. "theme" 是主题
+8. "font"是字体
+9. "music"是音乐
+10."danmu"是弹幕
