@@ -1,4 +1,10 @@
 let ws = new WebSocket("ws://127.0.0.1:1923/ws");
+let drawing =false;
+let draw_kind;
+var img;
+var Div;
+var pre = $("#load");
+let iterator = draw();
 
 
 function get_participant_list() {
@@ -30,8 +36,6 @@ function get_participant_list() {
     })
 }
 
-let drawing = false;
-let draw_kind;
 ws.onmessage = function (message) {
     let msg = JSON.parse(message.data);
     switch (msg.action) {
@@ -39,25 +43,35 @@ ws.onmessage = function (message) {
             $("#draw-area").html('');
             break;
         case 'start-drawing':
+            console.log("start")
             start_drawing(msg);
             break;
-        case 'who-is-lucky-dog':
-            if(draw_kind ==="load"){
-                set_lucky_dog(msg);
-            }
+        case 'stop-drawing':
+          set_lucky_dog(msg);
             break;
         case 'send-danmu':
             eg.Send(msg.content.danmu);
+            break;
+        case 'set-config':
+            set_config(msg);
             break;
         default:
             console.log('unknown action:\n' + message);
     }
 };
-var pre = $("#load");
+
+function set_config(msg) {
+  let theme = msg['content']['config']['theme'];
+  let font = msg['content']['config']['font'];
+  let music = msg['content']['config']['music'];
+  let danmu = msg['content']['config']['danmu'];
+}
 
 function start_drawing(msg) {
     $("#draw-area").html('');
     draw_kind = msg['content']['dkind'];
+    console.log("start_drawing\n");
+    drawing = true;
     switch (draw_kind) {
         case "load"://load
             pre.hide();
@@ -91,6 +105,14 @@ function start_drawing(msg) {
         default:
             break;
     }
+
+}
+// msg: JSON Object
+function set_lucky_dog(msg) {
+  drawing = false;
+  let user_id = msg['content']['uid'];
+  let content = $("#user_" + user_id).html();
+  $("#draw-area").html(content);
 }
 
 function init_swing() {
@@ -131,102 +153,76 @@ function pre_change(element) {
     pre.style.display = "inline";
 }
 
-// msg: JSON Object
-function set_lucky_dog(msg) {
-    drawing = false;
-    let user_id = msg['content']['uid'];
-    let content = $("#user_" + user_id).html();
-    $("#draw-area").html(content);
-}
-
+//draw_swing_init
 function draw_swing() {
-    $.fn.draw = function (options) {
-        var $_this = $(this);
-        var $dp = options.prod;
-        var $i = 0; //index
-        var $r = 0; //round
-        var $s = 150; //spead
-        //快速闪动，会走两遍
-        function dr() {
-            //drawround
-            if ($_this.res != '' && $_this.res != undefined && $i == 0) {
-                dr2();
-            } else {
-                $dp.find(".pro").removeClass("select").eq($i).addClass("select");
-                $i = $i >= 11 ? 0 : $i + 1;//用户数组的数量
-                setTimeout(dr, $s);
-            }
-        }
 
-        function dr2() {
-            $dp.find(".pro").removeClass("select").eq($i).addClass("select");
-            $i = $i >= 11 ? 0 : $i + 1;
-            $s = $s + 30;//让他变慢
-            $rand = Math.ceil(Math.random() * 12)
-            if ($r < $_this.res + $rand) {
-                $r++;
-            } else {
-                $i = 0;
-                $r = 0;
-                $s = 100;
-                setTimeout(result, 1000);
-                return;
-            }
-            setTimeout(dr2, $s);
-        }
+    console.log("swing swingswing");
+    var $_this = $(this);
+    var $dp = $("#swing");
+    var $i = 0; //index
+    var $r = 0; //round
+    var $s = 150; //spead
+    //快速闪动
 
-        function getRes() {
-            $_this.res = '';
-            //赋结果值
-            setTimeout(function () {
-                $_this.res = 1
-            }, 2000);
-        }
-
-        //监听点击事件
-        function click() {
-            $_this.bind("click", function () {
-                getRes();
-                console.log(i);
-                dr();
-                $_this.unbind("click");
-            });
-        }
-
-        click();
-
-        //输出获奖者
-        function result() {
-            alert("XX得到奖项");
-            click();
-        }
+    function dr() {
+      //drawround
+      if(drawing)
+        $_this.res = '';
+      else
+        $_this.res = 1;
+      if ($_this.res != '' && $_this.res != undefined && $i == 0) {
+        dr2();
+      } else {
+        $dp.find(".pro").removeClass("select").eq($i).addClass("select");
+        $i = $i >= 11 ? 0 : $i + 1;//用户数组的数量
+        setTimeout(dr, $s);
+      }
     }
-    $("#btn").draw({
-        prod: $("#swing")
-    });
-}
 
+    function dr2() {
+      $dp.find(".pro").removeClass("select").eq($i).addClass("select");
+      $i = $i >= 11 ? 0 : $i + 1;
+      $s = $s + 30;//让他变慢
+      $rand = Math.ceil(Math.random() * 12)
+      if ($r < $_this.res + $rand) {
+        $r++;
+      } else {
+        $i = 0;
+        $r = 0;
+        $s = 100;
+
+        return;
+      }
+      setTimeout(dr2, $s);
+    }
+    dr();
+
+
+
+
+}
+//draw_load_init
 function draw_load() {
-    drawing = true;
-}
 
+}
+//draw_flash_init
 function draw_flash() {
-    var img = [];
-    var Div = document.getElementsByClassName("pic");
-    var set = setInterval(function () {
+     img = [];
+     Div = document.getElementsByClassName("pic");
+    /*var set = setInterval(function () {
         for (var i in Div) {
             var ran = Math.ceil(Math.random() * 12);
             Div[i].src = "img/" + ran + ".jpeg";
         }
-    }, 10);
-    setTimeout(function () {
+    }, 10);*/
+    /*setTimeout(function () {
         clearInterval(set);
-    }, 3000);
+    }, 3000);*/
 }
-
+//draw_cube_init
 function draw_cube() {
-    var img = [];
-    var Div = document.getElementsByClassName("pic");
+    img = [];
+    Div = document.getElementsByClassName("pic");
     var flag = false;
     var MFB = document.getElementById("cube");
     if (!flag) {
@@ -236,7 +232,7 @@ function draw_cube() {
         MFB.classList.remove("cube_hover");
         flag = false;
     }
-    var set = setInterval(function () {
+    /*var set = setInterval(function () {
         for (var i in Div) {
             var ran = Math.ceil(Math.random() * 12);
             Div[i].src = "img/" + ran + ".jpeg";
@@ -244,10 +240,11 @@ function draw_cube() {
     }, 100);
     setTimeout(function () {
         clearInterval(set);
-    }, 15000);
+    }, 15000);*/
 
 }
 
+//method of load
 function* draw() {
     while (1) {
         let list = $("#user-list").children("div");
@@ -258,14 +255,39 @@ function* draw() {
     }
 }
 
-let iterator = draw();
+
 
 $(document).ready(function () {
 
     get_participant_list();
     setInterval(function () {
-        if (drawing) {
+      if(drawing){
+        switch (draw_kind) {
+          case "load":
             let id = iterator.next();
+            break;
+          case "swing":
+            break;
+          case "flash":
+            for (var i in Div) {
+              var ran = Math.ceil(Math.random() * 12);
+              Div[i].src = "img/" + ran + ".jpeg";
+            }
+            break;
+          case "cube":
+            for (var i in Div) {
+              var ran = Math.ceil(Math.random() * 12);
+              Div[i].src = "img/" + ran + ".jpeg";
+            }
+            break;
+          default:
+            console.log('unknown drawing:\n' + drawing);
+            break;
         }
+      }
+
+
+
+
     }, 100);
 });
