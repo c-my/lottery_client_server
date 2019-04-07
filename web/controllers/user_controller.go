@@ -5,7 +5,7 @@ import (
 	"github.com/c-my/lottery_client_server/datamodels"
 	"github.com/c-my/lottery_client_server/repositories"
 	"github.com/c-my/lottery_client_server/services"
-	"github.com/labstack/gommon/log"
+	"github.com/c-my/lottery_client_server/web/logger"
 )
 
 // UserController is our user controller
@@ -22,7 +22,7 @@ type UserController struct {
 func (c *UserController) Get() []byte {
 	res, err := json.Marshal(c.Service.GetAll())
 	if err != nil {
-		log.Fatal("get users failed: ", err)
+		logger.Warning.Println("get users failed:", err)
 	}
 	return res
 }

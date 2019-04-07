@@ -2,11 +2,13 @@ package routers
 
 import (
 	"encoding/json"
+	"github.com/c-my/lottery_client_server/config"
 	"github.com/c-my/lottery_client_server/web/controllers"
 	"github.com/c-my/lottery_client_server/web/logger"
 	"github.com/c-my/lottery_client_server/web/websockets"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -37,6 +39,20 @@ func setGet(r *mux.Router) {
 		}
 	})
 
+	r.HandleFunc("/get-activities", func(writer http.ResponseWriter, request *http.Request) {
+		writer.Header().Set("Content-Type", "application/json")
+		_, err := writer.Write(controllers.ActivityControl.GetAll())
+		if err != nil {
+			logger.Error.Println("failed to get exist user:", err)
+		}
+	})
+
+	r.HandleFunc("/get-participants", func(writer http.ResponseWriter, request *http.Request) {
+		//queryActivity := request.Form["activity"]
+		// get user list
+		writer.Header().Set("Content-Type", "application/json")
+	})
+
 	r.HandleFunc("/console", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "console.html")
 	})
@@ -55,14 +71,50 @@ func setGet(r *mux.Router) {
 }
 
 func setPost(r *mux.Router) {
-	r.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
-		js, err := json.Marshal(map[string]string{
-			"success": "true",
-		})
+	r.HandleFunc("/signin", func(w http.ResponseWriter, r *http.Request) {
+		loginRes, err := http.PostForm(config.CloudLoginURL, r.PostForm)
+		logger.Info.Println("get login post request")
+		if err != nil {
+			logger.Info.Println("failed to sign in:", err)
+		}
+
+		loginBody, err := ioutil.ReadAll(loginRes.Body)
+		if err != nil {
+			logger.Warning.Println("failed to sign in:", err)
+		}
+
+		loginJson, err := websockets.DecodeMsg(loginBody)
+		if err != nil {
+			logger.Warning.Println("failed to parse json file:", err)
+		}
+
+		var result = make(map[string]string)
+		switch loginJson["result"] {
+		case "success":
+			result["success"] = "true"
+			websockets.Client, err = websockets.NewWebsocketClient(config.CloudWsServer)
+			if err != nil {
+				logger.Warning.Println("failed to connect to cloud", err)
+			} else {
+				websockets.Client.SetHandler(func(wsc *websockets.WebsocketClient, messageType int, p []byte) {
+					websockets.HUB.ServerMsg <- websockets.ServerMsg{messageType, p}
+				})
+				websockets.Client.Run()
+			}
+
+			// start the websocket client
+			//r.Header["Set-Cookie"]
+		case "error":
+			result["sucess"] = "false"
+		}
+
+		js, err := json.Marshal(result)
 		if err != nil {
 			logger.Error.Println("an impossible error happened:", err)
 		}
+
 		w.Header().Set("Content-Type", "application/json")
+		logger.Info.Println("response to login page:", js)
 		_, err = w.Write(js)
 		if err != nil {
 			logger.Error.Println("fail to response login:", err)

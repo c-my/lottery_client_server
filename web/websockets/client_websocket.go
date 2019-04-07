@@ -6,6 +6,8 @@ import (
 	"net/http"
 )
 
+var Client *WebsocketClient
+
 // RecvHandler is a callback type
 type RecvHandler func(wsc *WebsocketClient, messageType int, p []byte)
 
