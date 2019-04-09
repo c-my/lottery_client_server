@@ -9,4 +9,5 @@ const (
 	LocalUrl       string = LocalAddr + ":" + LocalPort
 	InitialPath    string = "login"
 	InitialUrl     string = LocalUrl + "/" + InitialPath
+	LaunchBrowser  bool   = true
 )

@@ -31,9 +31,9 @@ func main() {
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
-
-	tools.LaunchBrowser("http://" + config.InitialUrl)
-
+	if config.LaunchBrowser {
+		tools.LaunchBrowser("http://" + config.InitialUrl)
+	}
 	logger.Error.Fatal(srv.ListenAndServe())
 }
 
