@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"bytes"
 	"encoding/json"
 	"github.com/c-my/lottery_client_server/config"
 	"github.com/c-my/lottery_client_server/web/controllers"
@@ -72,27 +73,22 @@ func setGet(r *mux.Router) {
 
 func setPost(r *mux.Router) {
 	r.HandleFunc("/signin", func(w http.ResponseWriter, r *http.Request) {
-		loginRes, err := http.PostForm(config.CloudLoginURL, r.PostForm)
-		logger.Info.Println("get login post request")
-		if err != nil {
-			logger.Info.Println("failed to sign in:", err)
-		}
 
-		loginBody, err := ioutil.ReadAll(loginRes.Body)
-		if err != nil {
-			logger.Warning.Println("failed to sign in:", err)
-		}
+		localJson := parsePostForm(r)
+		logger.Info.Println("post to cloud:", string(localJson))
 
-		loginJson, err := websockets.DecodeMsg(loginBody)
-		if err != nil {
-			logger.Warning.Println("failed to parse json file:", err)
-		}
+		loginMap, cookies := parsePostResponse(config.CloudLoginURL, localJson)
 
+		var err error
 		var result = make(map[string]string)
-		switch loginJson["result"] {
+
+		switch loginMap["result"] {
 		case "success":
 			result["success"] = "true"
-			websockets.Client, err = websockets.NewWebsocketClient(config.CloudWsServer)
+
+			session := "sessionid=" + getSessionFromCookie(cookies)
+			logger.Info.Println("trying connecting to cloud with session:", session)
+			websockets.Client, err = websockets.NewWebsocketClient(config.CloudWsServer, session)
 			if err != nil {
 				logger.Warning.Println("failed to connect to cloud", err)
 			} else {
@@ -102,24 +98,41 @@ func setPost(r *mux.Router) {
 				websockets.Client.Run()
 			}
 
-			// start the websocket client
-			//r.Header["Set-Cookie"]
 		case "error":
 			result["sucess"] = "false"
 		}
 
 		js, err := json.Marshal(result)
-		if err != nil {
-			logger.Error.Println("an impossible error happened:", err)
-		}
 
 		w.Header().Set("Content-Type", "application/json")
-		logger.Info.Println("response to login page:", js)
+		logger.Info.Println("response to login page:", string(js))
 		_, err = w.Write(js)
 		if err != nil {
 			logger.Error.Println("fail to response login:", err)
 		}
 	}).Methods("POST")
+
+	r.HandleFunc("/signup", func(w http.ResponseWriter, r *http.Request) {
+
+		logger.Info.Println("get signup post request:", r.PostForm)
+		localJson := parsePostForm(r)
+		signupMap, _ := parsePostResponse(config.CloudSignupURL, localJson)
+
+		var result = make(map[string]string)
+		switch signupMap["result"] {
+		case "success":
+			result["success"] = "ok"
+			//get session
+		case "error":
+			result["success"] = "false"
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		js, _ := json.Marshal(result)
+		w.Write(js)
+
+	}).Methods("POST")
+
 }
 
 func setWebsocket(r *mux.Router) {
@@ -161,4 +174,54 @@ func onWebsocketServerReceived(conn *websocket.Conn, data []byte) {
 	case "append-user":
 
 	}
+}
+
+func parsePostForm(r *http.Request) []byte {
+	err := r.ParseForm()
+	if err != nil {
+		logger.Warning.Println("can not parse form form the post:", err)
+		return []byte{}
+	}
+	var message = make(map[string]string)
+	for k, v := range r.PostForm {
+		message[k] = v[0]
+	}
+
+	resJson, err := json.Marshal(message)
+	if err != nil {
+		logger.Warning.Println("cannot marshal postform to json:", err)
+		logger.Warning.Println("the form is:", r.PostForm)
+		return []byte{}
+	}
+	return resJson
+}
+
+func parsePostResponse(url string, jsonToPost []byte) (map[string]interface{}, []*http.Cookie) {
+	res, err := http.Post(url, "application/json", bytes.NewReader(jsonToPost))
+	if err != nil {
+		logger.Warning.Println("failed to post cloud:", err)
+		return make(map[string]interface{}), []*http.Cookie{}
+	}
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		logger.Warning.Println("failed to read post response body:", err)
+		return make(map[string]interface{}), []*http.Cookie{}
+	}
+	resMap := make(map[string]interface{})
+	err = json.Unmarshal(body, &resMap)
+	if err != nil {
+		logger.Warning.Println("failed to turn body to json:", err)
+		logger.Warning.Println("the body is:", string(body))
+		return make(map[string]interface{}), []*http.Cookie{}
+	}
+	return resMap, res.Cookies()
+}
+
+func getSessionFromCookie(cookies []*http.Cookie) string {
+	for _, c := range cookies {
+		if c.Name == "sessionid" {
+			return c.Value
+		}
+	}
+	return ""
 }

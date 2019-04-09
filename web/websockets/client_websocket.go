@@ -3,7 +3,6 @@ package websockets
 import (
 	"github.com/c-my/lottery_client_server/web/logger"
 	"github.com/gorilla/websocket"
-	"net/http"
 )
 
 var Client *WebsocketClient
@@ -35,9 +34,10 @@ func (ws *WebsocketClient) Run() {
 }
 
 // NewClientWs returns a
-func NewWebsocketClient(url string) (*(WebsocketClient), error) {
+func NewWebsocketClient(url, session string) (*(WebsocketClient), error) {
 
-	header := http.Header{} // set websocket session here
+	header := make(map[string][]string)
+	header["Cookie"] = []string{session}
 	c, _, err := websocket.DefaultDialer.Dial(url, header)
 	if err != nil {
 		logger.Error.Println("failed to connect to cloud:", err)
