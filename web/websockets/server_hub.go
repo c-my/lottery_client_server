@@ -95,6 +95,14 @@ func (h *Hub) handleClientMessage(msg *ClientMsg) {
 		case "stop-drawing":
 			// relay the message
 			h.Broadcast(conn, websocket.TextMessage, data)
+		case "manual-import":
+		case "switch-page":
+		case "activity-start-time":
+		case "show-activity":
+		case "hide-activity":
+		case "disable-lucky":
+		case "part-update":
+
 		}
 	case websocket.BinaryMessage:
 		break
@@ -120,6 +128,9 @@ func (h *Hub) handleServerMessage(msg *ServerMsg) {
 			h.SendAll(mt, data)
 		case "send-danmu":
 			h.SendAll(mt, data)
+		case "modify-activity":
+		case "participants":
+		case "activity-info":
 		}
 	case websocket.BinaryMessage:
 		break

@@ -155,6 +155,9 @@ func setPost(r *mux.Router) {
 		controllers.ActivityControl.Append(newAct)
 	}).Methods("POST")
 
+	r.HandleFunc("/bg-img", func(writer http.ResponseWriter, request *http.Request) {
+
+	}).Methods("POST")
 }
 
 func setWebsocket(r *mux.Router) {
