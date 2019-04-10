@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"github.com/c-my/lottery_client_server/datamodels"
 	"github.com/c-my/lottery_client_server/repositories"
 	"github.com/c-my/lottery_client_server/services"
 	"github.com/c-my/lottery_client_server/web/logger"
@@ -21,4 +22,8 @@ func (c *ActivityController) GetAll() []byte {
 		logger.Warning.Println("get activities failed:", err)
 	}
 	return res
+}
+
+func (c *ActivityController) Append(activity datamodels.Activity) {
+	c.Service.Add(activity)
 }

@@ -9,6 +9,7 @@ import (
 
 type ActivityRepository interface {
 	SelectAll() []datamodels.Activity
+	Append(activity datamodels.Activity) bool
 }
 
 type activitySQLRepository struct {
@@ -19,6 +20,17 @@ type activitySQLRepository struct {
 func (r activitySQLRepository) SelectAll() (activities []datamodels.Activity) {
 	r.source.Find(&activities)
 	return
+}
+
+func (r *activitySQLRepository) Append(activity datamodels.Activity) bool {
+	var act datamodels.Activity
+	if err := r.source.Where("ID = ?", activity.Id).First(&act).Error; err != nil {
+		if gorm.IsRecordNotFoundError(err) {
+			r.source.Create(activity)
+			return true
+		}
+	}
+	return false
 }
 
 func NewActivityRepository() ActivityRepository {

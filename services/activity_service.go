@@ -7,6 +7,7 @@ import (
 
 type ActivityService interface {
 	GetAll() []datamodels.Activity
+	Add(activity datamodels.Activity)
 }
 
 type activityService struct {
@@ -15,6 +16,10 @@ type activityService struct {
 
 func (s *activityService) GetAll() []datamodels.Activity {
 	return s.repo.SelectAll()
+}
+
+func (s *activityService) Add(activity datamodels.Activity) {
+	s.repo.Append(activity)
 }
 
 func NewActivityService(repository repositories.ActivityRepository) ActivityService {

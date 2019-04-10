@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"github.com/c-my/lottery_client_server/config"
+	"github.com/c-my/lottery_client_server/datamodels"
 	"github.com/c-my/lottery_client_server/web/controllers"
 	"github.com/c-my/lottery_client_server/web/logger"
 	"github.com/c-my/lottery_client_server/web/websockets"
@@ -41,16 +42,26 @@ func setGet(r *mux.Router) {
 	})
 
 	r.HandleFunc("/get-activities", func(writer http.ResponseWriter, request *http.Request) {
-		writer.Header().Set("Content-Type", "application/json")
-		_, err := writer.Write(controllers.ActivityControl.GetAll())
+		client := http.Client{}
+		request, err := http.NewRequest("GET", config.CloudGetACtivities, nil)
+		request.Header.Add("Cookie", websockets.SessionStr)
+		response, err := client.Do(request)
 		if err != nil {
-			logger.Error.Println("failed to get exist user:", err)
+			logger.Error.Println("failed to get activities list from cloud:", err)
+		}
+		defer response.Body.Close()
+		resBody, err := ioutil.ReadAll(response.Body)
+		writer.Header().Set("Content-Type", "application/json")
+		_, err = writer.Write(resBody)
+		if err != nil {
+			logger.Error.Println("failed to response exist user to local:", err)
 		}
 	})
 
-	r.HandleFunc("/get-participants", func(writer http.ResponseWriter, request *http.Request) {
+	r.HandleFunc("/get-participants/{act-id}", func(writer http.ResponseWriter, request *http.Request) {
 		//queryActivity := request.Form["activity"]
 		// get user list
+		//actID := mux.Vars(request)["act-id"]
 		writer.Header().Set("Content-Type", "application/json")
 	})
 
@@ -131,6 +142,17 @@ func setPost(r *mux.Router) {
 		js, _ := json.Marshal(result)
 		w.Write(js)
 
+	}).Methods("POST")
+
+	r.HandleFunc("/append-acticity", func(w http.ResponseWriter, r *http.Request) {
+		//TODO: append in database
+		//TODO: request json format
+		localJson := parsePostForm(r)
+		actName := r.PostForm["name"][0]
+		appendActRes, _ := parsePostResponse(config.CloudAppendActivities, localJson)
+		actID := appendActRes["activitu_id"].(int)
+		newAct := datamodels.Activity{Id: actID, Name: actName}
+		controllers.ActivityControl.Append(newAct)
 	}).Methods("POST")
 
 }
