@@ -8,6 +8,7 @@ import (
 
 type BulletCommentRepository interface {
 	SelectAll() []datamodels.BulletComment
+	Append(danmu datamodels.BulletComment) bool
 }
 
 type bulletCommentSQLRepository struct {
@@ -19,11 +20,15 @@ func (r *bulletCommentSQLRepository) SelectAll() (bullets []datamodels.BulletCom
 	return
 }
 
+func (r *bulletCommentSQLRepository) Append(danmu datamodels.BulletComment) bool {
+	r.source.Create(danmu)
+	return true
+}
+
 func NewBulletCommentRepository() BulletCommentRepository {
 	db := datasource.DB
 	if (!db.HasTable(&datamodels.BulletComment{})) {
 		db.CreateTable(&datamodels.BulletComment{})
 	}
-	return &bulletCommentSQLRepository{
-		source: datasource.DB}
+	return &bulletCommentSQLRepository{source: datasource.DB}
 }

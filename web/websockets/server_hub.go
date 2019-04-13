@@ -1,6 +1,8 @@
 package websockets
 
 import (
+	"github.com/c-my/lottery_client_server/datamodels"
+	"github.com/c-my/lottery_client_server/web/controllers"
 	"github.com/c-my/lottery_client_server/web/logger"
 	"github.com/gorilla/websocket"
 )
@@ -93,6 +95,8 @@ func (h *Hub) handleClientMessage(msg *ClientMsg) {
 		case "start-drawing":
 			h.Broadcast(conn, websocket.TextMessage, data)
 		case "stop-drawing":
+			//TODO: choose a lucky dog
+
 			// relay the message
 			h.Broadcast(conn, websocket.TextMessage, data)
 		case "manual-import":
@@ -125,8 +129,10 @@ func (h *Hub) handleServerMessage(msg *ServerMsg) {
 	case websocket.TextMessage:
 		switch m["action"] {
 		case "append-user":
+			appendUser(m)
 			h.SendAll(mt, data)
 		case "send-danmu":
+			appendDanmu(m)
 			h.SendAll(mt, data)
 		case "modify-activity":
 		case "participants":
@@ -139,4 +145,14 @@ func (h *Hub) handleServerMessage(msg *ServerMsg) {
 	case websocket.PongMessage:
 		break
 	}
+}
+
+func appendUser(msg WsMessage) {
+	userToAdd := msg["content"].(datamodels.User)
+	controllers.UserControl.Append(userToAdd)
+}
+
+func appendDanmu(msg WsMessage) {
+	danmuToAdd := msg["content"].(datamodels.BulletComment)
+	controllers.DanmuControl.Append(danmuToAdd)
 }
