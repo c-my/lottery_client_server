@@ -136,7 +136,9 @@ func (h *Hub) handleServerMessage(msg *ServerMsg) {
 			h.SendAll(mt, data)
 		case "modify-activity":
 		case "participants":
+			fillUsers(m)
 		case "activity-info":
+			addActInfo(m)
 		}
 	case websocket.BinaryMessage:
 		break
@@ -155,4 +157,16 @@ func appendUser(msg WsMessage) {
 func appendDanmu(msg WsMessage) {
 	danmuToAdd := msg["content"].(datamodels.BulletComment)
 	controllers.DanmuControl.Append(danmuToAdd)
+}
+
+func fillUsers(msg WsMessage) {
+	usersToAdd := msg["content"].([]datamodels.User)
+	for _, u := range usersToAdd {
+		controllers.UserControl.Append(u)
+	}
+}
+
+func addActInfo(msg WsMessage) {
+	actInfo := msg["content"].(datamodels.Activity)
+	controllers.ActivityControl.Append(actInfo)
 }
