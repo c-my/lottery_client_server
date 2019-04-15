@@ -35,10 +35,10 @@ func (ws *WebsocketClient) Run() {
 }
 
 // NewClientWs returns a
-func NewWebsocketClient(url, session string) (*(WebsocketClient), error) {
+func NewWebsocketClient(url string) (*(WebsocketClient), error) {
 
 	header := make(map[string][]string)
-	header["Cookie"] = []string{session}
+	header["Cookie"] = []string{SessionStr}
 	c, _, err := websocket.DefaultDialer.Dial(url, header)
 	if err != nil {
 		logger.Error.Println("failed to connect to cloud:", err)

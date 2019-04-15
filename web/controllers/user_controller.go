@@ -30,3 +30,7 @@ func (c *UserController) Get() []byte {
 func (c *UserController) Append(u datamodels.User) {
 	c.Service.Add(u)
 }
+
+func (c *UserController) RandomlyGet() datamodels.User {
+	return c.Service.GetRandomly()
+}

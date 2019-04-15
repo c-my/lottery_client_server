@@ -1,6 +1,7 @@
 package websockets
 
 import (
+	"encoding/json"
 	"github.com/c-my/lottery_client_server/datamodels"
 	"github.com/c-my/lottery_client_server/web/controllers"
 	"github.com/c-my/lottery_client_server/web/logger"
@@ -96,15 +97,20 @@ func (h *Hub) handleClientMessage(msg *ClientMsg) {
 			h.Broadcast(conn, websocket.TextMessage, data)
 		case "stop-drawing":
 			//TODO: choose a lucky dog
-
+			//dogJson := generateLuckyDog()
+			//TODO: send the dog
 			// relay the message
 			h.Broadcast(conn, websocket.TextMessage, data)
 		case "manual-import":
 		case "switch-page":
+			h.Broadcast(conn, websocket.TextMessage, data)
 		case "activity-start-time":
 		case "show-activity":
+			h.Broadcast(conn, websocket.TextMessage, data)
 		case "hide-activity":
+			h.Broadcast(conn, websocket.TextMessage, data)
 		case "disable-lucky":
+			h.Broadcast(conn, websocket.TextMessage, data)
 		case "part-update":
 
 		}
@@ -169,4 +175,10 @@ func fillUsers(msg WsMessage) {
 func addActInfo(msg WsMessage) {
 	actInfo := msg["content"].(datamodels.Activity)
 	controllers.ActivityControl.Append(actInfo)
+}
+
+func generateLuckyDog() []byte {
+	dog := controllers.UserControl.RandomlyGet()
+	data, _ := json.Marshal(dog)
+	return data
 }

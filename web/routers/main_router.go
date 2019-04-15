@@ -98,15 +98,16 @@ func setPost(r *mux.Router) {
 			result["success"] = "true"
 
 			session := "sessionid=" + getSessionFromCookie(cookies)
+			websockets.SessionStr = session
 			logger.Info.Println("trying connecting to cloud with session:", session)
-			websockets.Client, err = websockets.NewWebsocketClient(config.CloudWsServer, session)
+			//websockets.Client, err = websockets.NewWebsocketClient(config.CloudWsServer, session)
 			if err != nil {
 				logger.Warning.Println("failed to connect to cloud", err)
 			} else {
-				websockets.Client.SetHandler(func(wsc *websockets.WebsocketClient, messageType int, p []byte) {
-					websockets.HUB.ServerMsg <- websockets.ServerMsg{messageType, p}
-				})
-				websockets.Client.Run()
+				//websockets.Client.SetHandler(func(wsc *websockets.WebsocketClient, messageType int, p []byte) {
+				//	websockets.HUB.ServerMsg <- websockets.ServerMsg{messageType, p}
+				//})
+				//websockets.Client.Run()
 			}
 
 		case "error":
@@ -150,6 +151,11 @@ func setPost(r *mux.Router) {
 		localJson := parsePostForm(r)
 		actName := r.PostForm["name"][0]
 		appendActRes, _ := parsePostResponse(config.CloudAppendActivities, localJson)
+		websockets.Client, _ = websockets.NewWebsocketClient(config.CloudWsServer)
+		websockets.Client.SetHandler(func(wsc *websockets.WebsocketClient, messageType int, p []byte) {
+			websockets.HUB.ServerMsg <- websockets.ServerMsg{messageType, p}
+		})
+		websockets.Client.Run()
 		actID := appendActRes["activitu_id"].(int)
 		newAct := datamodels.Activity{Id: actID, Name: actName}
 		controllers.ActivityControl.Append(newAct)
