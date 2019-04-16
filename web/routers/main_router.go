@@ -99,7 +99,7 @@ func setPost(r *mux.Router) {
 
 			session := "sessionid=" + getSessionFromCookie(cookies)
 			websockets.SessionStr = session
-			logger.Info.Println("trying connecting to cloud with session:", session)
+			//logger.Info.Println("trying connecting to cloud with session:", session)
 			//websockets.Client, err = websockets.NewWebsocketClient(config.CloudWsServer, session)
 			if err != nil {
 				logger.Warning.Println("failed to connect to cloud", err)
@@ -145,17 +145,27 @@ func setPost(r *mux.Router) {
 
 	}).Methods("POST")
 
-	r.HandleFunc("/append-acticity", func(w http.ResponseWriter, r *http.Request) {
+	r.HandleFunc("/append-activity", func(w http.ResponseWriter, r *http.Request) {
 		//TODO: append in database
 		//TODO: request json format
+
 		localJson := parsePostForm(r)
+		logger.Info.Println("postform is:", string(localJson))
 		actName := r.PostForm["name"][0]
-		appendActRes, _ := parsePostResponse(config.CloudAppendActivities, localJson)
-		websockets.Client, _ = websockets.NewWebsocketClient(config.CloudWsServer)
-		websockets.Client.SetHandler(func(wsc *websockets.WebsocketClient, messageType int, p []byte) {
-			websockets.HUB.ServerMsg <- websockets.ServerMsg{messageType, p}
-		})
-		websockets.Client.Run()
+
+		client := http.Client{}
+		logger.Info.Println("send to cloud with cookie:", string(localJson))
+		logger.Info.Println("cookies is:", websockets.SessionStr)
+		request, err := http.NewRequest("POST", config.CloudAppendActivities, bytes.NewReader(localJson))
+		request.Header.Add("Cookie", websockets.SessionStr)
+		response, err := client.Do(request)
+		if err != nil {
+			logger.Error.Println("failed to get activities list from cloud:", err)
+		}
+		defer response.Body.Close()
+		appendActRes := parseResponseBody(response)
+
+
 		actID := appendActRes["activitu_id"].(int)
 		newAct := datamodels.Activity{Id: actID, Name: actName}
 		controllers.ActivityControl.Append(newAct)
@@ -233,18 +243,7 @@ func parsePostResponse(url string, jsonToPost []byte) (map[string]interface{}, [
 		logger.Warning.Println("failed to post cloud:", err)
 		return make(map[string]interface{}), []*http.Cookie{}
 	}
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		logger.Warning.Println("failed to read post response body:", err)
-		return make(map[string]interface{}), []*http.Cookie{}
-	}
-	resMap := make(map[string]interface{})
-	err = json.Unmarshal(body, &resMap)
-	if err != nil {
-		logger.Warning.Println("failed to turn body to json:", err)
-		logger.Warning.Println("the body is:", string(body))
-		return make(map[string]interface{}), []*http.Cookie{}
-	}
+	resMap := parseResponseBody(res)
 	return resMap, res.Cookies()
 }
 
@@ -255,4 +254,20 @@ func getSessionFromCookie(cookies []*http.Cookie) string {
 		}
 	}
 	return ""
+}
+
+func parseResponseBody(response *http.Response) map[string]interface{} {
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		logger.Warning.Println("failed to read post response body:", err)
+		return make(map[string]interface{})
+	}
+	resMap := make(map[string]interface{})
+	err = json.Unmarshal(body, &resMap)
+	if err != nil {
+		logger.Warning.Println("failed to turn body to json:", err)
+		logger.Warning.Println("the body is:", string(body))
+		return make(map[string]interface{})
+	}
+	return resMap
 }

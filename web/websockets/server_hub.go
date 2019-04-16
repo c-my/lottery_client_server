@@ -2,6 +2,7 @@ package websockets
 
 import (
 	"encoding/json"
+	"github.com/c-my/lottery_client_server/config"
 	"github.com/c-my/lottery_client_server/datamodels"
 	"github.com/c-my/lottery_client_server/web/controllers"
 	"github.com/c-my/lottery_client_server/web/logger"
@@ -101,6 +102,7 @@ func (h *Hub) handleClientMessage(msg *ClientMsg) {
 			//TODO: send the dog
 			// relay the message
 			h.Broadcast(conn, websocket.TextMessage, data)
+		case "start-activity":
 		case "manual-import":
 		case "switch-page":
 			h.Broadcast(conn, websocket.TextMessage, data)
@@ -181,4 +183,12 @@ func generateLuckyDog() []byte {
 	dog := controllers.UserControl.RandomlyGet()
 	data, _ := json.Marshal(dog)
 	return data
+}
+
+func startActivity() {
+	Client, _ = NewWebsocketClient(config.CloudWsServer)
+	Client.SetHandler(func(wsc *WebsocketClient, messageType int, p []byte) {
+		HUB.ServerMsg <- ServerMsg{messageType, p}
+	})
+	Client.Run()
 }
