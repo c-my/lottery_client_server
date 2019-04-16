@@ -103,6 +103,7 @@ func (h *Hub) handleClientMessage(msg *ClientMsg) {
 			// relay the message
 			h.Broadcast(conn, websocket.TextMessage, data)
 		case "start-activity":
+			startActivity(m)
 		case "manual-import":
 		case "switch-page":
 			h.Broadcast(conn, websocket.TextMessage, data)
@@ -185,8 +186,9 @@ func generateLuckyDog() []byte {
 	return data
 }
 
-func startActivity() {
-	Client, _ = NewWebsocketClient(config.CloudWsServer)
+func startActivity(msg WsMessage) {
+	actID := msg["content"].(string)
+	Client, _ = NewWebsocketClient(config.CloudWsServer +"/"+actID)
 	Client.SetHandler(func(wsc *WebsocketClient, messageType int, p []byte) {
 		HUB.ServerMsg <- ServerMsg{messageType, p}
 	})
