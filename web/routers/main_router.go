@@ -148,7 +148,8 @@ func setPost(r *mux.Router) {
 		//TODO: request json format
 
 		localJson := parsePostForm(r)
-		logger.Info.Println("postform is:", string(localJson))
+		logger.Info.Println("receive post from local:", r.URL)
+		logger.Info.Println("the postform is:", string(localJson))
 		actName := r.PostForm["name"][0]
 
 		response, err := postWithSession(config.CloudAppendActivities, localJson, "")
@@ -162,10 +163,7 @@ func setPost(r *mux.Router) {
 		if len(appendActRes) == 0 {
 			return
 		}
-		actID, ok := appendActRes["activitu_id"].(int)
-		if !ok {
-			logger.Error.Println("received some shit from cloud:", )
-		}
+		actID, _ := appendActRes["activity_id"].(int)
 		newAct := datamodels.Activity{Id: actID, Name: actName}
 		controllers.ActivityControl.Append(newAct)
 	}).Methods("POST")
@@ -240,7 +238,7 @@ func parsePostForm(r *http.Request) []byte {
 }
 
 func postWithSession(url string, jsonToPost []byte, session string) (response *http.Response, err error) {
-	return requestWithSession(url, "GET", jsonToPost, session)
+	return requestWithSession(url, "POST", jsonToPost, session)
 }
 
 func getWithSession(url string, jsonToGet []byte, session string) (response *http.Response, err error) {
@@ -249,7 +247,7 @@ func getWithSession(url string, jsonToGet []byte, session string) (response *htt
 
 func requestWithSession(url string, method string, body []byte, session string) (response *http.Response, err error) {
 	client := http.Client{}
-	logger.Info.Println("send to cloud with cookie:", string(body))
+	logger.Info.Print(method, ": send to cloud (with cookie):", string(body))
 	logger.Info.Println("cookies is:", websockets.SessionStr)
 	request, err := http.NewRequest(method, url, bytes.NewReader(body))
 
@@ -287,6 +285,7 @@ func getSessionFromCookie(cookies []*http.Cookie) string {
 
 func parseResponseBody(response *http.Response) map[string]interface{} {
 	body, err := ioutil.ReadAll(response.Body)
+	logger.Info.Println("receive body from cloud:", string(body))
 	if err != nil {
 		logger.Warning.Println("failed to read post response body:", err)
 		return make(map[string]interface{})
