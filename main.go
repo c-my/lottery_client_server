@@ -5,7 +5,6 @@ import (
 	"github.com/c-my/lottery_client_server/web/logger"
 	"github.com/c-my/lottery_client_server/web/routers"
 	"github.com/c-my/lottery_client_server/web/tools"
-	"github.com/c-my/lottery_client_server/web/websockets"
 	"github.com/gorilla/mux"
 	"net/http"
 	"time"
@@ -15,15 +14,15 @@ func main() {
 	r := mux.NewRouter()
 	routers.SetSubRouter(config.LocalUrl, r)
 
-	c, err := websockets.NewWebsocketClient(config.CloudWsServer)
-	if err != nil {
-		logger.Warning.Println("stop trying to connect")
-	} else {
-		c.SetHandler(func(wsc *websockets.WebsocketClient, messageType int, p []byte) {
-			websockets.HUB.ServerMsg <- websockets.ServerMsg{messageType, p}
-		})
-		c.Run()
-	}
+	//c, err := websockets.NewWebsocketClient(config.CloudWsServer)
+	//if err != nil {
+	//	logger.Warning.Println("stop trying to connect")
+	//} else {
+	//	c.SetHandler(func(wsc *websockets.WebsocketClient, messageType int, p []byte) {
+	//		websockets.HUB.ServerMsg <- websockets.ServerMsg{messageType, p}
+	//	})
+	//	c.Run()
+	//}
 
 	srv := &http.Server{
 		Handler: r,
@@ -32,9 +31,9 @@ func main() {
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
-
-	tools.LaunchBrowser("http://" + config.InitialUrl)
-
+	if config.LaunchBrowser {
+		tools.LaunchBrowser("http://" + config.InitialUrl)
+	}
 	logger.Error.Fatal(srv.ListenAndServe())
 }
 
