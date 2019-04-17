@@ -7,6 +7,7 @@ import (
 
 type BulletCommentService interface {
 	GetAll() []datamodels.BulletComment
+	Add(comment datamodels.BulletComment)
 }
 
 type bulletCommentService struct {
@@ -15,6 +16,10 @@ type bulletCommentService struct {
 
 func (s *bulletCommentService) GetAll() []datamodels.BulletComment {
 	return s.repo.SelectAll()
+}
+
+func (s *bulletCommentService) Add(danmu datamodels.BulletComment) {
+	s.repo.Append(danmu)
 }
 
 func NewBulletCommentServece(repository repositories.BulletCommentRepository) BulletCommentService {

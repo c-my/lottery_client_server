@@ -3,8 +3,10 @@ package websockets
 import (
 	"github.com/c-my/lottery_client_server/web/logger"
 	"github.com/gorilla/websocket"
-	"net/http"
 )
+
+var Client *WebsocketClient
+var SessionStr string
 
 // RecvHandler is a callback type
 type RecvHandler func(wsc *WebsocketClient, messageType int, p []byte)
@@ -35,7 +37,8 @@ func (ws *WebsocketClient) Run() {
 // NewClientWs returns a
 func NewWebsocketClient(url string) (*(WebsocketClient), error) {
 
-	header := http.Header{} // set websocket session here
+	header := make(map[string][]string)
+	header["Cookie"] = []string{SessionStr}
 	c, _, err := websocket.DefaultDialer.Dial(url, header)
 	if err != nil {
 		logger.Error.Println("failed to connect to cloud:", err)

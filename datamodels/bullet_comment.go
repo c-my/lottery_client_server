@@ -1,10 +1,9 @@
 package datamodels
 
-import "time"
+import "github.com/jinzhu/gorm"
 
 type BulletComment struct {
-	openid    string `json:"openid" gorm:"primary_key`
-	danmu     string `json:"danmu"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	gorm.Model
+	UID   string `json:"uid"`
+	DanMu string `json:"danmu"`
 }

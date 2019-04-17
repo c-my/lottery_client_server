@@ -21,26 +21,26 @@ $(function() {
         }
     });
     $("#login").click(function() {
-        self.location.href = "console";
-        // $("#login-form").ajaxSubmit({
-        //     timeout : 1000,
-        //     data: {
-        //         'username': $("#username").val(),
-        //         'password': $("#password").val()
-        //     },
-        //     success: function(data) {
-        //         if (data.success === "true") {
-        //             self.location.href = "console.html";
-        //         } else {
-        //             $(".log-bar").text("用户名或密码错误");
-        //         }
-        //     },
-        //     complete: function(XMLHttpRequest, status) {
-        //         if (status == 'timeout') {
-        //             $(".log-bar").text("网络超时错误");
-        //         }
-        // 　　}
-        // });
-        // return false;
+        // self.location.href = "console";
+        $("#login-form").ajaxSubmit({
+            timeout : 1000,
+            data: {
+                'username': $("#username").val(),
+                'password': $("#password").val()
+            },
+            success: function(data) {
+                if (data.success === "true") {
+                    self.location.href = "console.html";
+                } else {
+                    $(".log-bar").text("用户名或密码错误");
+                }
+            },
+            complete: function(XMLHttpRequest, status) {
+                if (status == 'timeout') {
+                    $(".log-bar").text("网络超时错误");
+                }
+        　　}
+        });
+        return false;
     });
 });

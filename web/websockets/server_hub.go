@@ -1,6 +1,10 @@
 package websockets
 
 import (
+	"encoding/json"
+	"github.com/c-my/lottery_client_server/config"
+	"github.com/c-my/lottery_client_server/datamodels"
+	"github.com/c-my/lottery_client_server/web/controllers"
 	"github.com/c-my/lottery_client_server/web/logger"
 	"github.com/gorilla/websocket"
 )
@@ -93,8 +97,25 @@ func (h *Hub) handleClientMessage(msg *ClientMsg) {
 		case "start-drawing":
 			h.Broadcast(conn, websocket.TextMessage, data)
 		case "stop-drawing":
+			//TODO: choose a lucky dog
+			//dogJson := generateLuckyDog()
+			//TODO: send the dog
 			// relay the message
 			h.Broadcast(conn, websocket.TextMessage, data)
+		case "start-activity":
+			startActivity(m)
+		case "manual-import":
+		case "switch-page":
+			h.Broadcast(conn, websocket.TextMessage, data)
+		case "activity-start-time":
+		case "show-activity":
+			h.Broadcast(conn, websocket.TextMessage, data)
+		case "hide-activity":
+			h.Broadcast(conn, websocket.TextMessage, data)
+		case "disable-lucky":
+			h.Broadcast(conn, websocket.TextMessage, data)
+		case "part-update":
+
 		}
 	case websocket.BinaryMessage:
 		break
@@ -117,9 +138,16 @@ func (h *Hub) handleServerMessage(msg *ServerMsg) {
 	case websocket.TextMessage:
 		switch m["action"] {
 		case "append-user":
+			appendUser(m)
 			h.SendAll(mt, data)
 		case "send-danmu":
+			appendDanmu(m)
 			h.SendAll(mt, data)
+		case "modify-activity":
+		case "participants":
+			fillUsers(m)
+		case "activity-info":
+			addActInfo(m)
 		}
 	case websocket.BinaryMessage:
 		break
@@ -128,4 +156,41 @@ func (h *Hub) handleServerMessage(msg *ServerMsg) {
 	case websocket.PongMessage:
 		break
 	}
+}
+
+func appendUser(msg WsMessage) {
+	userToAdd := msg["content"].(datamodels.User)
+	controllers.UserControl.Append(userToAdd)
+}
+
+func appendDanmu(msg WsMessage) {
+	danmuToAdd := msg["content"].(datamodels.BulletComment)
+	controllers.DanmuControl.Append(danmuToAdd)
+}
+
+func fillUsers(msg WsMessage) {
+	usersToAdd := msg["content"].([]datamodels.User)
+	for _, u := range usersToAdd {
+		controllers.UserControl.Append(u)
+	}
+}
+
+func addActInfo(msg WsMessage) {
+	actInfo := msg["content"].(datamodels.Activity)
+	controllers.ActivityControl.Append(actInfo)
+}
+
+func generateLuckyDog() []byte {
+	dog := controllers.UserControl.RandomlyGet()
+	data, _ := json.Marshal(dog)
+	return data
+}
+
+func startActivity(msg WsMessage) {
+	actID := msg["content"].(string)
+	Client, _ = NewWebsocketClient(config.CloudWsServer +"/"+actID)
+	Client.SetHandler(func(wsc *WebsocketClient, messageType int, p []byte) {
+		HUB.ServerMsg <- ServerMsg{messageType, p}
+	})
+	Client.Run()
 }
