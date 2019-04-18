@@ -98,12 +98,13 @@ func (h *Hub) handleClientMessage(msg *ClientMsg) {
 			h.Broadcast(conn, websocket.TextMessage, data)
 		case "stop-drawing":
 			//TODO: choose a lucky dog
+			generateLuckyDog(&m)
 			//dogJson := generateLuckyDog()
 			//TODO: send the dog
 			// relay the message
 			h.Broadcast(conn, websocket.TextMessage, data)
 		case "start-activity":
-			startActivity(m)
+			startActivity(&m)
 		case "manual-import":
 		case "switch-page":
 			h.Broadcast(conn, websocket.TextMessage, data)
@@ -138,16 +139,16 @@ func (h *Hub) handleServerMessage(msg *ServerMsg) {
 	case websocket.TextMessage:
 		switch m["action"] {
 		case "append-user":
-			appendUser(m)
+			appendUser(&m)
 			h.SendAll(mt, data)
 		case "send-danmu":
-			appendDanmu(m)
+			appendDanmu(&m)
 			h.SendAll(mt, data)
 		case "modify-activity":
 		case "participants":
-			fillUsers(m)
+			fillUsers(&m)
 		case "activity-info":
-			addActInfo(m)
+			addActInfo(&m)
 		}
 	case websocket.BinaryMessage:
 		break
@@ -158,36 +159,37 @@ func (h *Hub) handleServerMessage(msg *ServerMsg) {
 	}
 }
 
-func appendUser(msg WsMessage) {
-	userToAdd := msg["content"].(datamodels.User)
+func appendUser(msg *WsMessage) {
+	userToAdd := (*msg)["content"].(datamodels.User)
 	controllers.UserControl.Append(userToAdd)
 }
 
-func appendDanmu(msg WsMessage) {
-	danmuToAdd := msg["content"].(datamodels.BulletComment)
+func appendDanmu(msg *WsMessage) {
+	danmuToAdd := (*msg)["content"].(datamodels.BulletComment)
 	controllers.DanmuControl.Append(danmuToAdd)
 }
 
-func fillUsers(msg WsMessage) {
-	usersToAdd := msg["content"].([]datamodels.User)
+func fillUsers(msg *WsMessage) {
+	usersToAdd := (*msg)["content"].([]datamodels.User)
 	for _, u := range usersToAdd {
 		controllers.UserControl.Append(u)
 	}
 }
 
-func addActInfo(msg WsMessage) {
-	actInfo := msg["content"].(datamodels.Activity)
+func addActInfo(msg *WsMessage) {
+	actInfo := (*msg)["content"].(datamodels.Activity)
 	controllers.ActivityControl.Append(actInfo)
 }
 
-func generateLuckyDog() []byte {
+func generateLuckyDog(msg *WsMessage) []byte {
+	//prizeName := (*msg)["content"]
 	dog := controllers.UserControl.RandomlyGet()
 	data, _ := json.Marshal(dog)
 	return data
 }
 
-func startActivity(msg WsMessage) {
-	actID := msg["content"].(string)
+func startActivity(msg *WsMessage) {
+	actID := (*msg)["content"].(string)
 	Client, _ = NewWebsocketClient(config.CloudWsServer +"/"+actID)
 	Client.SetHandler(func(wsc *WebsocketClient, messageType int, p []byte) {
 		HUB.ServerMsg <- ServerMsg{messageType, p}
