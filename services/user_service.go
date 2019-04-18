@@ -10,6 +10,7 @@ type UserService interface {
 	GetAll() []datamodels.User
 	GetByID(id uint) datamodels.User
 	GetRandomly() datamodels.User
+	GetAllRandomly() []datamodels.User
 	Add(datamodels.User)
 }
 
@@ -36,6 +37,10 @@ func (s *userService) GetByID(uid uint) datamodels.User {
 
 func (s *userService) GetRandomly() datamodels.User {
 	return s.repo.RandomSelect()
+}
+
+func (s *userService) GetAllRandomly() (users []datamodels.User) {
+	return s.repo.RandomSelectAll()
 }
 
 func (s *userService) Add(user datamodels.User) {
