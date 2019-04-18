@@ -12,3 +12,11 @@ func DecodeMsg(data []byte) (WsMessage, error) {
 	err := json.Unmarshal(data, &msg)
 	return msg, err
 }
+
+func AddAction(action string, content interface{}) ([]byte, error) {
+	m := map[string]interface{}{
+		"action":  action,
+		"content": content,
+	}
+	return json.Marshal(m)
+}
