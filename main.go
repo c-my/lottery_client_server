@@ -14,16 +14,6 @@ func main() {
 	r := mux.NewRouter()
 	routers.SetSubRouter(config.LocalUrl, r)
 
-	//c, err := websockets.NewWebsocketClient(config.CloudWsServer)
-	//if err != nil {
-	//	logger.Warning.Println("stop trying to connect")
-	//} else {
-	//	c.SetHandler(func(wsc *websockets.WebsocketClient, messageType int, p []byte) {
-	//		websockets.HUB.ServerMsg <- websockets.ServerMsg{messageType, p}
-	//	})
-	//	c.Run()
-	//}
-
 	srv := &http.Server{
 		Handler: r,
 		Addr:    config.LocalUrl,
@@ -36,11 +26,3 @@ func main() {
 	}
 	logger.Error.Fatal(srv.ListenAndServe())
 }
-
-//func addAction(action string, content interface{}) ([]byte, error) {
-//	m := map[string]interface{}{
-//		"action":  action,
-//		"content": content,
-//	}
-//	return json.Marshal(m)
-//}
