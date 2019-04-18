@@ -9,6 +9,7 @@ import (
 type WinnerRepository interface {
 	Contains(winner datamodels.Winner) bool
 	Append(winner datamodels.Winner) bool
+	GetAll() []datamodels.Winner
 }
 
 type winnerSQLRepository struct {
@@ -26,6 +27,11 @@ func (r *winnerSQLRepository) Append(winner datamodels.Winner) bool {
 	}
 	r.source.Create(winner)
 	return true
+}
+
+func (r *winnerSQLRepository) GetAll() (winners []datamodels.Winner) {
+	r.source.Find(winners)
+	return
 }
 
 // NewWinnerRepository return a WinnerRepository object
