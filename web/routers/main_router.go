@@ -185,6 +185,7 @@ func setWebsocket(r *mux.Router) {
 		for {
 			mt, message, err := c.ReadMessage()
 			if err != nil {
+				logger.Error.Println("failed to read from local:", err)
 				break
 			}
 			websockets.HUB.BroadMsg <- websockets.ClientMsg{c, mt, message}

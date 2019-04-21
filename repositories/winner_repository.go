@@ -18,7 +18,7 @@ type winnerSQLRepository struct {
 
 func (r *winnerSQLRepository) Contains(winner datamodels.Winner) bool {
 	resWinner := datamodels.Winner{}
-	return !r.source.Where("UID=? AND AID=?", winner.UID, winner.AID).First(&resWinner).RecordNotFound()
+	return !r.source.Where("UID=? AND A_ID=?", winner.UID, winner.AID).First(&resWinner).RecordNotFound()
 }
 
 func (r *winnerSQLRepository) Append(winner datamodels.Winner) bool {

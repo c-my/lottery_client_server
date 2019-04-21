@@ -96,7 +96,7 @@ func (h *Hub) handleClientMessage(msg *ClientMsg) {
 	switch mt {
 	case websocket.TextMessage:
 		switch m["action"] {
-		case "start-drawing":
+		case "start-draw":
 			h.Broadcast(conn, websocket.TextMessage, data)
 		case "stop-drawing":
 			json := generateLuckyDog(&m)
