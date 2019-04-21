@@ -12,6 +12,7 @@ type UserRepository interface {
 	SelectByID(uid uint) (user datamodels.User, found bool)
 	SelectAll() []datamodels.User
 	RandomSelect() datamodels.User
+	RandomSelectAll() []datamodels.User
 	Append(user datamodels.User) bool
 }
 
@@ -30,6 +31,11 @@ func (r *userSQLRepository) SelectByID(uid uint) (user datamodels.User, found bo
 // RandomSelect randomly select a user
 func (r *userSQLRepository) RandomSelect() (user datamodels.User) {
 	r.source.Order(gorm.Expr("random()")).First(&user)
+	return
+}
+
+func (r *userSQLRepository) RandomSelectAll() (users []datamodels.User) {
+	r.source.Order(gorm.Expr("random()")).Select("ID").Find(&users)
 	return
 }
 

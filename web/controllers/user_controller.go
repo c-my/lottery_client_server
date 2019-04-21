@@ -34,3 +34,7 @@ func (c *UserController) Append(u datamodels.User) {
 func (c *UserController) RandomlyGet() datamodels.User {
 	return c.Service.GetRandomly()
 }
+
+func (c *UserController) RandomlyGetAll() (users []datamodels.User) {
+	return c.Service.GetAllRandomly()
+}

@@ -1,9 +1,9 @@
 package websockets
 
 import (
-	"encoding/json"
 	"github.com/c-my/lottery_client_server/config"
 	"github.com/c-my/lottery_client_server/datamodels"
+	"github.com/c-my/lottery_client_server/services"
 	"github.com/c-my/lottery_client_server/web/controllers"
 	"github.com/c-my/lottery_client_server/web/logger"
 	"github.com/gorilla/websocket"
@@ -66,6 +66,7 @@ func (h *Hub) Run() {
 	}
 }
 
+// SendAll sends the message to all clients connected to us
 func (h *Hub) SendAll(messageType int, data []byte) {
 	logger.Info.Println("message delivered to all:", string(data), "message type:", messageType)
 	for client, _ := range h.Clients {
@@ -73,6 +74,7 @@ func (h *Hub) SendAll(messageType int, data []byte) {
 	}
 }
 
+// Broadcase sends the message to all clients connected to us except the sender
 func (h *Hub) Broadcast(conn *websocket.Conn, messageType int, data []byte) {
 	logger.Info.Println("broadcast message:", string(data), "message type:", messageType)
 	for client, _ := range h.Clients {
@@ -97,13 +99,11 @@ func (h *Hub) handleClientMessage(msg *ClientMsg) {
 		case "start-drawing":
 			h.Broadcast(conn, websocket.TextMessage, data)
 		case "stop-drawing":
-			//TODO: choose a lucky dog
-			//dogJson := generateLuckyDog()
-			//TODO: send the dog
-			// relay the message
+			json := generateLuckyDog(&m)
+			h.SendAll(websocket.TextMessage, json)
 			h.Broadcast(conn, websocket.TextMessage, data)
 		case "start-activity":
-			startActivity(m)
+			startActivity(&m)
 		case "manual-import":
 		case "switch-page":
 			h.Broadcast(conn, websocket.TextMessage, data)
@@ -138,16 +138,16 @@ func (h *Hub) handleServerMessage(msg *ServerMsg) {
 	case websocket.TextMessage:
 		switch m["action"] {
 		case "append-user":
-			appendUser(m)
+			appendUser(&m)
 			h.SendAll(mt, data)
 		case "send-danmu":
-			appendDanmu(m)
+			appendDanmu(&m)
 			h.SendAll(mt, data)
 		case "modify-activity":
 		case "participants":
-			fillUsers(m)
+			fillUsers(&m)
 		case "activity-info":
-			addActInfo(m)
+			addActInfo(&m)
 		}
 	case websocket.BinaryMessage:
 		break
@@ -158,37 +158,47 @@ func (h *Hub) handleServerMessage(msg *ServerMsg) {
 	}
 }
 
-func appendUser(msg WsMessage) {
-	userToAdd := msg["content"].(datamodels.User)
+func appendUser(msg *WsMessage) {
+	userToAdd := (*msg)["content"].(datamodels.User)
 	controllers.UserControl.Append(userToAdd)
 }
 
-func appendDanmu(msg WsMessage) {
-	danmuToAdd := msg["content"].(datamodels.BulletComment)
+func appendDanmu(msg *WsMessage) {
+	danmuToAdd := (*msg)["content"].(datamodels.BulletComment)
 	controllers.DanmuControl.Append(danmuToAdd)
 }
 
-func fillUsers(msg WsMessage) {
-	usersToAdd := msg["content"].([]datamodels.User)
+func fillUsers(msg *WsMessage) {
+	usersToAdd := (*msg)["content"].([]datamodels.User)
 	for _, u := range usersToAdd {
 		controllers.UserControl.Append(u)
 	}
 }
 
-func addActInfo(msg WsMessage) {
-	actInfo := msg["content"].(datamodels.Activity)
+func addActInfo(msg *WsMessage) {
+	actInfo := (*msg)["content"].(datamodels.Activity)
 	controllers.ActivityControl.Append(actInfo)
 }
 
-func generateLuckyDog() []byte {
-	dog := controllers.UserControl.RandomlyGet()
-	data, _ := json.Marshal(dog)
-	return data
+func generateLuckyDog(msg *WsMessage) []byte {
+	prizeID := (*msg)["content"].(string)
+	userList := controllers.UserControl.RandomlyGetAll()
+	for _, user := range userList {
+		if !services.WinnerServicer.AlreadyWin(user.ID, prizeID) {
+			// add the winner record
+			services.WinnerServicer.AddWinner(user.ID, prizeID)
+			// generate json bytes
+			json, _ := AddAction("who-is-lucky-dog", user)
+			return json
+		}
+	}
+	// TODO:deal when no available lucky-dog
+	return []byte{}
 }
 
-func startActivity(msg WsMessage) {
-	actID := msg["content"].(string)
-	Client, _ = NewWebsocketClient(config.CloudWsServer +"/"+actID)
+func startActivity(msg *WsMessage) {
+	actID := (*msg)["content"].(string)
+	Client, _ = NewWebsocketClient(config.CloudWsServer + "/" + actID)
 	Client.SetHandler(func(wsc *WebsocketClient, messageType int, p []byte) {
 		HUB.ServerMsg <- ServerMsg{messageType, p}
 	})
