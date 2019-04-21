@@ -131,7 +131,11 @@ func (h *Hub) handleServerMessage(msg *ServerMsg) {
 	mt := msg.MessageType
 	m, err := DecodeMsg(data)
 	if err != nil {
-		logger.Warning.Println("unrecognized message received from cloud: ", string(data))
+		if string(data) == config.CloudConfirmCode {
+			logger.Info.Println("connect confirm code:", string(data))
+		} else {
+			logger.Warning.Println("unrecognized message received from cloud: ", string(data))
+		}
 		return
 	}
 	switch mt {
