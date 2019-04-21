@@ -2,18 +2,18 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="css/PrizeDraw.css"/>
-    <link rel="stylesheet" type="text/css" href="css/swing.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="css/cube.css"/>
-    <link rel="stylesheet" type="text/css" href="css/flash.css"/>
-    <link rel="stylesheet" type="text/css" href="css/barrager.css">
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="css/PrizeDraw.css"/>
+  <link rel="stylesheet" type="text/css" href="css/swing.css" media="screen" />
+  <link rel="stylesheet" type="text/css" href="css/cube.css"/>
+  <link rel="stylesheet" type="text/css" href="css/flash.css"/>
+  <link rel="stylesheet" type="text/css" href="css/barrager.css">
 
-    <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
-    <script type="text/javascript" src="js/PrizeDraw.js"></script>
+  <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="js/PrizeDraw.js"></script>
 
-    <script type="text/javascript" src="js/jquery.barrager.min.js"></script>
-    <title>抽奖</title>
+  <script type="text/javascript" src="js/jquery.barrager.min.js"></script>
+  <title>抽奖</title>
 </head>
 <body>
 <div id="swing" style="display: none">
@@ -21,32 +21,32 @@
 
 
 <div id="load" style="display: none">
-    <span class="load_letter" data-content="P">P</span>
-    <span class="load_letter" data-content="R">R</span>
-    <span class="load_letter" data-content="I">I</span>
-    <span class="load_letter" data-content="Z">Z</span>
-    <span class="load_letter" data-content="E">E</span>
-    <span class="load_letter" data-content="-">-</span>
-    <span class="load_letter" data-content="D">D</span>
-    <span class="load_letter" data-content="R">R</span>
-    <span class="load_letter" data-content="A">A</span>
-    <span class="load_letter" data-content="W">W</span>
+  <span class="load_letter" data-content="P">P</span>
+  <span class="load_letter" data-content="R">R</span>
+  <span class="load_letter" data-content="I">I</span>
+  <span class="load_letter" data-content="Z">Z</span>
+  <span class="load_letter" data-content="E">E</span>
+  <span class="load_letter" data-content="-">-</span>
+  <span class="load_letter" data-content="D">D</span>
+  <span class="load_letter" data-content="R">R</span>
+  <span class="load_letter" data-content="A">A</span>
+  <span class="load_letter" data-content="W">W</span>
 </div>
 
 <div id="flash" style="display: none">
-    <div class="shandong"><img class="pic" src="img/1.jpeg" /></div>
+  <div class="shandong"><img class="pic" src="img/1.jpeg" /></div>
 </div>
 
 <div id="cube_div" style="display: none">
-    <div class="cube" id="cube">
-        <!--前后左右六张图-->
-        <div class="cube front"><img class="pic" src="img/1.jpeg" /></div>
-        <div class="cube behind"><img class="pic" src="img/2.jpeg" /></div>
-        <div class="cube left"><img class="pic" src="img/3.jpeg" /></div>
-        <div class="cube right"><img class="pic" src="img/4.jpeg" /></div>
-        <div class="cube top"><img class="pic" src="img/5.jpeg" /></div>
-        <div class="cube bottom"><img class="pic" src="img/6.jpeg" /></div>
-    </div>
+  <div class="cube" id="cube">
+    <!--前后左右六张图-->
+    <div class="cube front"><img class="pic" src="img/1.jpeg" /></div>
+    <div class="cube behind"><img class="pic" src="img/2.jpeg" /></div>
+    <div class="cube left"><img class="pic" src="img/3.jpeg" /></div>
+    <div class="cube right"><img class="pic" src="img/4.jpeg" /></div>
+    <div class="cube top"><img class="pic" src="img/5.jpeg" /></div>
+    <div class="cube bottom"><img class="pic" src="img/6.jpeg" /></div>
+  </div>
 </div>
 <button id="btn" onclick="start()">开始抽奖</button>
 
@@ -55,61 +55,61 @@
 
 </body>
 <script type="text/javascript">
-    // $(".pick-a-color").pickAColor();
-     var eg={};//全局对象，避免全局污染
+  // $(".pick-a-color").pickAColor();
+  var eg={};//全局对象，避免全局污染
 
-    //  eg.itemExm={
-    //     img:'if_son.png' ,//头像
-    //     info:'弹幕文字' ,//弹幕文字
-    //     //href:... 我们可能不需要这个功能
-    //     close:true, //关闭弹幕按钮
-    //     speed:6,   //延迟速度
-    //     bottom:400,//距离底部高度
-    //     color:'#fff', //默认颜色
-    //     old_ie_color:'#000000', //兼容IE 
-    // };
-    //  eg.item={};
+  //  eg.itemExm={
+  //     img:'if_son.png' ,//头像
+  //     info:'弹幕文字' ,//弹幕文字
+  //     //href:... 我们可能不需要这个功能
+  //     close:true, //关闭弹幕按钮
+  //     speed:6,   //延迟速度
+  //     bottom:400,//距离底部高度
+  //     color:'#fff', //默认颜色
+  //     old_ie_color:'#000000', //兼容IE
+  // };
+  //  eg.item={};
 
-    // //弹幕弹出示例
-    //  eg.Tan=function(a){
-    //      $('body').barrager(a);
-    //      return false;
-    //  };
-    
-    // eg.DMcontent=$('#content');//弹幕内容
-    // eg.DMdelay=$('#delay');//弹幕延迟时间
-    // eg.DMclose=$('#close');//是否显示关闭按钮
-    // eg.DMHrandom=$('#random');//随机高度
-    // eg.DMHset=$('#set');//自行设置弹幕位置
-    // eg.DMheight=$('#bottom_height');//输入设置的弹幕位置
-    // eg.DMcolor=$('#color');//默认颜色
-    // //这个按钮以后也会改
-    // eg.DMtan=$('#tan');//运行弹幕
+  // //弹幕弹出示例
+  //  eg.Tan=function(a){
+  //      $('body').barrager(a);
+  //      return false;
+  //  };
 
-    $(function(){
-        var interval=2*1000;//每条弹幕发送间隔
-        var run_once=true;//首次执行
+  // eg.DMcontent=$('#content');//弹幕内容
+  // eg.DMdelay=$('#delay');//弹幕延迟时间
+  // eg.DMclose=$('#close');//是否显示关闭按钮
+  // eg.DMHrandom=$('#random');//随机高度
+  // eg.DMHset=$('#set');//自行设置弹幕位置
+  // eg.DMheight=$('#bottom_height');//输入设置的弹幕位置
+  // eg.DMcolor=$('#color');//默认颜色
+  // //这个按钮以后也会改
+  // eg.DMtan=$('#tan');//运行弹幕
 
-        function do_barrager(){
-            if(run_once ){
-                //如果是首次执行,则设置一个定时器,并且把首次执行置为false
-                looper=setInterval(do_barrager,interval);                
-                run_once=false;
-            }
-            //获取
-            $.getJSON('server.php?mode=1',function(data){
-                //是否有数据
-                if(data.info){
+  $(function(){
+    var interval=2*1000;//每条弹幕发送间隔
+    var run_once=true;//首次执行
 
-                    $('body').barrager(data);
-                }
+    function do_barrager(){
+      if(run_once ){
+        //如果是首次执行,则设置一个定时器,并且把首次执行置为false
+        looper=setInterval(do_barrager,interval);
+        run_once=false;
+      }
+      //获取
+      $.getJSON('server.php?mode=1',function(data){
+        //是否有数据
+        if(data.info){
 
-            });
+          $('body').barrager(data);
         }
-        function barrager(){}
-    });
 
-    eg.Send=function(text){
+      });
+    }
+    function barrager(){}
+  });
+
+  eg.Send=function(text){
     //     //如果你们觉得变量名奇怪我可以改
     //     //这么写是因为比较好对应
     //     var DMcontent=eg.DMcontent.val();//局部变量得到表单中内容
@@ -128,7 +128,7 @@
 
     //     //头像图片
     //     var DMimg=$('input:radio[name=pic_Radio]:checked').val();
-    //    // if(DMimg=='none') 
+    //    // if(DMimg=='none')
 
     //    var DMcolor=eg.DMcolor.val();//颜色
 
@@ -137,21 +137,21 @@
     //          DMclose=false;
     //     }
 
-       var item={
-            img:"" ,//头像
-            info:text ,//弹幕文字
-            //href:... 我们可能不需要这个功能
-            close:false, //关闭弹幕按钮
-            speed:6,   //延迟速度
-            bottom: Math.floor(Math.random() * 500), //距离底部高度
-            color:"#ffffff", //默认颜色
-            old_ie_color:"#ff2424", //兼容IE 
-        }
-        console.log(item);
-        eg.item=item;
-        $('body').barrager(item);
-
+    var item={
+      img:"" ,//头像
+      info:text ,//弹幕文字
+      //href:... 我们可能不需要这个功能
+      close:false, //关闭弹幕按钮
+      speed:6,   //延迟速度
+      bottom: Math.floor(Math.random() * 500), //距离底部高度
+      color:"#ffffff", //默认颜色
+      old_ie_color:"#ff2424", //兼容IE
     }
-    </script>
+    console.log(item);
+    eg.item=item;
+    $('body').barrager(item);
+
+  }
+</script>
 </html>
 
