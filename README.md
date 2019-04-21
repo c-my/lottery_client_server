@@ -6,6 +6,7 @@
     * `github.com/gorilla/websocket`
     * `github.com/jinzhu/gorm`
     * `github.com/jinzhu/gorm/dialects/sqlite`
+    * `github.com/mattn/go-sqlite3`
 * 设置信息储存在 `config/configures.go`中
 
 ## 编译优化
