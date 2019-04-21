@@ -181,6 +181,12 @@ func addActInfo(msg *WsMessage) {
 }
 
 func generateLuckyDog(msg *WsMessage) []byte {
+	_, ok := (*msg)["content"].(string)
+	if !ok {
+		user := controllers.UserControl.RandomlyGet()
+		json, _ := AddAction("who-is-lucky-dog", user)
+		return json
+	}
 	prizeID := (*msg)["content"].(string)
 	userList := controllers.UserControl.RandomlyGetAll()
 	for _, user := range userList {
