@@ -264,7 +264,7 @@ $(document).ready(function () {
 
     let video = document.getElementById('my-video');
     let source = document.createElement('source');
-    console.log("wosdasas");
+
     source.setAttribute('src', 'rtmp://'+window.location.host.split(':')[0]+':1935/live/movie/123');
     source.setAttribute('type','rtmp/flv');
 

@@ -1,8 +1,8 @@
 let drawing = false;
 let running = false;
 
-let ws = new WebSocket('ws://127.0.0.1:1923/ws');
 
+let ws = new WebSocket("ws://"+window.location.host+"/ws");
 ws.onmessage = function (message) {
     console.log(message.data);
     let msg = JSON.parse(message.data);
