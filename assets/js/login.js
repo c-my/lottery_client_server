@@ -48,7 +48,7 @@ $(function() {
     $("#login").click(function() {
         $.ajax({
             type: "POST",
-            url: cloud_url,
+            url: window.location.origin + '/signin',
             timeout: 1000,
             dataType : "json",
             data: JSON.stringify({
@@ -57,13 +57,13 @@ $(function() {
             }),
             success: function(data) {
                 console.log(data);
-                if (data.result == "success") {
+                if (data.success === "true") {
                     console.log("uid: ", data.uid);
                     inform_local("true");
                     self.location.href = next_page;
-                } else if (data.result == "error") {
+                } else {
                     $(".log-bar").text("用户名或密码错误");
-                    console.log("message: ", data.msg);
+                    console.log("message: ", data.success);
                 }
             },
             complete: function(XMLHttpRequest, status) {

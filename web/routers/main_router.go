@@ -108,13 +108,14 @@ func setGet(r *mux.Router) {
 
 func setPost(r *mux.Router) {
 	r.HandleFunc("/signin", func(w http.ResponseWriter, r *http.Request) {
+		localJson, err := ioutil.ReadAll(r.Body)
 
-		localJson := parsePostForm(r)
+		//localJson := parsePostForm(r)
 		logger.Info.Println("post to cloud:", string(localJson))
 
 		loginMap, cookies := parsePostResponse(config.CloudLoginURL, localJson)
 
-		var err error
+		//var err error
 		var result = make(map[string]string)
 
 		switch loginMap["result"] {
@@ -172,11 +173,15 @@ func setPost(r *mux.Router) {
 	r.HandleFunc("/append-activity", func(w http.ResponseWriter, r *http.Request) {
 		//TODO: append in database
 		//TODO: request json format
+		localJson, err := ioutil.ReadAll(r.Body)
+		msg := websockets.WsMessage{}
+		json.Unmarshal(localJson, &msg)
+		actName := msg["name"].(string)
+		//localJson := parsePostForm(r)
 
-		localJson := parsePostForm(r)
 		logger.Info.Println("receive post from local:", r.URL)
 		logger.Info.Println("the postform is:", string(localJson))
-		actName := r.PostForm["name"][0]
+		//actName := r.PostForm["name"][0]
 
 		response, err := postWithSession(config.CloudAppendActivities, localJson, "")
 		if err != nil {
@@ -191,6 +196,7 @@ func setPost(r *mux.Router) {
 		}
 		actID, _ := appendActRes["activity_id"].(int)
 		newAct := datamodels.Activity{Id: actID, Name: actName}
+		logger.Info.Println("new activity:", newAct)
 		controllers.ActivityControl.Append(newAct)
 	}).Methods("POST")
 
