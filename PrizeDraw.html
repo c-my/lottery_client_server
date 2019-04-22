@@ -8,12 +8,25 @@
   <link rel="stylesheet" type="text/css" href="css/cube.css"/>
   <link rel="stylesheet" type="text/css" href="css/flash.css"/>
   <link rel="stylesheet" type="text/css" href="css/barrager.css">
-
+  <link href="http://vjs.zencdn.net/5.5.3/video-js.css" rel="stylesheet">
   <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
   <script type="text/javascript" src="js/PrizeDraw.js"></script>
-
   <script type="text/javascript" src="js/jquery.barrager.min.js"></script>
+  <script src="assets/js/video-js-5.19.2/video.js"></script>
   <title>抽奖</title>
+
+  <style>
+    video{
+      position:fixed;
+      right:0;
+      bottom: 0;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      z-index: -9999;
+    }
+    </style>
 </head>
 <body>
 <div id="swing" style="display: none">
@@ -48,10 +61,36 @@
     <div class="cube bottom"><img class="pic" src="img/6.jpeg" /></div>
   </div>
 </div>
-<button id="btn" onclick="start()">开始抽奖</button>
+
 
 <div id="draw-area"></div>
 <div id="user-list" style="display: none;"></div>
+
+<style>
+  video{
+    position:fixed;
+    right:0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -9999;
+  }
+</style>
+
+
+<video id="my-video" class="video-js"style="position:fixed;
+    right:0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -9999;opacity: 50%;" controls preload="auto"
+        data-setup="{}" >
+  <source src = "rtmp://localhost:1935/live/movie" type="rtmp/flv">
+</video>
 
 </body>
 <script type="text/javascript">
