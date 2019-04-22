@@ -214,7 +214,9 @@ func generateLuckyDog(msg *WsMessage) []byte {
 		}
 	}
 	// TODO:deal when no available lucky-dog
-	return []byte{}
+	user := datamodels.User{}
+	json, _ := AddAction("no-available", user)
+	return json
 }
 
 func startActivity(msg *WsMessage) {
