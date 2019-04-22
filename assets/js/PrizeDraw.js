@@ -1,10 +1,11 @@
-let ws = new WebSocket("ws://192.168.137.1:1923/ws");
+let ws = new WebSocket("ws://"+window.location.host+"/ws");
 let drawing = false;
 let draw_kind;
 var img;
 var Div;
 var pre = $("#load");
 let iterator = draw();
+
 
 
 function get_participant_list() {
@@ -260,6 +261,16 @@ function* draw() {
 
 
 $(document).ready(function () {
+
+    let video = document.getElementById('my-video');
+    let source = document.createElement('source');
+    console.log("wosdasas");
+    source.setAttribute('src', 'rtmp://'+window.location.host.split(':')[0]+':1935/live/movie/123');
+    source.setAttribute('type','rtmp/flv');
+
+    video.appendChild(source);
+
+
 
     get_participant_list();
     setInterval(function () {
