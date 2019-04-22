@@ -78,6 +78,10 @@ func setGet(r *mux.Router) {
 	r.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "login.html")
 	}).Methods("GET")
+
+	r.HandleFunc("/rtmp", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "rtmp.html")
+	}).Methods("GET")
 }
 
 func setPost(r *mux.Router) {
