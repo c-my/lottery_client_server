@@ -13,12 +13,6 @@ body {
     
 }
 
-
-
-#rtmpdiv{
-  z-index: -999;
-}
-
 @keyframes loading {
     from {max-width: 0;}
 }

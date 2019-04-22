@@ -1,0 +1,114 @@
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="icon" href="/icon/sampling.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/icon/sampling.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/materialdesignicons.min.css"/>
+    <link rel="stylesheet" href="/css/start-menu.css"/>
+    <title>三百两抽奖系统控制台</title>
+</head>
+<body>
+    <div class="header">
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+            <!-- Brand -->
+            <a href="https://sampling.alphamj.cn/" target="new" class="navbar-brand">
+                SAMPLING</a><span id="online-symbol"></span>
+            <!-- Links -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" id="help-doc" href="#"><i class="mdi mdi-library-books" style="font-size: 16px;"></i> 帮助文档</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <!--create new from blank-->
+    <div class="card" id="create-or-resume-div" style="width: 25rem;top: 10rem;">
+        <img class="card-img-top" id="create-or-resume-img" src="/img/create-from-blank.jpg" alt="Card image cap" style="height: 15rem;">
+        <div class="card-body">
+            <h5 class="card-title" id="create-or-resume">新建活动/继续活动</h5>
+            <p class="card-text" id="create-or-resume-son">开始一场抽奖或弹幕活动，重新设置您的抽奖参数，参加人员等数据/您有一场尚未结束的活动</p>
+            <button id="create-or-resume-button" type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">进入</button>
+
+            <!--write initial information-->
+            <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myLargeModalLabel">新建活动</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <div class="modal-body " style="align-items: center">
+                            <form method="post" action="console.jsp">
+                                <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="input-activity-name">活动名称</label>
+                                    <input type="text" class="form-control" id="input-activity-name" placeholder="input your activity's name" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="max-population">最大人数</label>
+                                    <input type="number" class="form-control" id="max-population" placeholder="Enter the maximum number of people allowed to enter" required>
+                                </div>
+                                </div>
+                                <div class="modal-body " style="align-items: center">
+                                    <form method="post" action="console.jsp">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="input-activity-name">活动名称</label>
+                                                <input type="text" class="form-control" id="input-activity-name" placeholder="input your activity's name" required>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="max-population">最大人数</label>
+                                                <input type="number" class="form-control" id="max-population" placeholder="Enter the maximum number of people allowed to enter" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3" style="">
+                                            <label for="validationTooltip03">备注/简介</label>
+                                            <textarea type="text" class="form-control" id="validationTooltip03" placeholder="remark"  style="width: 200%;height: 10%;"></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary right">创建房间</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--write initial information end-->
+                </div>
+            </div>
+        </div><!--create new from blank end-->
+        
+        <!--create new from history-->
+        <div class="col-md-6">
+            <div class="card">
+                <img class="card-img-top" id="create-from-history-img" src="/img/create-from-history.jpg" alt="Card image cap" style="height: 15rem;">
+                <div class="card-body">
+                    <h5 class="card-title" id="create-from-history">导入历史设置</h5>
+                    <p class="card-text" id="create-from-history-son">如果您要新建的活动和之前的一场有很大的相似度，请从这里进入</p>
+                    <button type="button" class="btn btn-primary right" data-toggle="modal" data-target=".bd-example-modal-sm">进入</button>
+
+                    <!--choose history-->
+                    <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" style="display: none;" aria-hidden="true">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="mySmallModalLabel">历史活动</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" id="history-list"></div>
+                            </div>
+                        </div>
+                    </div><!--choose history end-->
+                </div>
+            </div>
+        </div><!--create new from history end-->
+    </div>
+</body>
+</html>
+<script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/start-menu.js"></script>

@@ -1,0 +1,58 @@
+保存活动-》下次继续活动-》后台发来上次保存的信息（包含所有设置和用户列表（两次发送））
+点击历史活动-》后台发来历史信息（不包括用户列表）
+
+设置信息：
+// 初始化在线功能和服务权限
+抽奖设置信息json格式：
+{
+    "action": "initialize",
+    "content": {
+        "online": "true",
+        "userType": "vip" ,
+	    "url":"",
+        "activity_name": "才明洋表彰大会",
+        "draw_mode_chosen": "1",//2
+
+        "reward_items_names": ["大电视","大音响"],
+        "prize_names":[["一等奖","大电视",3],["二等奖","大音响",3]],
+        "lottery_style":"swing",//cube,flash,load
+        "topic_color":"#8A5010",
+        "lottery_music":"haorizi",//haoyunlai
+        "win_prize_music":"bingo",
+        "get_prize_music":"laciji",
+        "bullet_font_size":37,
+        "bullet_transparent_degree":4,
+        "bullet_font":"SimHei",//SimSun,NSimSun,FangSong,KaiTi,FangSong_GB2312,KaiTi_GB2312,MicrosoftYaHei,Arial
+        "bullet_color":"#996565",
+        "bullet_velocity":"fast",//slow,normal
+        "bullet_location":"top",//middle,bottom
+       "reward_users_list":
+		[{
+		"uid":"江小白",
+		"nickname":"钢链手指",
+		"itemname":"大电视"
+		},
+		{"uid":"李航",
+		"nickname":"黄金体验",
+		"itemname":"大音响"}],
+ 	      "reward_remain":[3,2],
+		  "danmu_switch":"on",
+		  "danmu_check_switch":"on"
+
+	 }
+	}
+
+
+    ws.send(JSON.stringify({
+        action: 'resume_activity',//恢复活动，后台发给前端抽奖设置信息和用户列表
+        content: ""
+    }));
+
+    ws.send(JSON.stringify({
+        action: "creat_from_history",///从历史导入活动，后台发给前端抽奖设置信息
+        content: str,///历史活动编号
+    }));
+ ws.send(JSON.stringify({
+        action: "save_as_history",///保存为历史设置，不用保存用户列表
+        content: ""
+    }));
