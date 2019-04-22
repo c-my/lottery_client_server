@@ -230,11 +230,18 @@ func updateConfig(msg *WsMessage) {
 	content := (*msg)["content"]
 	bytes, _ := json.Marshal(content)
 	configMsg, _ := DecodeMsg(bytes)
+
 	v := reflect.ValueOf(&(tools.ConsoleConfig)).Elem()
 	for i := 0; i < v.NumField(); i++ {
 		fieldInfo := v.Type().Field(i)
 		tag := fieldInfo.Tag
 		json := tag.Get("json")
-		v.Field(i).SetString(configMsg[json].(string))
+		_, ok := configMsg[json].(string)
+		if ok {
+			logger.Info.Println("updated key:", string(json))
+			v.Field(i).SetString(configMsg[json].(string))
+			tools.SaveConfigure(config.ConfigureFile)
+		}
 	}
+
 }

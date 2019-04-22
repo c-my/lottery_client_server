@@ -18,11 +18,11 @@ func Run() {
 func ConsoleConfigLoop() {
 	for {
 		time.Sleep(1000)
-		saveConfigure(config.ConfigureFile)
+		SaveConfigure(config.ConfigureFile)
 	}
 }
 
-func saveConfigure(fileName string) bool {
+func SaveConfigure(fileName string) bool {
 	jsonStr, _ := json.Marshal(ConsoleConfig)
 	err := ioutil.WriteFile(fileName, jsonStr, os.ModeAppend)
 	if err != nil {
@@ -47,33 +47,33 @@ type Configure struct {
 	UserType string `json:"userType"`
 
 	// basic information
-	ActivityName string `json:"activity-name"`
+	ActivityName string `json:"activity_name"`
 
 	// drawing settings
-	DrawModeChosen   string `json:"draw_mode-chosen"`
-	RewardItemsNames string `json:"reward-items-names"`
-	PrizeNames       string `json:"prize-names"`
+	DrawModeChosen   string `json:"draw_mode_chosen"`
+	RewardItemsNames string `json:"reward_items_names"`
+	PrizeNames       string `json:"prize_names"`
 
 	// methods and themes
-	LotteryStype  string `json:"lottery-style"`
-	TpoicColor    string `json:"tpoic-color"`
-	LotteryMusic  string `json:"lottery-music"`
-	WinPrizeMusic string `json:"win-prize-music"`
-	GetPrizeMusic string `json:"get-prize-music"`
+	LotteryStype  string `json:"lottery_style"`
+	TpoicColor    string `json:"topic_color"`
+	LotteryMusic  string `json:"lottery_music"`
+	WinPrizeMusic string `json:"win_prize_music"`
+	GetPrizeMusic string `json:"get_prize_music"`
 
 	// bullet settings
-	BulletFontSize          string `json:"bullet-font-size"`
-	BulletTransparentDegree string `json:"bullet-transparent-degree"`
-	BulletFont              string `json:"bullet-font"`
-	BulletColor             string `json:"bullet-color"`
-	BulletVelocity          string `json:"bullet-velocity"`
-	BulletLocation          string `json:"bullet-location"`
-	BulletEnable            string `json:"bullet-enable"`
-	BulletCheckEnable       string `json:"bullet-check-enable"`
+	BulletFontSize          string `json:"bullet_font_size"`
+	BulletTransparentDegree string `json:"bullet_transparent_degree"`
+	BulletFont              string `json:"bullet_font"`
+	BulletColor             string `json:"bullet_color"`
+	BulletVelocity          string `json:"bullet_velocity"`
+	BulletLocation          string `json:"bullet_location"`
+	BulletEnable            string `json:"bullet_enable"`
+	BulletCheckEnable       string `json:"bullet_check_enable"`
 
 	// drawing status bar on the left
-	RewardUsersList string `json:"reward-users-list"`
-	RewardRemain    string `json:"reward-remain"`
+	RewardUsersList string `json:"reward_users_list"`
+	RewardRemain    string `json:"reward_remain"`
 
 	IsActivityUnfinished bool `json:"is-activity-unfinished"`
 }
