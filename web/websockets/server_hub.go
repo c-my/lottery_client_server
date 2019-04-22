@@ -1,6 +1,7 @@
 package websockets
 
 import (
+	"encoding/json"
 	"github.com/c-my/lottery_client_server/config"
 	"github.com/c-my/lottery_client_server/datamodels"
 	"github.com/c-my/lottery_client_server/services"
@@ -8,6 +9,7 @@ import (
 	"github.com/c-my/lottery_client_server/web/logger"
 	"github.com/c-my/lottery_client_server/web/tools"
 	"github.com/gorilla/websocket"
+	"reflect"
 )
 
 var HUB *Hub
@@ -118,7 +120,12 @@ func (h *Hub) handleClientMessage(msg *ClientMsg) {
 			h.Broadcast(conn, websocket.TextMessage, data)
 		case "disable-lucky":
 			h.Broadcast(conn, websocket.TextMessage, data)
+		case "danmu-switch":
+			h.Broadcast(conn, websocket.TextMessage, data)
+		case "danmu-check-switch":
+			h.Broadcast(conn, websocket.TextMessage, data)
 		case "part-update":
+			updateConfig(&m)
 
 		}
 	case websocket.BinaryMessage:
@@ -217,4 +224,17 @@ func startActivity(msg *WsMessage) {
 		HUB.ServerMsg <- ServerMsg{messageType, p}
 	})
 	Client.Run()
+}
+
+func updateConfig(msg *WsMessage) {
+	content := (*msg)["content"]
+	bytes, _ := json.Marshal(content)
+	configMsg, _ := DecodeMsg(bytes)
+	v := reflect.ValueOf(&(tools.ConsoleConfig)).Elem()
+	for i := 0; i < v.NumField(); i++ {
+		fieldInfo := v.Type().Field(i)
+		tag := fieldInfo.Tag
+		json := tag.Get("json")
+		v.Field(i).SetString(configMsg[json].(string))
+	}
 }
