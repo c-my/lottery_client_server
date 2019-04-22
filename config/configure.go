@@ -14,4 +14,5 @@ const (
 	InitialPath           string = "login"
 	InitialUrl            string = "127.0.0.1" + ":" + LocalPort + "/" + InitialPath
 	LaunchBrowser         bool   = true
+	ConfigureFile         string = "console_configure.json"
 )
