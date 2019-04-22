@@ -7,6 +7,7 @@ import (
 	"github.com/c-my/lottery_client_server/datamodels"
 	"github.com/c-my/lottery_client_server/web/controllers"
 	"github.com/c-my/lottery_client_server/web/logger"
+	"github.com/c-my/lottery_client_server/web/tools"
 	"github.com/c-my/lottery_client_server/web/websockets"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
@@ -92,6 +93,16 @@ func setGet(r *mux.Router) {
 
 	r.HandleFunc("/rtmp", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "rtmp.html")
+	}).Methods("GET")
+
+	r.HandleFunc("/is-activity-unfinished", func(w http.ResponseWriter, r *http.Request) {
+		var result = ""
+		if tools.ConsoleConfig.IsActivityUnfinished {
+			result = "1"
+		} else {
+			result = "0"
+		}
+		w.Write([]byte(result))
 	}).Methods("GET")
 }
 

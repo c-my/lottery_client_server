@@ -6,6 +6,7 @@ import (
 	"github.com/c-my/lottery_client_server/services"
 	"github.com/c-my/lottery_client_server/web/controllers"
 	"github.com/c-my/lottery_client_server/web/logger"
+	"github.com/c-my/lottery_client_server/web/tools"
 	"github.com/gorilla/websocket"
 )
 
@@ -103,7 +104,10 @@ func (h *Hub) handleClientMessage(msg *ClientMsg) {
 			h.SendAll(websocket.TextMessage, json)
 			h.Broadcast(conn, websocket.TextMessage, data)
 		case "start-activity":
+			tools.ConsoleConfig.IsActivityUnfinished = true
 			startActivity(&m)
+		case "end-activity":
+			tools.ConsoleConfig.IsActivityUnfinished = false
 		case "manual-import":
 		case "switch-page":
 			h.Broadcast(conn, websocket.TextMessage, data)

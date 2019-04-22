@@ -24,5 +24,6 @@ func main() {
 	if config.LaunchBrowser {
 		tools.LaunchBrowser("http://" + config.InitialUrl)
 	}
+	tools.Run()
 	logger.Error.Fatal(srv.ListenAndServe())
 }
