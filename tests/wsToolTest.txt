@@ -1,0 +1,85 @@
+/* 后台发往前端 */
+
+// 用户信息
+{
+    "action": "append-user",
+    "content": {
+        "nickname": "Justin Bieber",
+        "uid": "1234567890", 
+        "avatar": "assets/avatars/avatar0.png"
+    }
+}
+// 初始化在线功能和服务权限
+{
+    "action": "initialize",
+    "content": {
+        "online": "true" or "false",
+        "userType": "vip" or "normal" or "debug"
+    }
+}
+// 发送中奖人和中奖项
+{
+    "action": "who-is-lucky-dog",
+    "content": {
+        "uid": "1234567890",
+        "nickname": "Yeah...",
+        "itemname": "一等奖"
+    }
+}
+
+/* 前端发往后台 */
+
+// 手动导入的用户信息
+{
+    "action": "manual-import",
+    "content": {
+        "username": "string", 
+        // 多个不确定的"string": "string"
+    }
+}
+// 切换展示页
+{
+    "action":"switch-page",
+    "content":"签到墙"
+}
+// 活动开始时间
+{
+    "action":"activity-start-time",
+    "content":"2019-3-7-0-3-42"
+}
+// 活动结束时间
+{
+    "action":"activity-end-time",
+    "content":"2019-3-7-0-3-42"
+}
+// 展示活动
+{
+    "action":"show-activity",
+    "content":""
+}
+// 隐藏活动
+{
+    "action":"hide-activity",
+    "content":""
+}
+// 开始抽奖
+{
+    "action":"start-drawing",
+    "content":{
+        "dkind":"cube"
+    }
+}
+// 停止抽奖
+{
+    "action":"stop-drawing",
+    "content":""
+}
+// 中奖无效
+{
+    "action":"disable-lucky",
+    "content":{
+        "itemname":"一等奖",
+        "uid":"1234567890",
+        "username":"Yeah..."
+    }
+}

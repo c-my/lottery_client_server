@@ -1,0 +1,148 @@
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/icon/sampling.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/icon/sampling.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/materialdesignicons.min.css"/>
+    <link rel="stylesheet" href="/css/toastr.css" />
+    <link rel="stylesheet" href="/css/manage_draw.css" />
+    <title>三百两抽奖系统控制台-弹幕审核</title>
+</head>
+<body>
+<div class="header">
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <!-- Brand -->
+        <a href="https://sampling.alphamj.cn/" target="new" class="navbar-brand">
+            SAMPLING</a><span id="online-symbol"></span>
+        <!-- Links -->
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" id="help-doc" href="#"><i class="mdi mdi-library-books" style="font-size: 16px;"></i> 帮助文档</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<div class="main row">
+    <div class="card col-md-10" style="padding-right: 10px;">
+        <table class="table table-bordered table-header">
+            <thead><tr>
+                <th class="bullet-time" scope="col">时间</th>
+                <th class="bullet-userid" scope="col">用户ID</th>
+                <th class="bullet-nickname" scope="col">用户昵称</th>
+                <th class="bullet-content" scope="col">内容 </th>
+                <div class="btn-group">
+                    <button class="btn btn-success" onclick="allow_this_draw()">通过</button>
+                    <button class="btn btn-danger" onclick="forbidden_this_draw()">屏蔽</button>
+                    <button class="btn btn-secondary" onclick="forbidden_this_user()">拉黑</button>
+                </div>
+            </tr></thead>
+        </table>
+        <div class="scrollbar" id="bullets_list">
+            <table class="table table-bordered table-hover table-striped">
+                <tbody id="bullets_list_tbody"></tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card col-md-2">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="input-header" data-toggle="modal" data-target="#exampleModalLong">
+                    屏蔽词表
+                </div>
+            </div>
+            <div class="col-md-10">
+                <input class="input" id="add_a_forbidden_word" type="text">
+            </div>
+            <div class="col-md-2">
+                <div class="input-btn" onclick="add_forbidden()">
+                    <i class="mdi mdi-table-plus"></i>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="input-header" data-toggle="modal" data-target="#users_black">
+                    用户黑名单
+                </div>
+            </div>
+            <div class="col-md-10">
+                <input class="input" id="add_a_black_user" type="text">
+            </div>
+            <div class="col-md-2">
+                <div class="input-btn" onclick="add_black_user($('#add_a_black_user').val())">
+                    <i class="mdi mdi-account-plus"></i>
+                </div>
+            </div>
+        </div>
+        <div id="exampleModalLong" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">屏蔽词汇</h5>
+                        <button class="close" data-dismiss="modal">
+                            <span>×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body scrollbar">
+                        <table class="table table-bordered" id="forbidden_words">
+                            <thead><tr>
+                                <th scope="col">#</th>
+                                <th scope="col">词汇</th>
+                                <th scope="col">屏蔽次数</th>
+                            </tr></thead>
+                            <tbody id="forbidden_words_body">
+                                <tr><th scope="row">1</th><td>优秀</td><td>1</td></tr>
+                                <tr><th scope="row">2</th><td>太强了</td><td>10</td></tr>
+                                <tr><th scope="row">3</th><td>天下第一</td><td>100</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="users_black" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="users_black_list_Title">黑名单</h5>
+                        <button class="close" data-dismiss="modal">
+                            <span>×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body scrollbar">
+                        <table class="table table-bordered" id="users_black_list">
+                            <thead><tr>
+                                <th scope="col">#</th>
+                                <th scope="col">用户id</th>
+                                <th scope="col">昵称</th>
+                            </tr></thead>
+                            <tbody id="black_users_list_body">
+                                <tr><th scope="row">1</th><td>wo3u4y2</td><td>李金牙</td></tr>
+                                <tr><th scope="row">2</th><td>fi2yioj</td><td>李金嘴</td></tr>
+                                <tr><th scope="row">3</th><td>jvuehb2</td><td>黄一凡</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/toastr.min.js"></script>
+<script type="text/javascript" src="/js/manage_draw.js"></script>
+<script type="text/javascript">
+    toastr.options.positionClass = 'toast-bottom-right';
+</script>

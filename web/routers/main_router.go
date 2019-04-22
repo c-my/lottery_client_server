@@ -72,7 +72,7 @@ func setGet(r *mux.Router) {
 	}).Methods("GET")
 
 	r.HandleFunc("/console", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "console.html")
+		http.ServeFile(w, r, "views/console.html")
 	}).Methods("GET")
 
 	r.HandleFunc("/screen", func(w http.ResponseWriter, r *http.Request) {
@@ -80,11 +80,15 @@ func setGet(r *mux.Router) {
 	}).Methods("GET")
 
 	r.HandleFunc("/index", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "index.html")
+		http.ServeFile(w, r, "views/index.html")
 	}).Methods("GET")
 
 	r.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "login.html")
+		http.ServeFile(w, r, "views/login.html")
+	}).Methods("GET")
+
+	r.HandleFunc("/start-menu", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "views/start-menu.1.html")
 	}).Methods("GET")
 
 	r.HandleFunc("/rtmp", func(w http.ResponseWriter, r *http.Request) {

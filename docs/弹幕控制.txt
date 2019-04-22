@@ -1,0 +1,49 @@
+1.关键字屏蔽
+
+{
+    "action": "add-forbidden-word",
+    "content": str
+}
+
+{
+    "action": "remove-forbidden-word",
+    "content": str
+}
+2.特定用户屏蔽
+
+{
+    "action": "add-forbidden-user",
+    "content": str
+}
+
+{
+    "action": "remove-forbidden-user",
+    "content": str
+}
+3.弹幕交互
+
+后台发给前端：
+{
+    "action":"bullet",
+    "content":{
+        "time":"time",
+        "nickname":"string",
+        "uid":"string",
+        "id":"string",
+        "bullet":"string"
+    }
+}
+
+{
+    "action": "add-forbidden-time",
+    "content": str
+}
+
+前端发给后台：
+
+允许指定弹幕
+{
+    "action": 'bullet_allow',
+    "content": id
+}
+

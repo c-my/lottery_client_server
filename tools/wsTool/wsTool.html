@@ -1,0 +1,53 @@
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/materialdesignicons.min.css"/>
+    <link rel="stylesheet" href="assets/css/wsTool.css"/>
+    <title>Web Socket 接口测试工具</title>
+</head>
+<body>
+    <div class="row">
+        <div class="col-md-6" style="padding-top: 1rem;">
+            <form id="msg-send-form">
+                <div class="row panel-header" style="position: relative;">
+                    <div class="col-md-11">
+                        发送消息内容
+                    </div>
+                    <div class="icon col-md-1" style="position:absolute; right: 0;">
+                        <i class="mdi mdi-send" id="msg-send-send"></i>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" style="padding-left: 0; padding-right: 0;">
+                        <textarea id="msg-send-content" spellcheck="false"></textarea>
+                    </div>
+                    <div class="col-md-12" style="padding-left: 0; padding-right: 0; padding-top: 1rem;">
+                        <div class="alert alert-dismissible alert-danger" id="send-statebar">sdsd</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6" style="padding-top: 1rem;">
+            <div class="row panel-header" style="position: relative;">
+                <div class="col-md-11">
+                    接收消息内容
+                </div>
+                <div class="icon col-md-1" style="position:absolute; right: 0;">
+                    <i class="mdi mdi-refresh" id="msg-recv-reset"></i>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12" style="padding-left: 0; padding-right: 0;">
+                    <textarea id="msg-recv-content" spellcheck="false" readonly="readonly"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript" src="assets/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="assets/js/jquery.form.js"></script>
+<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="assets/js/wsTool.js"></script>

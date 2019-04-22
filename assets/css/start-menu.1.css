@@ -1,0 +1,147 @@
+html {
+    height: 100%;
+}
+body {
+    height: 100%;
+    background-color: #5F9EA0;
+}
+.row {
+    margin-left: 0;
+    margin-right: 0;
+}
+.panel {
+    border: none;
+    border-radius: 0;
+    margin-top: 100px;
+    margin-bottom: 100px;
+    height: calc(100% - 260px);
+    padding-left: 0;
+    padding-right: 0;
+}
+#create-form, #history-form {
+    display: flex;
+    flex-direction: column;
+    padding: 40px 40px 0 40px;
+    text-align: center;
+    height: 100%;
+    border: none;
+}
+.input-field {
+    position: relative;
+    margin-top: 1rem;
+    padding-left: 0;
+}
+.input-field label {
+    color: #9e9e9e;
+    position: absolute;
+    top: 0.8rem;
+    left: 0;
+    font-size: 1rem;
+    cursor: text;
+    transition: .2s ease-out;
+}
+.input-field input {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #9e9e9e;
+    border-radius: 0;
+    outline: none;
+    height: 3rem;
+    width: 100%;
+    font-size: 1rem;
+    margin: 0 0 20px 0;
+    padding: 0;
+    box-shadow: none;
+    box-sizing: content-box;
+    transition: all 0.3s;
+}
+.input-field input:focus {
+    outline: none;
+    border-bottom: #5F9EA0 solid 1px;
+    box-shadow: 0px 1px 0px #5F9EA0; /*下边阴影*/
+    border-radius: 0px;
+}
+.input-field label.active {
+    color: #5F9EA0;
+    font-size: 0.8rem;
+    transform: translateY(-140%);
+}
+.input-field textarea {
+    margin-top: 10px;
+    width: 100%;
+    height: calc(100% - 250px);
+    outline: none;
+    resize: none;
+}
+.input-field textarea:focus {
+    box-shadow: 0px 1px 0px #5F9EA0;
+}
+.guide {
+    color: white;
+    background-color: #00BCD4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 40px;
+    text-align: center;
+    height: 100%;
+    border: none;
+}
+.panel-left, .panel-right {
+    padding: 0;
+}
+.panel-right h2, .panel-left h2 {
+    font-family: Montserrat, sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+}
+.btn-primary {
+    background-color: #00BCD4;
+    /* border-radius: 20px; */
+    border: 1px solid #FFFFFF;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 45px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+.right {
+    position: absolute;
+    right: 15;
+}
+.btn-primary:hover {
+    background-color: #00cfd6;
+    border: #00cfd6 1px solid;
+}
+.scrollbar {
+    overflow-y: auto;
+}
+.scrollbar::-webkit-scrollbar {
+    width: 10px;
+    height: 0px;
+}
+.scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #00BCD4;
+    background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%,
+    transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%,
+  rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+}
+.scrollbar::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    background: #EDEDED;
+}
+@media (max-width: 768px) {
+    .panel {
+        margin-top: 0;
+    }
+    .panel-left, .panel-right {
+        height: 100%;
+        background-color: white;
+    }
+    .input-field textarea {
+        height: calc(100% - 310px);
+    }
+}

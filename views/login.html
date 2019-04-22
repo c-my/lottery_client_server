@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<link rel="stylesheet" href="/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="/css/materialdesignicons.min.css"/>
+	<link rel="stylesheet" href="/css/login.css"/>
+	<title>三百两抽奖系统控制台-登录</title>
+</head>
+<body>
+	<div class="form">
+		<img class="thumbnail" src="/avatars/avatar7.png">
+		<div class="welcome">欢迎使用三百两抽奖系统</div>
+		<form class="login-form" id="login-form">
+			<input type="text" id="username" placeholder="username">
+			<input type="password" id="password" placeholder="password">
+			<div class="row" style="margin: 0px;">
+				<div class="remember-me col-md-6">
+					<input type="checkbox" id="remember-me" style="display: none;">
+					<label for="remember-me" id="rem-label">记住我</label>
+				</div>
+				<div class="col-md-6" style="margin-top: 16px;">
+					<p class="log-bar"></p>
+				</div>
+			</div>
+			<button id="login">登  录</button>
+			<div class="row">
+				<div class="col-md-6" style="text-align: left;">
+					<p class="message"><a href="#">现在注册</a></p>
+				</div>
+				<div class="col-md-6" style="text-align: right;">
+					<p class="message">没有网络? <a id="offline">离线使用
+						<i class="mdi mdi-arrow-right-circle offline-icon"></i></a></p>
+				</div>	
+			</div>
+		</form>
+	</div>
+</body>
+</html>
+<script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/login.js"></script>

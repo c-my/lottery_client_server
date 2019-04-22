@@ -1,0 +1,109 @@
+html {
+    height: 100%;
+}
+body {
+    height: 100%;
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+    background-color: cadetblue;
+    color: rgb(64, 77, 91);
+}
+.row {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+[class*="col-"] {
+    padding-left: 0px;
+    padding-right: 0px; 
+}
+.scrollbar::-webkit-scrollbar {
+    width: 10px;
+    height: 0px;
+}
+.scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #343A40;
+    background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, 
+    transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, 
+    rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+}
+.scrollbar::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    background: #EDEDED;
+}
+.main {
+    height: 100%;
+    width: 100%;
+}
+.card {
+    border-radius: 0;
+}
+.table-header {
+    margin-bottom: 0px;
+}
+.input-header {
+    padding-left: 10px;
+    color: white;
+    background-color: #00BCD4;
+    line-height: 3rem;
+    cursor: pointer;
+}
+.input-btn {
+    text-align: center;
+    vertical-align: middle;
+    padding-top: 20px;
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+.input {
+    border: 0;
+    border-bottom: #343A40 1px solid;
+    border-radius: 0;
+    outline: none;
+    height: 3rem;
+    width: 100%;
+    font-size: 1rem;
+    margin: 0 0 20px 0;
+    padding: 0;
+    box-shadow: none;
+    box-sizing: content-box;
+    transition: all 0.3s;
+}
+.input:focus {
+    outline: none;
+    border-bottom: #5F9EA0 solid 1px;
+    box-shadow: 0px 1px 0px #5F9EA0;
+    border-radius: 0px;
+}
+thead, th {
+    color: white;
+    background-color: #00BCD4;
+    font-weight: normal;
+}
+#bullets_list {
+    height: 100%;
+    width: calc(100% + 10px);
+    overflow-y: scroll;
+}
+tr.active td {
+    background-color: #748392;
+    color: white;
+}
+.btn-group {
+    height: 45px;
+    position: absolute;
+    right: 10px;
+    top: 0;
+}
+.btn-group button {
+    border-radius: 0;
+}
+.modal-body {
+    max-height: 50%;
+    overflow-y: auto;
+}
+.bullet-time     {width: 10%;}
+.bullet-userid   {width: 20%;}
+.bullet-nickname {width: 20%;}
+.bullet-content  {width: 50%;}
