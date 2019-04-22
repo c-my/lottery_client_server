@@ -62,8 +62,8 @@ type Configure struct {
 	GetPrizeMusic string `json:"get-prize-music"`
 
 	// bullet settings
-	BulletFontSize          int    `json:"bullet-font-size"`
-	BulletTransparentDegree int    `json:"bullet-transparent-degree"`
+	BulletFontSize          string `json:"bullet-font-size"`
+	BulletTransparentDegree string `json:"bullet-transparent-degree"`
 	BulletFont              string `json:"bullet-font"`
 	BulletColor             string `json:"bullet-color"`
 	BulletVelocity          string `json:"bullet-velocity"`
