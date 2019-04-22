@@ -120,7 +120,8 @@ function start_draw() {
     $(".btn-draw-action").css("background-color", "#dc3545");
     $("#draw-action").attr("class", "mdi mdi-stop-circle-outline");
     // 禁用抽奖作弊功能
-    if (userType != "normal") $cur_item.find(".cfg-cheat").attr("disabled", true);
+    if (userType != "normal")
+        $cur_item.find(".cfg-cheat").attr("disabled", true);
     // 禁用抽奖数量设置
     $cur_item.find(".max_winner").attr("readonly", "readonly");
     // 禁用奖项列表中的奖品设置
@@ -132,7 +133,7 @@ function start_draw() {
         levelMessage: 'info',
         timer: '2500'
     });
-    if (connected) ws.send(JSON.stringify({
+    if (true) ws.send(JSON.stringify({
         action: 'start-drawing',
         content: {'dkind': $("#draw-style").val()}
     }));
@@ -155,7 +156,7 @@ function stop_draw() {
     if (cur_draw_times == max_draw_times) {
         $(".btn-draw-action").prop("disabled", true);
     }
-    if (connected) ws.send(JSON.stringify({
+    if (true) ws.send(JSON.stringify({
         action: 'stop-drawing',
         content: ""
     }));
@@ -188,13 +189,13 @@ function on_activity_btn_click() {
             var t = new Date();
             var now = t.getFullYear() + "-" + t.getMonth() + "-" + t.getDate() + "-" +
                 t.getHours() + "-" + t.getMinutes() + "-" + t.getSeconds();
-            if (connected) ws.send(JSON.stringify({
+            if (true) ws.send(JSON.stringify({
                 action: 'activity-start-time',
                 content: now
             }));
             started = true;
         }
-        if (connected) ws.send(JSON.stringify({
+        if (true) ws.send(JSON.stringify({
             action: 'show-activity',
             content: {
                 cur_item: $cur_item.find("input.item-name").val()
@@ -219,7 +220,7 @@ function on_activity_btn_click() {
         $cur_item.find(".item-prize").addClass("disable");
         $(".btn-activity-action").prop("disabled", true);
         if (drawing) stop_draw();
-        if (connected) ws.send(JSON.stringify({
+        if (true) ws.send(JSON.stringify({
             action: 'hide-activity',
             content: ''
         }));
@@ -290,7 +291,7 @@ function import_participants() {
                         record_str += "<td>" + data[i][item] + "</td>";
                         content[item] = data[i][item];
                     }
-                    if (connected) ws.send(JSON.stringify({
+                    if (true) ws.send(JSON.stringify({
                         action: 'manual-import',
                         content: content
                     }));
@@ -590,7 +591,7 @@ function disable_lucky(obj, event) {
     var username = $user.text();
     var uid = $user.attr("uid");
     var itemname = $tr.find("td.itemname").text();
-    if (connected) ws.send(JSON.stringify({
+    if (true) ws.send(JSON.stringify({
         action: "disable-lucky",
         content: {
             uid: uid,
@@ -818,7 +819,7 @@ function quit_cheat_cfg() {
 /* switch stage page begin */
 function switch_page() {
     $("#page-name").text($(this).text());
-    if (connected) ws.send(JSON.stringify({
+    if (true) ws.send(JSON.stringify({
         action: "switch-page",
         content: $("#page-name").text()
     }));
@@ -828,6 +829,8 @@ function switch_page() {
 
 /* update settings function begin */
 function update_setting(obj, event) {
+    // $("#page-swichbar li .active").text()
+    // 获得当前选项卡的另一种方法
     var href = $("#page-swichbar").find(".active").attr("href");
     var content = {"part": href};
     if (href == "#basic-info") {
@@ -859,7 +862,8 @@ function update_setting(obj, event) {
         content['danmu-position'] = $("#danmu-position").val();
         console.log("update #danmu-sets");
     }
-    if (connected) ws.send(JSON.stringify({
+    console.log(content);
+    if (true) ws.send(JSON.stringify({
         action: "part-update",
         content: content
     }));
@@ -878,7 +882,7 @@ function confirm_finish_confirm() {
     var t = new Date();
     var now = t.getFullYear() + "-" + t.getMonth() + "-" + t.getDate() + "-" +
         t.getHours() + "-" + t.getMinutes() + "-" + t.getSeconds();
-    if (connected) ws.send(JSON.stringify({
+    if (true) ws.send(JSON.stringify({
         action: 'activity-end-time',
         content: now
     }));
@@ -916,7 +920,7 @@ function finish_activity() {
 
 /* danmu switch function begin */
 function danmu_switch(event, state) {
-    if (connected) ws.send(JSON.stringify({
+    if (true) ws.send(JSON.stringify({
         action: "danmu-switch",
         content: state
     }));
@@ -924,7 +928,7 @@ function danmu_switch(event, state) {
 }
 
 function danmu_check_switch(event, state) {
-    if (connected) ws.send(JSON.stringify({
+    if (true) ws.send(JSON.stringify({
         action: "danmu-check-switch",
         content: state
     }));
@@ -1052,14 +1056,14 @@ var path = getQueryString('path');
 // }
 // f.close();
 function save_as_history() {///保存为历史设置
-    if (connected) ws.send(JSON.stringify({
+    if (true) ws.send(JSON.stringify({
         action: "save_as_history",
         content: ""
     }));
 }
 
 function pause() {///临时暂停活动
-    if (connected) ws.send(JSON.stringify({
+    if (true) ws.send(JSON.stringify({
         action: "pause_this_activity",
         content: ""
     }));
@@ -1155,9 +1159,21 @@ $(document).ready(function () {
     document.onkeydown = global_keydown;
     $("#cur-item-input").attr("onkeydown", "input_keydown(this, event)");
 
-    ws = new WebSocket('ws://127.0.0.1:1923/ws');
+    ws = new WebSocket('ws://'+window.location.host+'/ws');
 
+    let test_data = {data: JSON.stringify({
+        action: 'initialize',
+        content: {
+            reward_items_names: ['一等奖', '二等奖'],
+            prize_names: [
+                ['一等奖', '奔驰汽车', 10],
+                ['二等奖', '漏油的奔驰汽车', 10]
+            ]
+        }
+    })};
+    console.log(test_data);
     ws.onmessage = recv_ws_message;
+    recv_ws_message(test_data);
 
     if (!$.isEmptyObject(ws) && ws.readyState == 1) {
         connected = true;
