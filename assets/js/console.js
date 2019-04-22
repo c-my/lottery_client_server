@@ -832,7 +832,7 @@ function update_setting(obj, event) {
     // $("#page-swichbar li .active").text()
     // 获得当前选项卡的另一种方法
     var href = $("#page-swichbar").find(".active").attr("href");
-    var content = {"part": href};
+    var content = {}; // {"part": href}; 才哥说不要part
     if (href == "#basic-info") {
         content['activity-name'] = $("#activity-name").val();
         console.log("update #basic-info");
