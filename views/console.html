@@ -1,464 +1,484 @@
-﻿
-<html lang="zh">
+﻿<html lang="zh">
 
 <head>
     <meta charset="UTF-8"/>
-    <link rel="icon" href="/icon/sampling.ico" type="image/x-icon" />
+    <link rel="icon" href="/icon/sampling.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="/icon/sampling.ico" type="image/x-icon"/>
-    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/css/bootstrap-switch.min.css">
     <link rel="stylesheet" href="/css/materialdesignicons.min.css"/>
     <!-- <link rel="stylesheet" href="/css/ECalendar_date_style.css"/> -->
     <link rel="stylesheet" href="/css/jquery.minicolors.min.css">
     <link rel="stylesheet" href="/css/component-chosen.min.css">
-    <link rel="stylesheet" href="/css/notifyMessage.css" />
+    <link rel="stylesheet" href="/css/notifyMessage.css"/>
     <link rel="stylesheet" href="/css/console.css"/>
     <title>三百两抽奖系统控制台</title>
 </head>
 <body>
-    <div class="header">
-        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-            <!-- Brand -->
-            <a href="https://sampling.alphamj.cn/" target="new" class="navbar-brand">
-                SAMPLING</a><span id="online-symbol"></span>
-            <!-- Links -->
-            <ul class="navbar-nav ml-auto">
+<div class="header">
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <!-- Brand -->
+        <a href="https://sampling.alphamj.cn/" target="new" class="navbar-brand">
+            SAMPLING</a><span id="online-symbol"></span>
+        <!-- Links -->
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" id="help-doc" href="#"><i class="mdi mdi-library-books"
+                                                              style="font-size: 16px;"></i> 帮助文档</a>
+            </li>
+            <!-- Dropdown -->
+            <!-- <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                  Dropdown link
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Link 1</a>
+                    <a class="dropdown-item" href="#">Link 2</a>
+                    <a class="dropdown-item" href="#">Link 3</a>
+                </div>
+            </li> -->
+        </ul>
+    </nav>
+    <!-- Nav pills -->
+    <nav class="navbar navbar-expand-sm navbar-dark row" id="menu">
+        <div class="col-md-4" id="left-panel-tab">
+            <ul class="nav nav-pills" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link" id="help-doc" href="#"><i class="mdi mdi-library-books" style="font-size: 16px;"></i> 帮助文档</a>
-                </li>  
-                <!-- Dropdown -->
-                <!-- <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                      Dropdown link
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Link 1</a>
-                        <a class="dropdown-item" href="#">Link 2</a>
-                        <a class="dropdown-item" href="#">Link 3</a>
-                    </div>
-                </li> -->
+                    <a class="underline nav-link active">抽奖页面实时监控</a>
+                </li>
             </ul>
-        </nav>
-        <!-- Nav pills -->
-        <nav class="navbar navbar-expand-sm navbar-dark row" id="menu">
-            <div class="col-md-4" id="left-panel-tab">
-                <ul class="nav nav-pills" role="tablist">
-                    <li class="nav-item">
-                        <a class="underline nav-link active">抽奖页面实时监控</a> 
-                    </li>
-                </ul>
-            </div>
-            <div class="col-md-6" style="padding-left: 0px;">
-                <ul class="nav nav-pills" role="tablist" id="page-swichbar">
-                    <li class="nav-item">
-                        <a class="underline nav-link active" data-toggle="pill" href="#basic-info">基本信息</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="underline nav-link" data-toggle="pill" href="#prize-pool">奖池设置</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="underline nav-link" data-toggle="pill" href="#style-theme">方式主题</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="underline nav-link" data-toggle="pill" href="#danmu-sets">弹幕设置</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-md-2" style="padding-right: 0px;">
-                <div class="row">
-                    <div class="col-md-6">
-                        <button class="btn btn-success" id="update-setting" onclick="update_setting(this, event)">更新设置</button>
-                    </div>
-                    <div class="col-md-6">
-                        <button class="btn btn-danger" id="finish-activity" onclick="finish_activity(this, event)">结束活动</button>
-                    </div>
+        </div>
+        <div class="col-md-6" style="padding-left: 0px;">
+            <ul class="nav nav-pills" role="tablist" id="page-swichbar">
+                <li class="nav-item">
+                    <a class="underline nav-link active" data-toggle="pill" href="#basic-info">基本信息</a>
+                </li>
+                <li class="nav-item">
+                    <a class="underline nav-link" data-toggle="pill" href="#prize-pool">奖池设置</a>
+                </li>
+                <li class="nav-item">
+                    <a class="underline nav-link" data-toggle="pill" href="#style-theme">方式主题</a>
+                </li>
+                <li class="nav-item">
+                    <a class="underline nav-link" data-toggle="pill" href="#danmu-sets">弹幕设置</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-2" style="padding-right: 0px;">
+            <div class="row">
+                <div class="col-md-6">
+                    <button class="btn btn-success" id="update-setting" onclick="update_setting(this, event)">更新设置
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-danger" id="finish-activity" onclick="finish_activity(this, event)">结束活动
+                    </button>
                 </div>
             </div>
-        </nav>
-        <!-- Nav pills end -->
-    </div><!--header-->
-    <div class="row main">
-        <div class="col-md-4">
-            <div class="card flexsec" id="left-panel">
-                <video class="flexfix" controls="controls" preload="auto" id="spy">
-                    <source src="" type="video/mp4">
-                </video>
-                <div class="flexfill global-control">
-                    <div class="btn-group flexfix" style="width: 100%; min-height: 3rem;">
-                        <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" id="switch-page">
-                            <span class="caret"></span><span id="page-name">切换背景</span>
-                        </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item page">签到墙</a>
-                            <a class="dropdown-item page">空白</a>
-                        </div>
-                        <button type="button" class="btn btn-activity-action"  disabled="true">
-                            <i id="activity-action" class="mdi mdi-arrow-right-drop-circle-outline"></i>
-                            <span id="activity-label">展示活动</span>
-                        </button>
-                        <button type="button" class="btn btn-draw-action" disabled="true">        
-                            <i id="draw-action" class="mdi mdi-arrow-right-drop-circle-outline"></i>
-                            <span id="draw-label">开始抽奖</span>
-                        </button>
+        </div>
+    </nav>
+    <!-- Nav pills end -->
+</div><!--header-->
+<div class="row main">
+    <div class="col-md-4">
+        <div class="card flexsec" id="left-panel">
+            <video class="flexfix" controls="controls" preload="auto" id="spy">
+                <source src="" type="video/mp4">
+            </video>
+            <div class="flexfill global-control">
+                <div class="btn-group flexfix" style="width: 100%; min-height: 3rem;">
+                    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" id="switch-page">
+                        <span class="caret"></span><span id="page-name">切换背景</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item page">签到墙</a>
+                        <a class="dropdown-item page">空白</a>
                     </div>
-                    <div class="cur-item flexfix">
-                        <div class="input-field">
-                            <label >当前奖项名称</label>
-                            <input type="text" 
-                            id="cur-item-input" list="items" autocomplete="true" onkeydown="return false;">
-                            </input>
-                            <datalist id="items"></datalist>
-                        </div>
+                    <button type="button" class="btn btn-activity-action" disabled>
+                        <i id="activity-action" class="mdi mdi-arrow-right-drop-circle-outline"></i>
+                        <span id="activity-label">展示活动</span>
+                    </button>
+                    <button type="button" class="btn btn-draw-action" disabled
+                            onclick="on_draw_btn_click()">
+                        <i id="draw-action" class="mdi mdi-arrow-right-drop-circle-outline"></i>
+                        <span id="draw-label">开始抽奖</span>
+                    </button>
+                </div>
+                <div class="cur-item flexfix">
+                    <div class="input-field">
+                        <label>当前奖项名称</label>
+                        <input type="text"
+                               id="cur-item-input" list="items" autocomplete="true" onkeydown="return false;">
+                        </input>
+                        <datalist id="items"></datalist>
                     </div>
-                    <table class="table table-bordered inline-table" cellspacing="0" id="lucky-list-head">
-                        <thead>
-                            <tr>
-                                <th width="45%">用户名称</th>
-                                <th width="40%">奖品名称</th>
-                                <th width="15%"></th>
-                            </tr>
-                        </thead>
+                </div>
+                <table class="table table-bordered inline-table" cellspacing="0" id="lucky-list-head">
+                    <thead>
+                    <tr>
+                        <th width="45%">用户名称</th>
+                        <th width="40%">奖品名称</th>
+                        <th width="15%"></th>
+                    </tr>
+                    </thead>
+                </table>
+                <div class="lucky-list flexfill">
+                    <table class="table table-bordered inline-table" cellspacing="0">
+                        <tbody id="lucky-list-body">
+                        </tbody>
                     </table>
-                    <div class="lucky-list flexfill">
-                        <table class="table table-bordered inline-table" cellspacing="0">
-                            <tbody id="lucky-list-body">
-                            </tbody>
-                        </table>
-                    </div>
-                </div><!--/.global-control-->
-            </div><!--/.card-->
-        </div>
-        <div class="col-md-8">
-            <!-- Tab panes -->
-            <div class="card tab-content flexsec" id="setting-panel">
-                <div class="container tab-pane active" id="basic-info">
-                    <div class="row flexfix">
-                        <div class="input-field col-md-6">
-                            <input id="activity-name" type="text" autocomplete="off">
-                            <label for="activity-name" class="">活动名称</label>
-                        </div>
-                        <div class="input-field col-md-6" style="margin: 0px;">
-                            <div class="row">
-                                <div class="input-field col-md-8">
-                                    <input id="parts" type="text" autocomplete="off" onclick="$('#participants').click();">
-                                    <label for="parts" class="parts-label">用户信息</label>
-                                </div>
-                                <div class="col-md-4">
-                                    <button class="btn btn-info import-participants" onclick="$('#participants').click();" 
-                                    style="position: absolute; bottom: 20px; width: calc(100% - 30px);">导入文件</button>
-                                </div>
-                            </div>
-                            <input type="file" id='participants' accept=".csv" style="display: none">
-                        </div>
-                        <!-- <div class="input-field col-md-6">
-                            <label for="start-time" class="active">活动开始时间</label>
-                            <div class="calendarWarp">
-                                <input type="text" class='ECalendar' id="start-time"/>
-                            </div>
-                        </div>
-                        <div class="input-field col-md-6">
-                            <label for="end-time" class="active">活动结束时间</label>
-                            <div class="calendarWarp">
-                                <input type="text" class='ECalendar' id="end-time"/>
-                            </div>
-                        </div> -->
-                    </div>
-                    <div class="flexfill parts-list scrollbar">
-                        <table class="table table-bordered inline-table" cellspacing="0">
-                            <thead id="parts-list-head"></thead>
-                            <tbody id="parts-list-body"></tbody>
-                        </table>
-                    </div>
                 </div>
-                <div class="container tab-pane fade" id="prize-pool">
-                    <div class="row flexfix" style="margin-top: 20px;">
-                        <div class="input-field col-md-12">
-                            <select class="form-control form-control-chosen" id="draw-mode">
-                                <option value="1">固定奖项抽用户</option>
-                                <option value="2" disabled="disabled">固定用户抽奖项</option>
-                            </select>
-                            <label class="active">抽奖模式</label>                        
-                        </div>
-                    </div>
-                    <div class="row flexfill">
-                        <div class="col-md-4" style="position: relative">
-                            <div class="row" style="margin-left: 0px; margin-right: 0px;">
-                                <div class="col-md-12 table-header">
-                                    奖品列表设置
-                                </div>
-                                <div class="col-md-12 table-adder">
-                                    <button class="btn btn-round btn-add-prize right">
-                                        <i class="mdi mdi-plus activator"></i></button>
-                                </div>
-                            </div>
-                            <div class="prize-list scrollbar">
-                                <table class="table table-bordered inline-table" cellspacing="0">
-                                    <thead id="prize-list-head">
-                                        <tr><th width="80%">奖品名称</th><th width="20%"></th></tr>
-                                    </thead>
-                                    <tbody id="prize-list-body"></tbody>
-                                </table>
-                            </div>
-                            <div class="hover row" id="cheat-info" style="width: 100%;">
-                                <div class="col-md-12">
-                                    <table class="table table-bordered inline-table" cellspacing="0">
-                                        <thead class="cheat-info-header">
-                                            <tr><th>中奖人选列表</th></tr>
-                                        </thead>
-                                        <tbody id="cheat-winner-info"></tbody>
-                                    </table>
-                                </div>
-                                <div class="col-md-12">
-                                    <table class="table table-bordered inline-table" cellspacing="0">
-                                        <thead class="cheat-info-header">
-                                            <tr><th>排除人员列表</th></tr>
-                                        </thead>
-                                        <tbody id="cheat-loser-info"></tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="row" style="margin-left: 0px; margin-right: 0px;">
-                                <div class="col-md-12 table-header">
-                                    奖项列表设置
-                                </div>
-                                <div class="col-md-12 table-adder">
-                                    <button class="btn btn-round btn-add-item right">
-                                        <i class="mdi mdi-plus activator"></i></button>
-                                </div>
-                            </div>
-                            <div class="item-list scrollbar">
-                                <table class="table table-bordered inline-table" cellspacing="0">
-                                    <thead id="item-list-head">
-                                        <tr>
-                                            <th width="35%">奖项名称</th>
-                                            <th width="35%">对应奖品</th>
-                                            <th width="15%">数量</th>
-                                            <th width="15%"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="item-list-body"></tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="container tab-pane fade" id="style-theme">
-                    <div class="row flexfix" style="margin-top: 20px;">
-                        <div class="input-field col-md-6">
-                            <select id="draw-style" class="form-control form-control-chosen">
-                                <option value="cube">魔方</option>
-                                <option value="flash">闪烁</option>
-                                <option value="swing">晃动</option>
-                                <option value="load">默认</option>
-                            </select>
-                            <label class="active">抽奖风格</label>
-                        </div>
-                        <div class="input-field col-md-6" style="margin-top: 5px;">
-                            <input class="minicolors" id="show-style" type="text">
-                            <label for="show-style" class="active">主题颜色</label>
-                        </div>
-                        <div class="input-field col-md-6">
-                            <select id="draw-music" class="form-control form-control-chosen">
-                                <option value="haorizi">好日子</option>
-                                <option value="haoyunlai">好运来</option>
-                            </select>
-                            <label class="active">抽奖音效</label>
-                        </div>
-                        <div class="input-field col-md-6">
-                            <div class="row" style="margin-top: -25px;">
-                                <div class="input-field col-md-9">
-                                    <input id="bg-img" type="text" autocomplete="off">
-                                    <label for="bg-img" class="bg-img-label">背景图片</label>
-                                </div>
-                                <div class="col-md-3" style="padding-right: 0;">
-                                    <button class="btn btn-info " onclick="$('#background-img').click();" 
-                                    style="position: absolute; bottom: 20px; width: calc(100% - 15px);">本地上传</button>
-                                </div>
-                            </div>
-                            <input type="file" id='background-img' accept="image/png, image/jpeg" style="display: none">
-                        </div>
-                        <div class="input-field col-md-6">
-                            <select id="lucky-music" class="form-control form-control-chosen">
-                                <option value="bingo">Bingo</option>
-                            </select>
-                            <label class="active">中奖音效</label>
-                        </div>
-                        <div class="input-field col-md-6">
-                            <select id="reward-music" class="form-control form-control-chosen">
-                                <option value="laciji">拉次基进行曲</option>
-                            </select>
-                            <label class="active">领奖音效</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="container tab-pane fade" id="danmu-sets">
-                    <div class="row">
-                        <div class="input-field col-md-6">
-                            <input type="range" id="font-size" min="6" max="72" value="20"
-                            style="background: linear-gradient(to right, #343A40, #ebeff4 30.3%, #ebeff4)"></input>
-                            <p class="range-value">20</p>
-                            <label class="active">字体大小</label>
-                        </div>
-                        <div class="input-field col-md-6">
-                            <input type="range" id="opacity" min="0" max="10" value="5"
-                            style="background: linear-gradient(to right, #343A40, #ebeff4 50%, #ebeff4)"></input>
-                            <p class="range-value">5</p>
-                            <label class="active">透明程度</label>
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top: 15px;">
-                        <div class="input-field col-md-6">
-                            <select id="font-family" class="form-control form-control-chosen">
-                                <option value="SimHei">黑体</option>
-                                <option value="SimSun">宋体</option>
-                                <option value="NSimSun">新宋体</option>
-                                <option value="FangSong">仿宋</option>
-                                <option value="KaiTi">楷体</option>
-                                <option value="FangSong_GB2312">仿宋_GB2312</option>
-                                <option value="KaiTi_GB2312">楷体_GB2312</option> 
-                                <option value="Microsoft YaHei">微软雅黑体</option>
-                                <option value="Arial">Arial</option>
-                                <option value="Comic Sans">Comic Sans</option>
-                                <option value="Courier New">Courier New</option>
-                                <option value="Times New Roman">Times New Roman</option>
-                            </select>
-                            <label class="active">弹幕字体</label>
-                        </div>
-                        <div class="input-field col-md-6" style="margin-top: 5px;">
-                            <input class="minicolors" id="font-color" type="text">
-                            <label for="font-color" class="active">弹幕颜色</label>
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top: 15px;">
-                        <div class="input-field col-md-6">
-                            <select id="danmu-speed" class="form-control form-control-chosen">
-                                <option value="slow">缓慢</option>
-                                <option value="normal">正常</option>
-                                <option value="fast">快速</option>
-                            </select>
-                            <label class="active">弹幕速度</label>
-                        </div>
-                        <div class="input-field col-md-6">
-                            <select id="danmu-position" class="form-control form-control-chosen">
-                                <option value="top">顶部</option>
-                                <option value="middle">中间</option>
-                                <option value="bottom">底部</option>
-                            </select>
-                            <label class="active">弹幕位置</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col-md-3">
-                                <span style="position: absolute;top: 10px;">弹幕开关</span>
-                            <input id="danmu-switch" type="checkbox" name="switch" />
-                        </div>
-                        <div class="input-field col-md-3">
-                            <span style="position: absolute;top: 10px;">弹幕审核</span>
-                            <input id="danmu-check-switch" type="checkbox" name="switch" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div><!--/.main-->
-    <!-- 结束活动确认模态框 -->
-    <div class="modal fade" id="finish-confirm">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">      
-                <!-- 模态框头部 -->
-                <div class="modal-header">
-                    <h4 class="modal-title">确定结束活动？</h4>
-                    <button type="button" class="close" onclick="quit_finish_confirm()">&times;</button>
-                </div>
-                <!-- 模态框主体 -->
-                <div class="modal-body row" style="margin-right: 0;">
-                    <p class="tips">点击保存设置方便下次使用，或点击结束活动直接退出系统 : )</p>
+            </div><!--/.global-control-->
+        </div><!--/.card-->
+    </div>
+    <div class="col-md-8">
+        <!-- Tab panes -->
+        <div class="card tab-content flexsec" id="setting-panel">
+            <div class="container tab-pane active" id="basic-info">
+                <div class="row flexfix">
                     <div class="input-field col-md-6">
-                        <input id="config-name" type="text" autocomplete="off">
-                        <label for="config-name" class="">设置信息名称</label>
+                        <input id="activity-name" type="text" autocomplete="off">
+                        <label for="activity-name" class="">活动名称</label>
                     </div>
-                    <div class="col-md-6">
-                        <div class="alert alert-dismissible fade" id="save-statebar" style="margin-top: 16px;">
+                    <div class="input-field col-md-6" style="margin: 0px;">
+                        <div class="row">
+                            <div class="input-field col-md-8">
+                                <input id="parts" type="text" autocomplete="off" onclick="$('#participants').click();">
+                                <label for="parts" class="parts-label">用户信息</label>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-info import-participants" onclick="$('#participants').click();"
+                                        style="position: absolute; bottom: 20px; width: calc(100% - 30px);">导入文件
+                                </button>
+                            </div>
+                        </div>
+                        <input type="file" id='participants' accept=".csv" style="display: none">
+                    </div>
+                    <!-- <div class="input-field col-md-6">
+                        <label for="start-time" class="active">活动开始时间</label>
+                        <div class="calendarWarp">
+                            <input type="text" class='ECalendar' id="start-time"/>
+                        </div>
+                    </div>
+                    <div class="input-field col-md-6">
+                        <label for="end-time" class="active">活动结束时间</label>
+                        <div class="calendarWarp">
+                            <input type="text" class='ECalendar' id="end-time"/>
+                        </div>
+                    </div> -->
+                </div>
+                <div class="flexfill parts-list scrollbar">
+                    <table class="table table-bordered inline-table" cellspacing="0">
+                        <thead id="parts-list-head"></thead>
+                        <tbody id="parts-list-body"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="container tab-pane fade" id="prize-pool">
+                <div class="row flexfix" style="margin-top: 20px;">
+                    <div class="input-field col-md-12">
+                        <select class="form-control form-control-chosen" id="draw-mode">
+                            <option value="1">固定奖项抽用户</option>
+                            <option value="2" disabled="disabled">固定用户抽奖项</option>
+                        </select>
+                        <label class="active">抽奖模式</label>
+                    </div>
+                </div>
+                <div class="row flexfill">
+                    <div class="col-md-4" style="position: relative">
+                        <div class="row" style="margin-left: 0px; margin-right: 0px;">
+                            <div class="col-md-12 table-header">
+                                奖品列表设置
+                            </div>
+                            <div class="col-md-12 table-adder">
+                                <button class="btn btn-round btn-add-prize right">
+                                    <i class="mdi mdi-plus activator"></i></button>
+                            </div>
+                        </div>
+                        <div class="prize-list scrollbar">
+                            <table class="table table-bordered inline-table" cellspacing="0">
+                                <thead id="prize-list-head">
+                                <tr>
+                                    <th width="80%">奖品名称</th>
+                                    <th width="20%"></th>
+                                </tr>
+                                </thead>
+                                <tbody id="prize-list-body"></tbody>
+                            </table>
+                        </div>
+                        <div class="hover row" id="cheat-info" style="width: 100%;">
+                            <div class="col-md-12">
+                                <table class="table table-bordered inline-table" cellspacing="0">
+                                    <thead class="cheat-info-header">
+                                    <tr>
+                                        <th>中奖人选列表</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="cheat-winner-info"></tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-12">
+                                <table class="table table-bordered inline-table" cellspacing="0">
+                                    <thead class="cheat-info-header">
+                                    <tr>
+                                        <th>排除人员列表</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="cheat-loser-info"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="row" style="margin-left: 0px; margin-right: 0px;">
+                            <div class="col-md-12 table-header">
+                                奖项列表设置
+                            </div>
+                            <div class="col-md-12 table-adder">
+                                <button class="btn btn-round btn-add-item right">
+                                    <i class="mdi mdi-plus activator"></i></button>
+                            </div>
+                        </div>
+                        <div class="item-list scrollbar">
+                            <table class="table table-bordered inline-table" cellspacing="0">
+                                <thead id="item-list-head">
+                                <tr>
+                                    <th width="35%">奖项名称</th>
+                                    <th width="35%">对应奖品</th>
+                                    <th width="15%">数量</th>
+                                    <th width="15%"></th>
+                                </tr>
+                                </thead>
+                                <tbody id="item-list-body"></tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-                <!-- 模态框底部 -->
-                <div class="modal-footer" style="justify-content: space-between;">
-                    <div>
-                        <button type="button" class="btn btn-secondary" onclick="quit_finish_confirm()">取消</button>
+            </div>
+            <div class="container tab-pane fade" id="style-theme">
+                <div class="row flexfix" style="margin-top: 20px;">
+                    <div class="input-field col-md-6">
+                        <select id="draw-style" class="form-control form-control-chosen">
+                            <option value="cube">魔方</option>
+                            <option value="flash">闪烁</option>
+                            <option value="swing">晃动</option>
+                            <option value="load">默认</option>
+                        </select>
+                        <label class="active">抽奖风格</label>
                     </div>
-                    <div>
-                        <button type="button" class="btn btn-success" onclick="save_configurations()" >保存设置</button>
-                        <button type="button" class="btn btn-danger" onclick="confirm_finish_confirm()">结束活动</button>
+                    <div class="input-field col-md-6" style="margin-top: 5px;">
+                        <input class="minicolors" id="show-style" type="text">
+                        <label for="show-style" class="active">主题颜色</label>
+                    </div>
+                    <div class="input-field col-md-6">
+                        <select id="draw-music" class="form-control form-control-chosen">
+                            <option value="haorizi">好日子</option>
+                            <option value="haoyunlai">好运来</option>
+                        </select>
+                        <label class="active">抽奖音效</label>
+                    </div>
+                    <div class="input-field col-md-6">
+                        <div class="row" style="margin-top: -25px;">
+                            <div class="input-field col-md-9">
+                                <input id="bg-img" type="text" autocomplete="off">
+                                <label for="bg-img" class="bg-img-label">背景图片</label>
+                            </div>
+                            <div class="col-md-3" style="padding-right: 0;">
+                                <button class="btn btn-info " onclick="$('#background-img').click();"
+                                        style="position: absolute; bottom: 20px; width: calc(100% - 15px);">本地上传
+                                </button>
+                            </div>
+                        </div>
+                        <input type="file" id='background-img' accept="image/png, image/jpeg" style="display: none">
+                    </div>
+                    <div class="input-field col-md-6">
+                        <select id="lucky-music" class="form-control form-control-chosen">
+                            <option value="bingo">Bingo</option>
+                        </select>
+                        <label class="active">中奖音效</label>
+                    </div>
+                    <div class="input-field col-md-6">
+                        <select id="reward-music" class="form-control form-control-chosen">
+                            <option value="laciji">拉次基进行曲</option>
+                        </select>
+                        <label class="active">领奖音效</label>
+                    </div>
+                </div>
+            </div>
+            <div class="container tab-pane fade" id="danmu-sets">
+                <div class="row">
+                    <div class="input-field col-md-6">
+                        <input type="range" id="font-size" min="6" max="72" value="20"
+                               style="background: linear-gradient(to right, #343A40, #ebeff4 30.3%, #ebeff4)"></input>
+                        <p class="range-value">20</p>
+                        <label class="active">字体大小</label>
+                    </div>
+                    <div class="input-field col-md-6">
+                        <input type="range" id="opacity" min="0" max="10" value="5"
+                               style="background: linear-gradient(to right, #343A40, #ebeff4 50%, #ebeff4)"></input>
+                        <p class="range-value">5</p>
+                        <label class="active">透明程度</label>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 15px;">
+                    <div class="input-field col-md-6">
+                        <select id="font-family" class="form-control form-control-chosen">
+                            <option value="SimHei">黑体</option>
+                            <option value="SimSun">宋体</option>
+                            <option value="NSimSun">新宋体</option>
+                            <option value="FangSong">仿宋</option>
+                            <option value="KaiTi">楷体</option>
+                            <option value="FangSong_GB2312">仿宋_GB2312</option>
+                            <option value="KaiTi_GB2312">楷体_GB2312</option>
+                            <option value="Microsoft YaHei">微软雅黑体</option>
+                            <option value="Arial">Arial</option>
+                            <option value="Comic Sans">Comic Sans</option>
+                            <option value="Courier New">Courier New</option>
+                            <option value="Times New Roman">Times New Roman</option>
+                        </select>
+                        <label class="active">弹幕字体</label>
+                    </div>
+                    <div class="input-field col-md-6" style="margin-top: 5px;">
+                        <input class="minicolors" id="font-color" type="text">
+                        <label for="font-color" class="active">弹幕颜色</label>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 15px;">
+                    <div class="input-field col-md-6">
+                        <select id="danmu-speed" class="form-control form-control-chosen">
+                            <option value="slow">缓慢</option>
+                            <option value="normal">正常</option>
+                            <option value="fast">快速</option>
+                        </select>
+                        <label class="active">弹幕速度</label>
+                    </div>
+                    <div class="input-field col-md-6">
+                        <select id="danmu-position" class="form-control form-control-chosen">
+                            <option value="top">顶部</option>
+                            <option value="middle">中间</option>
+                            <option value="bottom">底部</option>
+                        </select>
+                        <label class="active">弹幕位置</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col-md-3">
+                        <span style="position: absolute;top: 10px;">弹幕开关</span>
+                        <input id="danmu-switch" type="checkbox" name="switch"/>
+                    </div>
+                    <div class="input-field col-md-3">
+                        <span style="position: absolute;top: 10px;">弹幕审核</span>
+                        <input id="danmu-check-switch" type="checkbox" name="switch"/>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div><!--/.main-->
+<!-- 结束活动确认模态框 -->
+<div class="modal fade" id="finish-confirm">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- 模态框头部 -->
+            <div class="modal-header">
+                <h4 class="modal-title">确定结束活动？</h4>
+                <button type="button" class="close" onclick="quit_finish_confirm()">&times;</button>
+            </div>
+            <!-- 模态框主体 -->
+            <div class="modal-body row" style="margin-right: 0;">
+                <p class="tips">点击保存设置方便下次使用，或点击结束活动直接退出系统 : )</p>
+                <div class="input-field col-md-6">
+                    <input id="config-name" type="text" autocomplete="off">
+                    <label for="config-name" class="">设置信息名称</label>
+                </div>
+                <div class="col-md-6">
+                    <div class="alert alert-dismissible fade" id="save-statebar" style="margin-top: 16px;">
+                    </div>
+                </div>
+            </div>
+            <!-- 模态框底部 -->
+            <div class="modal-footer" style="justify-content: space-between;">
+                <div>
+                    <button type="button" class="btn btn-secondary" onclick="quit_finish_confirm()">取消</button>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-success" onclick="save_configurations()">保存设置</button>
+                    <button type="button" class="btn btn-danger" onclick="confirm_finish_confirm()">结束活动</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <!-- 作弊设置模态框 -->
-    <div class="modal fade" id="cheat-modal">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">      
-                <!-- 模态框头部 -->
-                <div class="modal-header">
-                    <h4 class="modal-title"><span id="cheat-kind"></span>作弊信息表</h4>
-                    <button type="button" class="close" onclick="quit_cheat_cfg()">&times;</button>
-                </div>
-                <!-- 模态框主体 -->
-                <div class="modal-body row">
-                    <div class="col-md-6">
-                        <div class="row" style="margin-left: 0px; margin-right: 0px;">
-                            <div class="col-md-12 table-header">
-                                中奖人选列表
-                            </div>
-                            <div class="col-md-12 table-adder">
-                                <button class="btn btn-round right" id="btn-add-winner">
-                                    <i class="mdi mdi-plus activator"></i></button>
-                            </div>
+<!-- 作弊设置模态框 -->
+<div class="modal fade" id="cheat-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- 模态框头部 -->
+            <div class="modal-header">
+                <h4 class="modal-title"><span id="cheat-kind"></span>作弊信息表</h4>
+                <button type="button" class="close" onclick="quit_cheat_cfg()">&times;</button>
+            </div>
+            <!-- 模态框主体 -->
+            <div class="modal-body row">
+                <div class="col-md-6">
+                    <div class="row" style="margin-left: 0px; margin-right: 0px;">
+                        <div class="col-md-12 table-header">
+                            中奖人选列表
                         </div>
-                        <div class="cheat-scroll scrollbar"  ondrop="drop_cheat_item(this, event)" ondragover="allowDrop(event)">
-                            <table class="table table-bordered inline-table" cellspacing="0">
-                                <thead>
-                                    <tr><th width="80%">用户ID</th><th width="20%"></th></tr>
-                                </thead>
-                                <tbody id="cheat-winner"></tbody>
-                            </table>
+                        <div class="col-md-12 table-adder">
+                            <button class="btn btn-round right" id="btn-add-winner">
+                                <i class="mdi mdi-plus activator"></i></button>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="row" style="margin-left: 0px; margin-right: 0px;">
-                            <div class="col-md-12 table-header">
-                                排除人员列表
-                            </div>
-                            <div class="col-md-12 table-adder">
-                                <button class="btn btn-round right" id="btn-add-loser">
-                                    <i class="mdi mdi-plus activator"></i></button>
-                            </div>
-                        </div>
-                        <div class="cheat-scroll scrollbar" ondrop="drop_cheat_item(this, event)" ondragover="allowDrop(event)">
-                            <table class="table table-bordered inline-table" cellspacing="0">
-                                <thead>
-                                    <tr><th width="80%">用户ID</th><th width="20%"></th></tr>
-                                </thead>
-                                <tbody id="cheat-loser"></tbody>
-                            </table>
-                        </div>
+                    <div class="cheat-scroll scrollbar" ondrop="drop_cheat_item(this, event)"
+                         ondragover="allowDrop(event)">
+                        <table class="table table-bordered inline-table" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th width="80%">用户ID</th>
+                                <th width="20%"></th>
+                            </tr>
+                            </thead>
+                            <tbody id="cheat-winner"></tbody>
+                        </table>
                     </div>
                 </div>
-                <!-- 模态框底部 -->
-                <div class="modal-footer">
-                    <div class="alert alert-danger alert-dismissible fade show" id="cheat-statebar">
-                        
+                <div class="col-md-6">
+                    <div class="row" style="margin-left: 0px; margin-right: 0px;">
+                        <div class="col-md-12 table-header">
+                            排除人员列表
+                        </div>
+                        <div class="col-md-12 table-adder">
+                            <button class="btn btn-round right" id="btn-add-loser">
+                                <i class="mdi mdi-plus activator"></i></button>
+                        </div>
                     </div>
-                    <button type="button" class="btn btn-info" onclick="save_cheat_info()">保存</button>
-                    <button type="button" class="btn btn-secondary" onclick="quit_cheat_cfg()">取消</button>
+                    <div class="cheat-scroll scrollbar" ondrop="drop_cheat_item(this, event)"
+                         ondragover="allowDrop(event)">
+                        <table class="table table-bordered inline-table" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th width="80%">用户ID</th>
+                                <th width="20%"></th>
+                            </tr>
+                            </thead>
+                            <tbody id="cheat-loser"></tbody>
+                        </table>
+                    </div>
                 </div>
+            </div>
+            <!-- 模态框底部 -->
+            <div class="modal-footer">
+                <div class="alert alert-danger alert-dismissible fade show" id="cheat-statebar">
+
+                </div>
+                <button type="button" class="btn btn-info" onclick="save_cheat_info()">保存</button>
+                <button type="button" class="btn btn-secondary" onclick="quit_cheat_cfg()">取消</button>
             </div>
         </div>
     </div>
+</div>
 </body>
 </html>
 <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
@@ -468,6 +488,6 @@
 <!-- <script type="text/javascript" src="/js/Ecalendar.jquery.min.js"></script> -->
 <script type="text/javascript" src="/js/jquery.minicolors.min.js"></script>
 <script type="text/javascript" src="/js/chosen.jquery.js"></script>
-<script type="text/javascript" src="/js/notifyMessage.js"></script> 
+<script type="text/javascript" src="/js/notifyMessage.js"></script>
 <script type="text/javascript" src="/js/console.js"></script>
 <script type="text/javascript" src="/js/data_operation.js"></script>
