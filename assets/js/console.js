@@ -58,7 +58,7 @@ function recv_ws_message(message) {
             // $('#show_style').attr("value",msg.content.topic_color);
             $("#show-style").setColor(msg.content.topic_color);
 
-            $("#draw-style option[value=" + msg.content.lottery_style + "]").attr("selected", "selected");
+            $("#draw-style option[value=" + msg.content.lottery_style + "]").attr("selected", "1ed");
             $("#draw-music option[value=" + msg.content.lottery_music + "]").attr("selected", "selected");
             $("#lucky-music option[value=" + msg.content.win_prize_music + "]").attr("selected", "selected");
             $("#reward-music option[value=" + msg.content.get_prize_music + "]").attr("selected", "selected");
@@ -89,8 +89,8 @@ function recv_ws_message(message) {
 
             break;
         case 'who-is-lucky-dog':
-            show_lucky_dog(msg.content.uid, msg.content.nickname, msg.content.itemname);
-            console.log(msg.content.uid + "-" + msg.content.nickname + " gets " + msg.content.itemname);
+            show_lucky_dog(msg.content.uid, msg.content.nickname, $cur_item.find("input.item-name").val());
+            console.log(msg.content.uid + "-" + msg.content.nickname + " gets " + $cur_item.find("input.item-name").val());
             break;
         default:
             console.log('unknown action:\n' + msg.action);
@@ -133,10 +133,13 @@ function start_draw() {
         levelMessage: 'info',
         timer: '2500'
     });
-    if (true) ws.send(JSON.stringify({
+    let send_data = {
         action: 'start-drawing',
-        content: {'dkind': $("#draw-style").val()}
-    }));
+        content: {'dkind': $("#draw-style").val(),
+            cur_item: $cur_item.find("input.item-name").val()}
+    };
+    console.log(send_data);
+    if (true) ws.send(JSON.stringify(send_data));
 }
 
 /* start draw end */
@@ -195,6 +198,10 @@ function on_activity_btn_click() {
             }));
             started = true;
         }
+        console.log({action: 'show-activity',
+            content: {
+                cur_item: $cur_item.find("input.item-name").val()
+            }});
         if (true) ws.send(JSON.stringify({
             action: 'show-activity',
             content: {
@@ -834,32 +841,36 @@ function update_setting(obj, event) {
     var href = $("#page-swichbar").find(".active").attr("href");
     var content = {}; // {"part": href}; 才哥说不要part
     if (href == "#basic-info") {
-        content['activity-name'] = $("#activity-name").val();
+        content['activity_name'] = $("#activity-name").val();
         console.log("update #basic-info");
     } else if (href == "#prize-pool") {
-        content['draw-mode'] = $("#draw-mode").val();
+        content['draw_mode_chosen'] = $("#draw-mode").val();
+        content['reward_items_names'] = [];
+        content['prize_names'] = [];
         console.log("update #prize-pool");
     } else if (href == "#style-theme") {
-        content['draw-style'] = $("#draw-style").val();
-        content['theme-color'] = $("#show-style").val();
-        content['draw-music'] = $("#draw-music").val();
+        content['lottery_style'] = $("#draw-style").val();
+        content['topic_color'] = $("#show-style").val();
+        content['lottery_music'] = $("#draw-music").val();
         if ($("#bg-img").val() == "") {
-            content['background-img'] = "none";
+            content['background_img'] = "none";
         } else if ($("#bg-img").val().indexOf("fakepath") != -1) {
-            content['background-img'] = "base64Str";
+            content['background_img'] = "base64Str";
         } else {
-            content['background-img'] = $("#bg-img").val();
+            content['background_img'] = $("#bg-img").val();
         }
-        content['lucky-music'] = $("#lucky-music").val();
-        content['reward-music'] = $("#reward-music").val();
+        content['win_prize_music'] = $("#lucky-music").val();
+        content['get_prize_music'] = $("#reward-music").val();
         console.log("update #style-theme");
     } else if (href == "#danmu-sets") {
-        content['font-size'] = $("#font-size").val();
-        content['opacity'] = $("#opacity").val();
-        content['font-family'] = $("#font-family").val();
-        content['font-color'] = $("#font-color").val();
-        content['danmu-speed'] = $("#danmu-speed").val();
-        content['danmu-position'] = $("#danmu-position").val();
+        content['bullet_font_size'] = $("#font-size").val();
+        content['bullet_transparent_degree'] = $("#opacity").val();
+        content['bullet_font'] = $("#font-family").val();
+        content['bullet_color'] = $("#font-color").val();
+        content['bullet_velocity'] = $("#danmu-speed").val();
+        content['bullet_location'] = $("#danmu-position").val();
+        content['bullet_enable'] = true; //$("#danmu-position").val();
+        content['bullet_check_enable'] = true;
         console.log("update #danmu-sets");
     }
     console.log(content);
@@ -1159,18 +1170,20 @@ $(document).ready(function () {
     document.onkeydown = global_keydown;
     $("#cur-item-input").attr("onkeydown", "input_keydown(this, event)");
 
-    ws = new WebSocket('ws://'+window.location.host+'/ws');
+    ws = new WebSocket('ws://' + window.location.host + '/ws');
 
-    let test_data = {data: JSON.stringify({
-        action: 'initialize',
-        content: {
-            reward_items_names: ['一等奖', '二等奖'],
-            prize_names: [
-                ['一等奖', '奔驰汽车', 10],
-                ['二等奖', '漏油的奔驰汽车', 10]
-            ]
-        }
-    })};
+    let test_data = {
+        data: JSON.stringify({
+            action: 'initialize',
+            content: {
+                reward_items_names: ['一等奖', '二等奖'],
+                prize_names: [
+                    ['一等奖', '奔驰汽车', 10],
+                    ['二等奖', '漏油的奔驰汽车', 10]
+                ]
+            }
+        })
+    };
     console.log(test_data);
     ws.onmessage = recv_ws_message;
     recv_ws_message(test_data);
