@@ -73,7 +73,7 @@ func setGet(r *mux.Router) {
 
 	r.HandleFunc("/console", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "views/console.html")
-	}).Methods("GET")
+	})
 
 	r.HandleFunc("/screen", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "PrizeDraw.html")

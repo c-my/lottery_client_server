@@ -35,7 +35,7 @@ func (r *userSQLRepository) RandomSelect() (user datamodels.User) {
 }
 
 func (r *userSQLRepository) RandomSelectAll() (users []datamodels.User) {
-	r.source.Order(gorm.Expr("random()")).Select("ID").Find(&users)
+	r.source.Order(gorm.Expr("random()")).Find(&users)
 	return
 }
 
