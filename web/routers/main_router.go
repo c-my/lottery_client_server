@@ -194,9 +194,9 @@ func setPost(r *mux.Router) {
 		if len(appendActRes) == 0 {
 			return
 		}
-		actID, _ := appendActRes["activity_id"].(int)
-		newAct := datamodels.Activity{Id: actID, Name: actName}
-		logger.Info.Println("new activity:", newAct)
+		actID := appendActRes["activity_id"].(float64)
+		actIDInt := int(actID)
+		newAct := datamodels.Activity{Id: actIDInt, Name: actName}
 		controllers.ActivityControl.Append(newAct)
 	}).Methods("POST")
 
