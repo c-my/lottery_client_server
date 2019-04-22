@@ -118,6 +118,10 @@ func (h *Hub) handleClientMessage(msg *ClientMsg) {
 			h.Broadcast(conn, websocket.TextMessage, data)
 		case "disable-lucky":
 			h.Broadcast(conn, websocket.TextMessage, data)
+		case "danmu-switch":
+			h.Broadcast(conn, websocket.TextMessage, data)
+		case "danmu-check-switch"
+			h.Broadcast(conn, websocket.TextMessage, data)
 		case "part-update":
 
 		}
