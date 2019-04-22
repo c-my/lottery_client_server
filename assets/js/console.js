@@ -159,10 +159,12 @@ function stop_draw() {
     if (cur_draw_times == max_draw_times) {
         $(".btn-draw-action").prop("disabled", true);
     }
-    if (true) ws.send(JSON.stringify({
+    let send_data = {
         action: 'stop-drawing',
-        content: ""
-    }));
+        content: $cur_item.find("input.item-name").val()
+    };
+    console.log(send_data);
+    if (true) ws.send(JSON.stringify(send_data));
 }
 
 /* stop draw end */
@@ -598,14 +600,15 @@ function disable_lucky(obj, event) {
     var username = $user.text();
     var uid = $user.attr("uid");
     var itemname = $tr.find("td.itemname").text();
-    if (true) ws.send(JSON.stringify({
+    let send_data = {
         action: "disable-lucky",
         content: {
             uid: uid,
             username: username,
             itemname: itemname
         }
-    }));
+    };
+    if (true) ws.send(JSON.stringify(send_data));
     del_row(obj);
     // add user to cheat-loser table
     if (userType != "normal") {
