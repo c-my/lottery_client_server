@@ -92,6 +92,9 @@ function recv_ws_message(message) {
             show_lucky_dog(msg.content.uid, msg.content.nickname, $cur_item.find("input.item-name").val());
             console.log(msg.content.uid + "-" + msg.content.nickname + " gets " + $cur_item.find("input.item-name").val());
             break;
+        case "no-available":
+            cur_draw_times--;
+            break;
         default:
             console.log('unknown action:\n' + msg.action);
     }
