@@ -1,5 +1,5 @@
-let ws = new WebSocket("ws://127.0.0.1:1923/ws");
-let drawing =false;
+let ws = new WebSocket("ws://192.168.137.1:1923/ws");
+let drawing = false;
 let draw_kind;
 var img;
 var Div;
@@ -47,7 +47,7 @@ ws.onmessage = function (message) {
             start_drawing(msg);
             break;
         case 'stop-drawing':
-          set_lucky_dog(msg);
+            set_lucky_dog(msg);
             break;
         case 'send-danmu':
             eg.Send(msg.content.danmu);
@@ -61,10 +61,10 @@ ws.onmessage = function (message) {
 };
 
 function set_config(msg) {
-  let theme = msg['content']['config']['theme'];
-  let font = msg['content']['config']['font'];
-  let music = msg['content']['config']['music'];
-  let danmu = msg['content']['config']['danmu'];
+    let theme = msg['content']['config']['theme'];
+    let font = msg['content']['config']['font'];
+    let music = msg['content']['config']['music'];
+    let danmu = msg['content']['config']['danmu'];
 }
 
 function start_drawing(msg) {
@@ -83,7 +83,7 @@ function start_drawing(msg) {
         case "swing"://swing
             pre.hide();
             pre = $("#swing");
-            pre.css("display","flex");
+            pre.css("display", "flex");
             console.log("swing\n");
             init_swing();
             draw_swing();
@@ -107,12 +107,13 @@ function start_drawing(msg) {
     }
 
 }
+
 // msg: JSON Object
 function set_lucky_dog(msg) {
-  drawing = false;
-  let user_id = msg['content']['uid'];
-  let content = $("#user_" + user_id).html();
-  $("#draw-area").html(content);
+    drawing = false;
+    let user_id = msg['content']['uid'];
+    let content = $("#user_" + user_id).html();
+    $("#draw-area").html(content);
 }
 
 function init_swing() {
@@ -165,50 +166,51 @@ function draw_swing() {
     //快速闪动
 
     function dr() {
-      //drawround
-      if(drawing)
-        $_this.res = '';
-      else
-        $_this.res = 1;
-      if ($_this.res != '' && $_this.res != undefined && $i == 0) {
-        dr2();
-      } else {
-        $dp.find(".pro").removeClass("select").eq($i).addClass("select");
-        $i = $i >= 11 ? 0 : $i + 1;//用户数组的数量
-        setTimeout(dr, $s);
-      }
+        //drawround
+        if (drawing)
+            $_this.res = '';
+        else
+            $_this.res = 1;
+        if ($_this.res != '' && $_this.res != undefined && $i == 0) {
+            dr2();
+        } else {
+            $dp.find(".pro").removeClass("select").eq($i).addClass("select");
+            $i = $i >= 11 ? 0 : $i + 1;//用户数组的数量
+            setTimeout(dr, $s);
+        }
     }
 
     function dr2() {
-      $dp.find(".pro").removeClass("select").eq($i).addClass("select");
-      $i = $i >= 11 ? 0 : $i + 1;
-      $s = $s + 30;//让他变慢
-      $rand = Math.ceil(Math.random() * 12)
-      if ($r < $_this.res + $rand) {
-        $r++;
-      } else {
-        $i = 0;
-        $r = 0;
-        $s = 100;
+        $dp.find(".pro").removeClass("select").eq($i).addClass("select");
+        $i = $i >= 11 ? 0 : $i + 1;
+        $s = $s + 30;//让他变慢
+        $rand = Math.ceil(Math.random() * 12)
+        if ($r < $_this.res + $rand) {
+            $r++;
+        } else {
+            $i = 0;
+            $r = 0;
+            $s = 100;
 
-        return;
-      }
-      setTimeout(dr2, $s);
+            return;
+        }
+        setTimeout(dr2, $s);
     }
+
     dr();
 
 
-
-
 }
+
 //draw_load_init
 function draw_load() {
 
 }
+
 //draw_flash_init
 function draw_flash() {
-     img = [];
-     Div = document.getElementsByClassName("pic");
+    img = [];
+    Div = document.getElementsByClassName("pic");
     /*var set = setInterval(function () {
         for (var i in Div) {
             var ran = Math.ceil(Math.random() * 12);
@@ -219,6 +221,7 @@ function draw_flash() {
         clearInterval(set);
     }, 3000);*/
 }
+
 //draw_cube_init
 function draw_cube() {
     img = [];
@@ -256,37 +259,34 @@ function* draw() {
 }
 
 
-
 $(document).ready(function () {
 
     get_participant_list();
     setInterval(function () {
-      if(drawing){
-        switch (draw_kind) {
-          case "load":
-            let id = iterator.next();
-            break;
-          case "swing":
-            break;
-          case "flash":
-            for (var i in Div) {
-              var ran = Math.ceil(Math.random() * 12);
-              Div[i].src = "img/" + ran + ".jpeg";
+        if (drawing) {
+            switch (draw_kind) {
+                case "load":
+                    let id = iterator.next();
+                    break;
+                case "swing":
+                    break;
+                case "flash":
+                    for (var i in Div) {
+                        var ran = Math.ceil(Math.random() * 12);
+                        Div[i].src = "img/" + ran + ".jpeg";
+                    }
+                    break;
+                case "cube":
+                    for (var i in Div) {
+                        var ran = Math.ceil(Math.random() * 12);
+                        Div[i].src = "img/" + ran + ".jpeg";
+                    }
+                    break;
+                default:
+                    console.log('unknown drawing:\n' + drawing);
+                    break;
             }
-            break;
-          case "cube":
-            for (var i in Div) {
-              var ran = Math.ceil(Math.random() * 12);
-              Div[i].src = "img/" + ran + ".jpeg";
-            }
-            break;
-          default:
-            console.log('unknown drawing:\n' + drawing);
-            break;
         }
-      }
-
-
 
 
     }, 100);

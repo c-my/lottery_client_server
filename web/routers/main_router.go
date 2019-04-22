@@ -16,11 +16,18 @@ import (
 
 // SetSubRouter sets sub router for root
 func SetSubRouter(parent string, r *mux.Router) {
-	subRouter := r.Host(parent).Subrouter()
-	setStatic(subRouter)
-	setGet(subRouter)
-	setPost(subRouter)
-	setWebsocket(subRouter)
+	//subRouter := r.Host(parent).Subrouter()
+	//subRouter := r.Host("0.0.0.0：1923").Subrouter()
+	//subRouter := r.Path("").Subrouter()
+
+	setStatic(r)
+	setGet(r)
+	setPost(r)
+	setWebsocket(r)
+	//setStatic(subRouter)
+	//setGet(subRouter)
+	//setPost(subRouter)
+	//setWebsocket(subRouter)
 }
 
 func setStatic(r *mux.Router) {
@@ -39,7 +46,7 @@ func setGet(r *mux.Router) {
 		if err != nil {
 			logger.Error.Println("failed to get exist user:", err)
 		}
-	})
+	}).Methods("GET")
 
 	r.HandleFunc("/get-activities", func(writer http.ResponseWriter, request *http.Request) {
 
@@ -54,26 +61,26 @@ func setGet(r *mux.Router) {
 		if err != nil {
 			logger.Error.Println("failed to response exist user to local:", err)
 		}
-	})
+	}).Methods("GET")
 
 	r.HandleFunc("/get-participants/{act-id}", func(writer http.ResponseWriter, request *http.Request) {
 		//queryActivity := request.Form["activity"]
 		// get user list
 		//actID := mux.Vars(request)["act-id"]
 		writer.Header().Set("Content-Type", "application/json")
-	})
+	}).Methods("GET")
 
 	r.HandleFunc("/console", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "console.html")
-	})
+	}).Methods("GET")
 
 	r.HandleFunc("/screen", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "PrizeDraw.html")
-	})
+	}).Methods("GET")
 
 	r.HandleFunc("/index", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "index.html")
-	})
+	}).Methods("GET")
 
 	r.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "login.html")

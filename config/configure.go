@@ -8,7 +8,7 @@ const (
 	CloudAppendActivities string = "https://" + CloudURL + "/append-activity"
 	CloudGetACtivities    string = "https://" + CloudURL + "/get-activities"
 	CloudConfirmCode      string = "BLXDNZ"
-	LocalAddr             string = "127.0.0.1"
+	LocalAddr             string = "0.0.0.0"
 	LocalPort             string = "1923"
 	LocalUrl              string = LocalAddr + ":" + LocalPort
 	InitialPath           string = "login"
