@@ -71,7 +71,13 @@ func setGet(r *mux.Router) {
 		writer.Header().Set("Content-Type", "application/json")
 	}).Methods("GET")
 
-	r.HandleFunc("/console", func(w http.ResponseWriter, r *http.Request) {
+	r.HandleFunc("/console/{act-id}", func(w http.ResponseWriter, r *http.Request) {
+		actID := mux.Vars(r)["act-id"]
+		websockets.Client, _ = websockets.NewWebsocketClient(config.CloudWsServer + "/" + actID)
+		websockets.Client.SetHandler(func(wsc *websockets.WebsocketClient, messageType int, p []byte) {
+			websockets.HUB.ServerMsg <- websockets.ServerMsg{messageType, p}
+		})
+		websockets.Client.Run()
 		http.ServeFile(w, r, "views/console.html")
 	})
 
@@ -187,6 +193,7 @@ func setPost(r *mux.Router) {
 		if err != nil {
 			logger.Error.Println("failed to get activities list from cloud:", err)
 		}
+
 		defer response.Body.Close()
 
 		appendActRes := parseResponseBody(response)
@@ -198,6 +205,9 @@ func setPost(r *mux.Router) {
 		actIDInt := int(actID)
 		newAct := datamodels.Activity{Id: actIDInt, Name: actName}
 		controllers.ActivityControl.Append(newAct)
+		//bodyBytes, _ := ioutil.ReadAll(response.Body)
+		resBytes, _ := json.Marshal(appendActRes)
+		w.Write(resBytes)
 	}).Methods("POST")
 
 	r.HandleFunc("/bg-img", func(writer http.ResponseWriter, request *http.Request) {

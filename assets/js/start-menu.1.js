@@ -87,11 +87,15 @@ function creat_from_blank() {
     $.ajax({
         url: window.location.origin + '/append-activity',//老才的服务器名
         method: 'post',
-        contentType: 'json',
-        dataType: 'json',
         data: JSON.stringify(data),
-        success: e => {
-            window.location.href = "/console";
+        success: function(e) {
+            console.log('success');
+            console.log(e);
+            e = JSON.parse(e);
+            window.location.href = "/console/" + e.activity_id;
+        },
+        error: e => {
+            console.log(e);
         }
     })
 }
