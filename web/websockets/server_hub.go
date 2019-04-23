@@ -181,7 +181,10 @@ func appendUser(msg *WsMessage) {
 }
 
 func appendDanmu(msg *WsMessage) {
-	danmuToAdd := (*msg)["content"].(datamodels.BulletComment)
+	danmuJson, _ := json.Marshal((*msg)["content"])
+	danmuToAdd := datamodels.BulletComment{}
+	json.Unmarshal(danmuJson, &danmuToAdd)
+	//danmuToAdd := (*msg)["content"].(datamodels.BulletComment)
 	controllers.DanmuControl.Append(danmuToAdd)
 }
 
