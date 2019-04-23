@@ -55,9 +55,9 @@ $(function() {
             })
         });
         $.ajax({
-            type: "POST",
+            method: "POST",
             url: window.location.origin + '/signin',
-            timeout: 1000,
+            timeout: 10000,
             dataType : "json",
             data: JSON.stringify({
                 username: $("#username").val(),
