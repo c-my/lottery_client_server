@@ -894,8 +894,8 @@ function update_setting(obj, event) {
         content['bullet_color'] = $("#font-color").val();
         content['bullet_velocity'] = $("#danmu-speed").val();
         content['bullet_location'] = $("#danmu-position").val();
-        content['bullet_enable'] = true; //$("#danmu-position").val();
-        content['bullet_check_enable'] = true;
+        content['bullet_enable'] = $("#danmu-switch").bootstrapSwitch('state'); //$("#danmu-position").val();
+        content['bullet_check_enable'] = $("#danmu-check-switch").bootstrapSwitch('state');
         console.log("update #danmu-sets");
     }
     console.log(content);
