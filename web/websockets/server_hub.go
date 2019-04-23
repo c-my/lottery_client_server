@@ -174,7 +174,9 @@ func (h *Hub) handleServerMessage(msg *ServerMsg) {
 }
 
 func appendUser(msg *WsMessage) {
-	userToAdd := (*msg)["content"].(datamodels.User)
+	userJson, _ := json.Marshal((*msg)["content"])
+	userToAdd := datamodels.User{}
+	json.Unmarshal(userJson, &userToAdd)
 	controllers.UserControl.Append(userToAdd)
 }
 
