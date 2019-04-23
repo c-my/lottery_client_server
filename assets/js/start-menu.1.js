@@ -106,11 +106,14 @@ function resume_activity() {
         "content": ""
     };
     $.ajax({
-        url: window.location.origin + '/get-activities',//老才的服务器名
+        url: 'https://sampling.alphamj.cn/get-activities',
         method: 'post',
         contentType: 'json',
         dataType: 'json',
         data: JSON.stringify(data),
+        success: e => {
+
+        }
     });
     window.location.href = "console";
 }
@@ -141,6 +144,23 @@ $(document).ready(function () {
         error: function (e) {
             console.log(e);
             is_activity_unfinished(0);
+        }
+    });
+
+    $.ajax({
+        // url: "https://sampling.alphamj.cn/get-activities",
+        url: window.location.origin + '/get-activities',
+        success: e => {
+            console.log(e);
+            let data = e; //JSON.parse(e);
+            for (let i = 0; i < data.length; i++) {
+                $("#history-list").append('<a history_id="' + data[i].id + '" ' +
+                    'class="list-group-item list-group-item-action" ' +
+                    'onclick="creat_from_history(this)">' + data[i].name + '</a>')
+            }
+        },
+        error: e => {
+            console.log(e);
         }
     })
 });

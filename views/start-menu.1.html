@@ -2,96 +2,96 @@
 
 <head>
     <meta charset="UTF-8"/>
-    <link rel="icon" href="/icon/sampling.ico" type="image/x-icon" />
+    <link rel="icon" href="/icon/sampling.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="/icon/sampling.ico" type="image/x-icon"/>
-    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/css/materialdesignicons.min.css"/>
     <link rel="stylesheet" href="\css\start-menu.1.css"/>
     <title>三百两抽奖系统控制台-开始页</title>
 </head>
 <body>
-    <div class="header">
-        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-            <!-- Brand -->
-            <a href="https://sampling.alphamj.cn/" target="new" class="navbar-brand">
-                SAMPLING</a><span id="online-symbol"></span>
-            <!-- Links -->
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" id="help-doc" href="#"><i class="mdi mdi-library-books" style="font-size: 16px;"></i> 帮助文档</a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-    <div class="row">
-        <div id="resume" class="col-md-6 offset-md-3 card panel">
-            <div class="guide" id="resume-guide">
-                <h2 class="card-title">继续活动</h5>
+<div class="header">
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <!-- Brand -->
+        <a href="https://sampling.alphamj.cn/" target="new" class="navbar-brand">
+            SAMPLING</a><span id="online-symbol"></span>
+        <!-- Links -->
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" id="help-doc" href="#"><i class="mdi mdi-library-books"
+                                                              style="font-size: 16px;"></i> 帮助文档</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<div class="row">
+    <div id="resume" class="col-md-6 offset-md-3 card panel">
+        <div class="guide" id="resume-guide">
+            <h2 class="card-title">继续活动</h5>
                 <p class="card-text">您有一场尚未结束的活动</p>
-                <button type="button" id="show-create" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" onclick="resume_activity()">进入</button>
-            </div>
+                <button type="button" id="show-create" class="btn btn-primary" data-toggle="modal"
+                        data-target=".bd-example-modal-lg" onclick="resume_activity()">进入
+                </button>
         </div>
-        <div id="create-or-history" class="col-md-8 offset-md-2 card panel">
-            <div class="row">
-                <div class="col-md-6 panel-left">
-                    <div id="create-form">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h2>新建活动</h2>
-                            </div>
-                            <div class="input-field col-md-6">
-                                <label for="input-activity-name">活动名称</label>
-                                <input type="text" id="input-activity-name" autocomplete="off" required>
-                            </div>
-                            <div class="input-field col-md-6">
-                                <label for="max-population">最大人数</label>
-                                <input type="number" min="1" id="max-population" required>
-                            </div>
-                            <div class="input-field col-md-12">
-                                <label class="active" for="validationTooltip03">备注</label>
-                                <textarea class="scrollbar" type="text" spellcheck="false" id="validationTooltip03"></textarea>
-                            </div>
-                            <div class="col-md-12" style="margin-top: 10px;">
-                                <button type="submit" class="btn btn-primary right" onclick="creat_from_blank()">创建活动</button>
-                            </div>
+    </div>
+    <div id="create-or-history" class="col-md-8 offset-md-2 card panel">
+        <div class="row">
+            <div class="col-md-6 panel-left">
+                <div id="create-form">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2>新建活动</h2>
+                        </div>
+                        <div class="input-field col-md-6">
+                            <label for="input-activity-name">活动名称</label>
+                            <input type="text" id="input-activity-name" autocomplete="off" required>
+                        </div>
+                        <div class="input-field col-md-6">
+                            <label for="max-population">最大人数</label>
+                            <input type="number" min="1" id="max-population" required>
+                        </div>
+                        <div class="input-field col-md-12">
+                            <label class="active" for="validationTooltip03">备注</label>
+                            <textarea class="scrollbar" type="text" spellcheck="false"
+                                      id="validationTooltip03"></textarea>
+                        </div>
+                        <div class="col-md-12" style="margin-top: 10px;">
+                            <button type="submit" class="btn btn-primary right" onclick="creat_from_blank()">创建活动
+                            </button>
                         </div>
                     </div>
-                    <div class="guide" id="create-guide" style="display: none;">
-                        <h2 class="card-title">新建活动</h5>
-                        <p class="card-text">开始一场抽奖或弹幕活动，重新设置您的抽奖参数，参加人员等数据</p>
-                        <button type="button" id="show-create" class="btn btn-primary" onclick="show_create()">进入</button>
-                    </div>
                 </div>
-                <div class="col-md-6 panel-right">
-                    <form id="history-form" method="post" action="console.jsp" style="display: none;">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h2>导入历史设置</h2>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="list-group scrollbar" id="history-list" style="margin-top: 1rem;
+                <div class="guide" id="create-guide" style="display: none;">
+                    <h2 class="card-title">新建活动</h5>
+                        <p class="card-text">开始一场抽奖或弹幕活动，重新设置您的抽奖参数，参加人员等数据</p>
+                        <button type="button" id="show-create" class="btn btn-primary" onclick="show_create()">进入
+                        </button>
+                </div>
+            </div>
+            <div class="col-md-6 panel-right">
+                <form id="history-form" method="post" action="console.jsp" style="display: none;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2>导入历史设置</h2>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="list-group scrollbar" id="history-list" style="margin-top: 1rem;
                                 height: calc(100% - 100px);">
 
-                                    <a history_id="qwerasdf0" class="list-group-item list-group-item-action" onclick="creat_from_history(this)">才明洋表彰大会</a>
-                                    <a history_id="qwerasdf1" class="list-group-item list-group-item-action" onclick="creat_from_history(this)">才明洋表彰大会</a>
-                                    <a history_id="qwerasdf2" class="list-group-item list-group-item-action" onclick="creat_from_history(this)">才明洋表彰大会</a>
-                                    <a history_id="qwerasdf3" class="list-group-item list-group-item-action" onclick="creat_from_history(this)">才明洋表彰大会</a>
-                                    <a history_id="qwerasdf4" class="list-group-item list-group-item-action" onclick="creat_from_history(this)">才明洋表彰大会</a>
-
-
-                                </div>
                             </div>
                         </div>
-                    </form>
-                    <div class="guide" id="history-guide">
-                        <h2 class="card-title">导入历史设置</h5>
-                        <p class="card-text">如果您要新建的活动和之前的一场有很大的相似度，请从这里进入</p>
-                        <button type="button" id="show-history" class="btn btn-primary" onclick="show_history()">进入</button>
                     </div>
+                </form>
+                <div class="guide" id="history-guide">
+                    <h2 class="card-title">导入历史设置</h2>
+                    <p class="card-text">如果您要新建的活动和之前的一场有很大的相似度，请从这里进入</p>
+                    <button type="button" id="show-history" class="btn btn-primary" onclick="show_history()">进入
+                    </button>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </body>
 </html>
 <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
