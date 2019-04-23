@@ -2,6 +2,7 @@ package routers
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"github.com/c-my/lottery_client_server/config"
 	"github.com/c-my/lottery_client_server/datamodels"
@@ -13,6 +14,7 @@ import (
 	"github.com/gorilla/websocket"
 	"io/ioutil"
 	"net/http"
+	"os"
 )
 
 // SetSubRouter sets sub router for root
@@ -215,8 +217,17 @@ func setPost(r *mux.Router) {
 		w.Write(resBytes)
 	}).Methods("POST")
 
-	r.HandleFunc("/bg-img", func(writer http.ResponseWriter, request *http.Request) {
-
+	r.HandleFunc("/post", func(writer http.ResponseWriter, request *http.Request) {
+		imgBase64Bytes, err := ioutil.ReadAll(request.Body)
+		if err != nil {
+			logger.Error.Println("failed to read img body:", err)
+		}
+		var imgBytes []byte
+		base64.StdEncoding.Decode(imgBytes, imgBase64Bytes)
+		err = ioutil.WriteFile("bg-img", imgBytes, os.ModeType)
+		if err != nil {
+			logger.Error.Println("failed to write img file")
+		}
 	}).Methods("POST")
 }
 
