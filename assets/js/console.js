@@ -855,8 +855,23 @@ function update_setting(obj, event) {
         console.log("update #basic-info");
     } else if (href == "#prize-pool") {
         content['draw_mode_chosen'] = $("#draw-mode").val();
+        let l = $("#prize-list-body").children();
         content['reward_items_names'] = [];
+        for (let i =0; i < l.length; i++) {
+            content['reward_items_names'].push(l[i].firstElementChild.firstElementChild.value)
+        }
         content['prize_names'] = [];
+        l = $('#item-list-body').children(); // [<tr>, <tr>]
+        for (let i =0; i < l.length; i++) {
+            let tr = l[i];
+            let td_list = $(tr).children();
+            content['prize_names'].push([
+                td_list[0].firstElementChild.value,
+                td_list[1].firstElementChild.value,
+                td_list[2].firstElementChild.value,
+            ])
+        }
+
         console.log("update #prize-pool");
     } else if (href == "#style-theme") {
         content['lottery_style'] = $("#draw-style").val();
