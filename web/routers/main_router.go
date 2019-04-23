@@ -62,6 +62,7 @@ func setGet(r *mux.Router) {
 		if err != nil {
 			logger.Error.Println("failed to response exist user to local:", err)
 		}
+		writer.Write(resBody)
 	}).Methods("GET")
 
 	r.HandleFunc("/get-participants/{act-id}", func(writer http.ResponseWriter, request *http.Request) {
