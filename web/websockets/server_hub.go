@@ -176,12 +176,20 @@ func (h *Hub) handleServerMessage(msg *ServerMsg) {
 func appendUser(msg *WsMessage) {
 	userJson, _ := json.Marshal((*msg)["content"])
 	userToAdd := datamodels.User{}
-	json.Unmarshal(userJson, &userToAdd)
+	err := json.Unmarshal(userJson, &userToAdd)
+	if err != nil {
+		logger.Error.Println("failed to decode appended user:", err)
+	}
 	controllers.UserControl.Append(userToAdd)
 }
 
 func appendDanmu(msg *WsMessage) {
-	danmuToAdd := (*msg)["content"].(datamodels.BulletComment)
+	danmuJson, _ := json.Marshal((*msg)["content"])
+	danmuToAdd := datamodels.BulletComment{}
+	err := json.Unmarshal(danmuJson, &danmuToAdd)
+	if err != nil {
+		logger.Error.Println("failed to decode danmu,", err)
+	}
 	controllers.DanmuControl.Append(danmuToAdd)
 }
 
