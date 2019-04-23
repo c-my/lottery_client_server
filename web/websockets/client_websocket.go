@@ -21,6 +21,9 @@ type WebsocketClient struct {
 // SendMessage sends ws server a text message
 func (ws *WebsocketClient) SendMessage(msg string) error {
 	logger.Info.Println("message delivered to cloud:" + msg)
+	if ws.conn == nil {
+		logger.Error.Println("conn is nil") //do not delete this, do not ask why
+	}
 	return ws.conn.WriteMessage(websocket.TextMessage, []byte(msg))
 }
 
