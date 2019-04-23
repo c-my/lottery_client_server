@@ -48,6 +48,9 @@ ws.onmessage = function (message) {
             start_drawing(msg);
             break;
         case 'stop-drawing':
+            // set_lucky_dog(msg);
+            break;
+        case 'who-is-lucky-dog':
             set_lucky_dog(msg);
             break;
         case 'send-danmu':
