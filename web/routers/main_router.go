@@ -77,6 +77,7 @@ func setGet(r *mux.Router) {
 		websockets.Client.SetHandler(func(wsc *websockets.WebsocketClient, messageType int, p []byte) {
 			websockets.HUB.ServerMsg <- websockets.ServerMsg{messageType, p}
 		})
+		logger.Info.Println("dialing cloud...")
 		websockets.Client.Run()
 		http.ServeFile(w, r, "views/console.html")
 	})
